@@ -16,6 +16,10 @@
 // ======================================
 
 export function renderSortingActivityContent(lesson) {
+    const shuffledItems = shuffleItems(lesson.items);
+
+    lesson.currentItemOrder = shuffledItems;
+
     return `
         <p class="lead">${lesson.instructions}</p>
 
@@ -29,7 +33,7 @@ export function renderSortingActivityContent(lesson) {
                 <h5>Items to Sort</h5>
 
                 <div class="d-grid gap-2" id="sortingItems">
-                    ${lesson.items.map((item, index) => `
+                    ${shuffledItems.map((item, index) => `
                         <button
                             class="btn btn-outline-primary culture-sort-item"
                             data-sort-index="${index}">
@@ -63,9 +67,8 @@ export function renderSortingActivityContent(lesson) {
                         </p>
 
                         <div
-                            class="sort-placeholder"
+                            class="sorted-items"
                             data-category-items="${category.key}">
-                            Items will appear here.
                         </div>
                     </div>
                 </div>
@@ -83,6 +86,8 @@ export function initializeSortingActivity(lesson) {
     let selectedItem = null;
     let sortedCount = 0;
 
+    const activityItems = lesson.currentItemOrder || lesson.items;
+
     const choicePanel = document.getElementById("sortingChoicePanel");
     const selectedItemLabel = document.getElementById("selectedSortingItem");
     const feedback = document.getElementById("sortingFeedback");
@@ -93,12 +98,22 @@ export function initializeSortingActivity(lesson) {
 
             selectedItem = {
                 index: itemIndex,
-                data: lesson.items[itemIndex],
+                data: activityItems[itemIndex],
                 button
             };
 
-            selectedItemLabel.textContent = `Where does "${selectedItem.data.text}" belong?`;
+            document.querySelectorAll(".culture-sort-item").forEach(itemButton => {
+                itemButton.classList.remove("active-sort-item");
+            });
+
+            button.classList.add("active-sort-item");
+
+            selectedItemLabel.textContent =
+                `Where does "${selectedItem.data.text}" belong?`;
+
             choicePanel.classList.remove("d-none");
+
+            feedback.innerHTML = "";
         });
     });
 
@@ -110,28 +125,30 @@ export function initializeSortingActivity(lesson) {
             const correctAnswer = selectedItem.data.answer;
 
             if (userChoice === correctAnswer) {
-                const targetColumn = document.querySelector(`[data-category-items="${correctAnswer}"]`);
+                const targetColumn =
+                    document.querySelector(`[data-category-items="${correctAnswer}"]`);
 
                 if (targetColumn) {
-                    if (targetColumn.classList.contains("sort-placeholder")) {
-                        targetColumn.innerHTML = "";
-                    }
-
                     const pill = document.createElement("div");
-                    pill.className = "sorted-pill";
+                    pill.className = "sorted-pill sorted-pill-enter";
                     pill.textContent = selectedItem.data.text;
                     targetColumn.appendChild(pill);
                 }
 
                 selectedItem.button.disabled = true;
-                selectedItem.button.classList.remove("btn-outline-primary");
+                selectedItem.button.classList.remove(
+                    "btn-outline-primary",
+                    "active-sort-item"
+                );
                 selectedItem.button.classList.add("btn-success");
 
                 sortedCount++;
 
                 feedback.innerHTML = `
                     <div class="alert alert-success">
-                        Correct. "${selectedItem.data.text}" belongs in ${getCategoryTitle(lesson, correctAnswer)}.
+                        <strong>Correct.</strong>
+                        "${selectedItem.data.text}" belongs in
+                        ${getCategoryTitle(lesson, correctAnswer)}.
                     </div>
                 `;
 
@@ -141,19 +158,27 @@ export function initializeSortingActivity(lesson) {
                 if (sortedCount === lesson.items.length) {
                     feedback.innerHTML = `
                         <div class="alert alert-success">
-                            Excellent! You sorted all of the items.
+                            <strong>Excellent!</strong>
+                            ${sortedCount} / ${lesson.items.length} correct.
+                            <br>
+                            You successfully identified examples of visible and hidden culture.
                         </div>
                     `;
                 }
             } else {
                 feedback.innerHTML = `
                     <div class="alert alert-warning">
-                        Not quite. Try again.
+                        <strong>Not quite.</strong>
+                        Try again. The item is still selected.
                     </div>
                 `;
             }
         });
     });
+}
+
+function shuffleItems(items) {
+    return [...items].sort(() => Math.random() - 0.5);
 }
 
 function getCategoryTitle(lesson, categoryKey) {
