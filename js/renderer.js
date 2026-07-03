@@ -22,7 +22,9 @@ import {
 
 import {
     renderSortingActivityContent,
-    initializeSortingActivity
+    initializeSortingActivity,
+    renderImageRevealContent,
+    initializeImageReveal
 } from "./activities.js";
 
 export function renderLesson(lesson, context) {
@@ -44,6 +46,7 @@ export function renderLesson(lesson, context) {
 
     attachSharedLessonEvents(lesson, context);
     initializeSortingActivity(lesson);
+    initializeImageReveal(lesson);
 }
 
 const lessonRenderers = {
@@ -54,7 +57,8 @@ const lessonRenderers = {
     reflectionImage: renderReflection,
     twoColumn: renderTwoColumn,
     accordion: renderAccordion,
-    sortingActivity: renderSortingActivity
+    sortingActivity: renderSortingActivity,
+    imageReveal: renderImageReveal
 };
 
 // ---------- Shared Layout ----------
@@ -417,4 +421,12 @@ function renderUnknownLessonType(lesson) {
             </div>
         </section>
     `;
+}
+
+function renderImageReveal(lesson, context) {
+    return renderPageShell(
+        lesson,
+        renderImageRevealContent(lesson),
+        context
+    );
 }

@@ -6,28 +6,11 @@
 import { cultureModule } from "../modules/culture.js";
 import { stereotypesModule } from "../modules/stereotypes.js";
 import { ambiguityModule } from "../modules/ambiguity.js";
+import { daeaModule } from "../modules/daea.js";
 
 // Temporary placeholder modules.
 // We will replace these one at a time as we build them.
 
-
-const daeaModule = {
-    key: "daea",
-    title: "Critical Reflection / DAEA",
-    description: "Practice Describe, Analyze, Evaluate, and Apply.",
-    lessons: [
-        {
-            id: "daea-intro",
-            type: "moduleIntro",
-            title: "Critical Reflection / DAEA",
-            moduleLabel: "Module 4",
-            body: [
-                "This module introduces critical reflection and the DAEA framework."
-            ],
-            buttonText: "Begin Module 4"
-        }
-    ]
-};
 
 const pragueModule = {
     key: "prague",
