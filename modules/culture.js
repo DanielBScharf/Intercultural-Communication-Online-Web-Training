@@ -2,7 +2,29 @@
 // Module 1: Understanding Culture
 // modules/culture.js
 // ======================================
-
+// ======================================
+// Module 1: Understanding Culture
+// ======================================
+//
+// Purpose:
+// This file contains ONLY the content for Module 1.
+// It does not control navigation, styling, rendering, or saving.
+//
+// How to edit:
+// Add, remove, or revise lesson objects inside the lessons array.
+//
+// Important:
+// The "type" field tells renderer.js what layout/activity to use.
+// Example:
+// type: "reflection" creates a reflection textbox.
+// type: "contentImage" creates a content page with an image.
+// type: "sortingActivity" creates a sorting/classification activity.
+//
+// Connected files:
+// - js/courseData.js imports this module.
+// - js/renderer.js decides how each lesson type appears.
+// - js/storage.js saves learner responses.
+// ======================================
 export const cultureModule = {
     key: "culture",
     title: "Understanding Culture",
