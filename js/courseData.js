@@ -4,45 +4,12 @@
 // ======================================
 
 import { cultureModule } from "../modules/culture.js";
+import { stereotypesModule } from "../modules/stereotypes.js";
+import { ambiguityModule } from "../modules/ambiguity.js";
 
 // Temporary placeholder modules.
 // We will replace these one at a time as we build them.
 
-const stereotypesModule = {
-    key: "stereotypes",
-    title: "Stereotypes",
-    description: "Explore stereotypes, why people use them, and how to respond to them.",
-    lessons: [
-        {
-            id: "stereotypes-intro",
-            type: "moduleIntro",
-            title: "Stereotypes",
-            moduleLabel: "Module 2",
-            body: [
-                "In this module, you will explore stereotypes, why people use them, and how they can both help and harm intercultural understanding."
-            ],
-            buttonText: "Begin Module 2"
-        }
-    ]
-};
-
-const ambiguityModule = {
-    key: "ambiguity",
-    title: "Tolerance of Ambiguity",
-    description: "Build comfort with unfamiliar and unclear situations.",
-    lessons: [
-        {
-            id: "ambiguity-intro",
-            type: "moduleIntro",
-            title: "Tolerance of Ambiguity",
-            moduleLabel: "Module 3",
-            body: [
-                "This module introduces tolerance of ambiguity and provides a framework for handling unfamiliar situations."
-            ],
-            buttonText: "Begin Module 3"
-        }
-    ]
-};
 
 const daeaModule = {
     key: "daea",
