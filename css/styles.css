@@ -427,3 +427,25 @@ h6 {
     font-weight: 600;
     color: var(--primary-dark);
 }
+.active-sort-item {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary-dark);
+    font-weight: 700;
+}
+
+.sorted-pill-enter {
+    animation: pillEnter 0.25s ease-out;
+}
+
+@keyframes pillEnter {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
