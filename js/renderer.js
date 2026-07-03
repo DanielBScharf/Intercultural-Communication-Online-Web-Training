@@ -50,7 +50,6 @@ const lessonRenderers = {
     twoColumn: renderTwoColumn,
     accordion: renderAccordion,
     sortingActivity: renderSortingActivity,
-    moduleComplete: renderModuleComplete
 };
 
 export function renderLesson(lesson, context) {
