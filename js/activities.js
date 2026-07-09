@@ -365,3 +365,339 @@ function getCategoryTitle(lesson, categoryKey) {
     const category = lesson.categories.find(category => category.key === categoryKey);
     return category ? category.title : categoryKey;
 }
+
+// ======================================
+// Story Activity
+// ======================================
+//
+// Purpose:
+// Renders guided scenario-based activities.
+// A story activity can include story text, comic panels,
+// decision questions, reflection prompts, reveals, and summaries.
+// ======================================
+
+export function renderStoryActivityContent(lesson) {
+    return `
+        <div class="story-activity" data-story-id="${lesson.id}">
+
+            <p class="lead">
+                ${lesson.instructions || ""}
+            </p>
+
+            <div id="storyPageContainer"></div>
+
+            <div class="story-navigation mt-4 d-flex justify-content-between gap-3">
+
+                <button class="btn btn-outline-secondary" id="storyPrevious">
+                    Previous
+                </button>
+
+                <div class="story-progress small text-muted align-self-center" id="storyProgress">
+                    Page 1 of ${lesson.pages.length}
+                </div>
+
+                <button class="btn btn-primary" id="storyNext">
+                    Next
+                </button>
+
+            </div>
+
+        </div>
+    `;
+}
+
+export function initializeStoryActivity(lesson) {
+    if (lesson.type !== "storyActivity") return;
+
+    let currentPageIndex = 0;
+
+    const container = document.getElementById("storyPageContainer");
+    const previousButton = document.getElementById("storyPrevious");
+    const nextButton = document.getElementById("storyNext");
+    const progress = document.getElementById("storyProgress");
+
+    function renderCurrentStoryPage() {
+        const page = lesson.pages[currentPageIndex];
+
+        container.innerHTML = renderStoryPage(page, lesson);
+
+        progress.textContent =
+            `Page ${currentPageIndex + 1} of ${lesson.pages.length}`;
+
+        previousButton.disabled = currentPageIndex === 0;
+
+        nextButton.textContent =
+            currentPageIndex === lesson.pages.length - 1
+                ? "Finish Activity"
+                : "Next";
+
+        attachStoryPageEvents(page);
+    }
+
+    previousButton.addEventListener("click", () => {
+        if (currentPageIndex > 0) {
+            currentPageIndex--;
+            renderCurrentStoryPage();
+        }
+    });
+
+    nextButton.addEventListener("click", () => {
+        if (currentPageIndex < lesson.pages.length - 1) {
+            currentPageIndex++;
+            renderCurrentStoryPage();
+        }
+    });
+
+    renderCurrentStoryPage();
+}
+
+function renderStoryPage(page, lesson) {
+    switch (page.pageType) {
+        case "story":
+            return renderStoryPageStory(page);
+
+        case "comic":
+            return renderStoryPageComic(page);
+
+        case "reflection":
+            return renderStoryPageReflection(page);
+
+        case "decision":
+            return renderStoryPageDecision(page);
+
+        case "reveal":
+            return renderStoryPageReveal(page);
+
+        case "summary":
+            return renderStoryPageSummary(page);
+
+        default:
+            return `
+                <div class="alert alert-warning">
+                    Unknown story page type: ${page.pageType}
+                </div>
+            `;
+    }
+}
+
+function renderStoryPageStory(page) {
+    return `
+        <div class="story-page-card">
+
+            <h3>${page.title}</h3>
+
+            ${renderStoryImage(page.image, page.imageAlt)}
+
+            ${renderStoryParagraphs(page.body)}
+
+        </div>
+    `;
+}
+
+function renderStoryPageComic(page) {
+    return `
+        <div class="story-page-card">
+
+            <h3>${page.title}</h3>
+
+            ${page.intro ? `<p>${page.intro}</p>` : ""}
+
+            <div class="row g-4 mt-2">
+
+                ${page.panels.map(panel => `
+                    <div class="col-md-6">
+                        <img
+                            src="${panel.image}"
+                            alt="${panel.alt || ""}"
+                            class="img-fluid rounded shadow-sm story-comic-panel"
+                            onerror="this.outerHTML='<div class=&quot;placeholder-image rounded shadow-sm&quot;>${panel.label || "Comic Panel"}</div>'">
+                    </div>
+                `).join("")}
+
+            </div>
+
+        </div>
+    `;
+}
+
+function renderStoryPageReflection(page) {
+    const savedValue = loadStoryResponse(page.storageKey);
+
+    return `
+        <div class="story-page-card">
+
+            <h3>${page.title}</h3>
+
+            ${renderStoryParagraphs(page.body)}
+
+            <label for="${page.storageKey}" class="form-label fw-semibold mt-3">
+                ${page.prompt}
+            </label>
+
+            <textarea
+                id="${page.storageKey}"
+                class="form-control reflection-box story-response"
+                rows="6"
+                data-story-storage-key="${page.storageKey}"
+                placeholder="${page.placeholder || "Write your response here..."}">${savedValue}</textarea>
+
+            <div class="save-status mt-2" id="${page.storageKey}Status">
+                Your response will be saved in this browser.
+            </div>
+
+        </div>
+    `;
+}
+
+function renderStoryPageDecision(page) {
+    const savedValue = loadStoryResponse(page.storageKey);
+
+    return `
+        <div class="story-page-card">
+
+            <h3>${page.title}</h3>
+
+            ${renderStoryParagraphs(page.body)}
+
+            <p class="fw-semibold mt-3">
+                ${page.question}
+            </p>
+
+            <div class="d-grid gap-2">
+
+                ${page.choices.map(choice => `
+                    <button
+                        class="btn ${savedValue === choice ? "btn-primary" : "btn-outline-primary"} story-choice"
+                        data-story-choice="${choice}"
+                        data-story-storage-key="${page.storageKey}">
+                        ${choice}
+                    </button>
+                `).join("")}
+
+            </div>
+
+            <div class="save-status mt-2" id="${page.storageKey}Status">
+                ${savedValue ? "✓ Saved" : "Choose a response."}
+            </div>
+
+        </div>
+    `;
+}
+
+function renderStoryPageReveal(page) {
+    return `
+        <div class="story-page-card story-reveal">
+
+            <h3>${page.title}</h3>
+
+            ${renderStoryImage(page.image, page.imageAlt)}
+
+            ${renderStoryParagraphs(page.body)}
+
+        </div>
+    `;
+}
+
+function renderStoryPageSummary(page) {
+    return `
+        <div class="story-page-card">
+
+            <h3>${page.title}</h3>
+
+            ${renderStoryParagraphs(page.body)}
+
+            <div class="module-summary mt-4">
+
+                <h5>Key Takeaways</h5>
+
+                <ul>
+                    ${page.points.map(point => `<li>${point}</li>`).join("")}
+                </ul>
+
+            </div>
+
+        </div>
+    `;
+}
+
+function attachStoryPageEvents(page) {
+    document.querySelectorAll(".story-response").forEach(textarea => {
+        textarea.addEventListener("input", () => {
+            const storageKey = textarea.dataset.storyStorageKey;
+
+            saveStoryResponse(storageKey, textarea.value);
+
+            const status = document.getElementById(`${storageKey}Status`);
+
+            if (status) {
+                status.textContent = "✓ Saved";
+
+                setTimeout(() => {
+                    status.textContent = "Your response will be saved in this browser.";
+                }, 1500);
+            }
+        });
+    });
+
+    document.querySelectorAll(".story-choice").forEach(button => {
+        button.addEventListener("click", () => {
+            const storageKey = button.dataset.storyStorageKey;
+            const choice = button.dataset.storyChoice;
+
+            saveStoryResponse(storageKey, choice);
+
+            document.querySelectorAll(".story-choice").forEach(choiceButton => {
+                choiceButton.classList.remove("btn-primary");
+                choiceButton.classList.add("btn-outline-primary");
+            });
+
+            button.classList.remove("btn-outline-primary");
+            button.classList.add("btn-primary");
+
+            const status = document.getElementById(`${storageKey}Status`);
+
+            if (status) {
+                status.textContent = "✓ Saved";
+            }
+        });
+    });
+}
+
+function renderStoryParagraphs(body = []) {
+    if (!body || !body.length) return "";
+
+    return body.map(paragraph => `<p>${paragraph}</p>`).join("");
+}
+
+function renderStoryImage(image, imageAlt = "") {
+    if (!image) return "";
+
+    return `
+        <img
+            src="${image}"
+            alt="${imageAlt}"
+            class="img-fluid rounded shadow-sm lesson-image mb-4"
+            onerror="this.outerHTML='<div class=&quot;placeholder-image rounded shadow-sm mb-4&quot;>Scenario Image</div>'">
+    `;
+}
+
+function saveStoryResponse(storageKey, value) {
+    localStorage.setItem(
+        `interculturalWorkshop_response_${storageKey}`,
+        JSON.stringify(value)
+    );
+}
+
+function loadStoryResponse(storageKey) {
+    const saved = localStorage.getItem(
+        `interculturalWorkshop_response_${storageKey}`
+    );
+
+    if (!saved) return "";
+
+    try {
+        return JSON.parse(saved);
+    } catch {
+        return "";
+    }
+}
