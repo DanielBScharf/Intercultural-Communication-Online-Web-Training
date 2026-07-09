@@ -7,6 +7,7 @@
 // Contains reusable interactive learning activities.
 // Current activity:
 // - sortingActivity
+// - guidedActivity
 //
 // Future activities can go here:
 // - comicViewer
@@ -689,6 +690,368 @@ function saveStoryResponse(storageKey, value) {
 }
 
 function loadStoryResponse(storageKey) {
+    const saved = localStorage.getItem(
+        `interculturalWorkshop_response_${storageKey}`
+    );
+
+    if (!saved) return "";
+
+    try {
+        return JSON.parse(saved);
+    } catch {
+        return "";
+    }
+}
+
+// ======================================
+// Guided Activity
+// ======================================
+//
+// Purpose:
+// Renders reusable slide-based activities.
+// A guided activity can include story text, comic panels,
+// reflection prompts, decisions, reveals, and summaries.
+// ======================================
+
+export function renderGuidedActivityContent(lesson) {
+    const slideCount = getGuidedSlides(lesson).length;
+
+    return `
+        <div class="guided-activity" data-guided-id="${lesson.id}">
+
+            <p class="lead">
+                ${lesson.instructions || ""}
+            </p>
+
+            <div id="guidedSlideContainer"></div>
+
+            <div class="story-navigation mt-4 d-flex justify-content-between gap-3">
+
+                <button class="btn btn-outline-secondary" id="guidedPrevious">
+                    Previous
+                </button>
+
+                <div class="story-progress small text-muted align-self-center" id="guidedProgress">
+                    ${slideCount ? `Slide 1 of ${slideCount}` : "No slides"}
+                </div>
+
+                <button class="btn btn-primary" id="guidedNext">
+                    Next
+                </button>
+
+            </div>
+
+        </div>
+    `;
+}
+
+export function initializeGuidedActivity(lesson) {
+    if (lesson.type !== "guidedActivity") return;
+
+    let currentSlideIndex = 0;
+
+    const slides = getGuidedSlides(lesson);
+    const container = document.getElementById("guidedSlideContainer");
+    const previousButton = document.getElementById("guidedPrevious");
+    const nextButton = document.getElementById("guidedNext");
+    const progress = document.getElementById("guidedProgress");
+
+    function renderCurrentGuidedSlide() {
+        if (!slides.length) {
+            container.innerHTML = renderGuidedSlide(null, lesson, currentSlideIndex);
+            previousButton.disabled = true;
+            nextButton.disabled = true;
+            progress.textContent = "No slides";
+            return;
+        }
+
+        const slide = slides[currentSlideIndex];
+
+        container.innerHTML = renderGuidedSlide(slide, lesson, currentSlideIndex);
+
+        progress.textContent =
+            `Slide ${currentSlideIndex + 1} of ${slides.length}`;
+
+        previousButton.disabled = currentSlideIndex === 0;
+        nextButton.disabled = currentSlideIndex === slides.length - 1;
+
+        attachGuidedSlideEvents(slide);
+    }
+
+    previousButton.addEventListener("click", () => {
+        if (currentSlideIndex > 0) {
+            currentSlideIndex--;
+            renderCurrentGuidedSlide();
+        }
+    });
+
+    nextButton.addEventListener("click", () => {
+        if (currentSlideIndex < slides.length - 1) {
+            currentSlideIndex++;
+            renderCurrentGuidedSlide();
+        }
+    });
+
+    renderCurrentGuidedSlide();
+}
+
+function renderGuidedSlide(slide, lesson, index) {
+    if (!slide) {
+        return `
+            <div class="alert alert-warning">
+                This guided activity does not include any slides yet.
+            </div>
+        `;
+    }
+
+    switch (slide.slideType) {
+        case "story":
+            return renderGuidedSlideStory(slide);
+
+        case "comic":
+            return renderGuidedSlideComic(slide);
+
+        case "reflection":
+            return renderGuidedSlideReflection(slide, lesson, index);
+
+        case "decision":
+            return renderGuidedSlideDecision(slide, lesson, index);
+
+        case "reveal":
+            return renderGuidedSlideReveal(slide);
+
+        case "summary":
+            return renderGuidedSlideSummary(slide);
+
+        default:
+            return `
+                <div class="alert alert-warning">
+                    Unknown guided slide type: ${slide.slideType}
+                </div>
+            `;
+    }
+}
+
+function renderGuidedSlideStory(slide) {
+    return `
+        <div class="story-page-card">
+
+            <h3>${slide.title}</h3>
+
+            ${renderStoryImage(slide.image, slide.imageAlt)}
+
+            ${renderStoryParagraphs(slide.body)}
+
+        </div>
+    `;
+}
+
+function renderGuidedSlideComic(slide) {
+    const panels = slide.panels || [];
+
+    return `
+        <div class="story-page-card">
+
+            <h3>${slide.title}</h3>
+
+            ${slide.intro ? `<p>${slide.intro}</p>` : ""}
+
+            <div class="row g-4 mt-2">
+
+                ${panels.map(panel => `
+                    <div class="col-md-6">
+                        <img
+                            src="${panel.image}"
+                            alt="${panel.alt || ""}"
+                            class="img-fluid rounded shadow-sm story-comic-panel"
+                            onerror="this.outerHTML='<div class=&quot;placeholder-image rounded shadow-sm&quot;>${panel.label || "Comic Panel"}</div>'">
+                    </div>
+                `).join("")}
+
+            </div>
+
+        </div>
+    `;
+}
+
+function renderGuidedSlideReflection(slide, lesson, index) {
+    const storageKey = getGuidedStorageKey(slide, lesson, index);
+    const savedValue = loadGuidedResponse(storageKey);
+
+    return `
+        <div class="story-page-card">
+
+            <h3>${slide.title}</h3>
+
+            ${renderStoryParagraphs(slide.body)}
+
+            <label for="${storageKey}" class="form-label fw-semibold mt-3">
+                ${slide.prompt}
+            </label>
+
+            <textarea
+                id="${storageKey}"
+                class="form-control reflection-box guided-response"
+                rows="6"
+                data-guided-storage-key="${storageKey}"
+                placeholder="${slide.placeholder || "Write your response here..."}">${savedValue}</textarea>
+
+            <div class="save-status mt-2" id="${storageKey}Status">
+                Your response will be saved in this browser.
+            </div>
+
+        </div>
+    `;
+}
+
+function renderGuidedSlideDecision(slide, lesson, index) {
+    const storageKey = getGuidedStorageKey(slide, lesson, index);
+    const savedValue = loadGuidedResponse(storageKey);
+    const choices = slide.choices || [];
+
+    return `
+        <div class="story-page-card">
+
+            <h3>${slide.title}</h3>
+
+            ${renderStoryParagraphs(slide.body)}
+
+            <p class="fw-semibold mt-3">
+                ${slide.question}
+            </p>
+
+            <div class="d-grid gap-2">
+
+                ${choices.map((choice, choiceIndex) => {
+                    const choiceValue = getGuidedChoiceValue(choice);
+                    const choiceLabel = getGuidedChoiceLabel(choice);
+
+                    return `
+                        <button
+                            class="btn ${savedValue === choiceValue ? "btn-primary" : "btn-outline-primary"} guided-choice"
+                            data-guided-choice-index="${choiceIndex}"
+                            data-guided-storage-key="${storageKey}">
+                            ${choiceLabel}
+                        </button>
+                    `;
+                }).join("")}
+
+            </div>
+
+            <div class="save-status mt-2" id="${storageKey}Status">
+                ${savedValue ? "Saved" : "Choose a response."}
+            </div>
+
+        </div>
+    `;
+}
+
+function renderGuidedSlideReveal(slide) {
+    return `
+        <div class="story-page-card story-reveal">
+
+            <h3>${slide.title}</h3>
+
+            ${renderStoryImage(slide.image, slide.imageAlt)}
+
+            ${renderStoryParagraphs(slide.body)}
+
+        </div>
+    `;
+}
+
+function renderGuidedSlideSummary(slide) {
+    return `
+        <div class="story-page-card">
+
+            <h3>${slide.title}</h3>
+
+            ${renderStoryParagraphs(slide.body)}
+
+            ${slide.points && slide.points.length ? `
+                <div class="module-summary mt-4">
+
+                    <h5>Key Takeaways</h5>
+
+                    <ul>
+                        ${slide.points.map(point => `<li>${point}</li>`).join("")}
+                    </ul>
+
+                </div>
+            ` : ""}
+
+        </div>
+    `;
+}
+
+function attachGuidedSlideEvents(slide) {
+    document.querySelectorAll(".guided-response").forEach(textarea => {
+        textarea.addEventListener("input", () => {
+            const storageKey = textarea.dataset.guidedStorageKey;
+
+            saveGuidedResponse(storageKey, textarea.value);
+
+            const status = document.getElementById(`${storageKey}Status`);
+
+            if (status) {
+                status.textContent = "Saved";
+
+                setTimeout(() => {
+                    status.textContent = "Your response will be saved in this browser.";
+                }, 1500);
+            }
+        });
+    });
+
+    document.querySelectorAll(".guided-choice").forEach(button => {
+        button.addEventListener("click", () => {
+            const storageKey = button.dataset.guidedStorageKey;
+            const choiceIndex = Number(button.dataset.guidedChoiceIndex);
+            const choice = getGuidedChoiceValue(slide.choices[choiceIndex]);
+
+            saveGuidedResponse(storageKey, choice);
+
+            document.querySelectorAll(".guided-choice").forEach(choiceButton => {
+                choiceButton.classList.remove("btn-primary");
+                choiceButton.classList.add("btn-outline-primary");
+            });
+
+            button.classList.remove("btn-outline-primary");
+            button.classList.add("btn-primary");
+
+            const status = document.getElementById(`${storageKey}Status`);
+
+            if (status) {
+                status.textContent = "Saved";
+            }
+        });
+    });
+}
+
+function getGuidedSlides(lesson) {
+    return lesson.slides || [];
+}
+
+function getGuidedStorageKey(slide, lesson, index) {
+    return slide.storageKey || `${lesson.id}-slide-${index}`;
+}
+
+function getGuidedChoiceValue(choice) {
+    return typeof choice === "string" ? choice : choice.value || choice.label;
+}
+
+function getGuidedChoiceLabel(choice) {
+    return typeof choice === "string" ? choice : choice.label || choice.value;
+}
+
+function saveGuidedResponse(storageKey, value) {
+    localStorage.setItem(
+        `interculturalWorkshop_response_${storageKey}`,
+        JSON.stringify(value)
+    );
+}
+
+function loadGuidedResponse(storageKey) {
     const saved = localStorage.getItem(
         `interculturalWorkshop_response_${storageKey}`
     );
