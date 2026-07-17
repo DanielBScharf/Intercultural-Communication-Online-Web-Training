@@ -84,3 +84,4 @@ Use `guidedActivity` for:
 - reflective case studies
 
 Do not force decisions when the learning goal is analysis or reflection.
+
