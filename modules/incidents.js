@@ -116,7 +116,7 @@ export const incidentsModule = {
             slides: [
                 {
                     slideType: "story",
-                    title: "A Slow Discussion",
+                    title: "Vague Communication",
                     body: [
                         "Your team is meeting with a partner organization to discuss a new business agreement.",
                         "You explain your proposal and ask if the other side agrees. The response is: 'That may be difficult'. You leave the meeting thinking negotiations are still ongoing",
@@ -137,9 +137,9 @@ export const incidentsModule = {
                     slideType: "reveal",
                     title: "Additional Perspective",
                     body: [
-                        "The other team may be working within a culture that worries that directly saying 'no' will cause the other person to save face.",
-                        "Their indirect pace may not mean they are avoiding the decision. It may mean they are gathering support so the decision can succeed later.",
-                        "The misunderstanding grows when one side defines progress as a quick decision while the other defines progress as relationship-building and alignment."
+                        "The other team may be working within a culture that worries that directly saying 'no' can be seen as rude and will cause the other person to lose face.",
+                        "Their indirect communication may not mean they are avoiding the decision. In their eyes they gave you the most direct way to say no that they could.",
+                        "The misunderstanding can also build over reluctance to share information. In many cultures, the spread of information, including in decision making is very top down. If upper managment says something is not possible they may not share their reasoning, or allow further negotiation."
                     ]
                 },
                 {
@@ -179,20 +179,20 @@ export const incidentsModule = {
             slides: [
                 {
                     slideType: "story",
-                    title: "A Polite Refusal",
+                    title: "A confusing party",
                     body: [
-                        "You are invited to someone's home for dinner. The host offers you more food several times.",
-                        "You are still hungry, but in your experience it is polite to say \"no\" at first so you do not seem demanding.",
-                        "The host accepts your first \"no\" literally and stops offering. Later, the host seems confused that you did not eat much, and you feel disappointed."
+                        "You are traveling abroad and become friends with a local colleague. Several weeks later, they invite you to a family wedding.",
+                        "You attend expecting a small gathering of close family and friends. Instead, hundreds of people are present. Many guests seem to know only one member of the family, and some appear to have simply arrived after hearing about the event.",
+                        "You are unsure whether you are truly welcome or whether you are intruding. Everyone else seems completely comfortable."
                     ]
                 },
                 {
                     slideType: "reflection",
                     title: "First Reflection",
                     body: [
-                        "Both people may be trying to be polite. The confusion comes from different expectations about offers, refusals, and directness."
+                        "Many different cultures see \"family\" events and parties, such as weddings, differently. While you may think of it as a family event they may see it as a comunity celebration"
                     ],
-                    prompt: "Describe what happened. What assumptions might the guest make about polite refusal, and what assumptions might the host make about accepting an answer?",
+                    prompt: "Describe what happened. What assumptions might you be making about the party and the invitation?",
                     storageKey: "incidentGuestHostInitialReflection",
                     placeholder: "Describe: ...\nAssumptions: ..."
                 },
@@ -200,9 +200,9 @@ export const incidentsModule = {
                     slideType: "reveal",
                     title: "Additional Perspective",
                     body: [
-                        "In some contexts, an offer may be repeated even after a polite refusal. In others, accepting the first answer may be seen as respectful and attentive.",
-                        "Neither pattern is automatically better. The misunderstanding happens because each person reads politeness through a different cultural perspective.",
-                        "A small clarification can repair the moment without blame, especially when people assume good intentions."
+                        "In some cultures \"family\" is defined differently and is expanded beyond the \"nuclear family\" to include extanded family, neighbors, church members, members of the same community, and even historical affiliations. Someone could say \"it's just family\" but mean 300+ people",
+                        "There are also sometimes social obligations of hospitality. People in some cultures may feel obligated to invite the entire community to events like this.",
+                        "In many cultures around the world weddings are community celebrations instead of private family events. They are meant to build social bonds and cohesion. As well as to introduce the new \"family\" into the larger community family."
                     ]
                 },
                 {
@@ -210,9 +210,9 @@ export const incidentsModule = {
                     title: "DAEA Reflection",
                     body: [
                         "Use DAEA to examine the guest and host perspectives without turning either person into a stereotype.",
-                        "Focus on what each person may have meant, felt, and needed."
+                        "Focus on what each person may regard as family and what a wedding is supposed to represent."
                     ],
-                    prompt: "Analyze both politeness expectations. Evaluate your reaction to the confusion. What could a guest or host do next time to make the meaning clearer?",
+                    prompt: "Analyze your and their definitions of family. Evaluate your reaction to the confusion. What could you do in the future if you are invited to a wedding in a foreign country?",
                     storageKey: "incidentGuestHostDaeaReflection",
                     placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."
                 },
@@ -220,14 +220,14 @@ export const incidentsModule = {
                     slideType: "summary",
                     title: "Takeaways",
                     body: [
-                        "This incident shows how hidden cultural expectations can shape ordinary communication.",
-                        "A polite answer in one context may be confusing in another."
+                        "This incident shows how hidden cultural differences in definition of family and community.",
+                        "A \"family wedding\" may be a huge celebration with the entire community present."
                     ],
                     points: [
-                        "Culture influences what people mean by polite communication.",
-                        "Good intentions do not always prevent misunderstanding.",
-                        "Ambiguity can be explored through gentle clarification.",
-                        "DAEA supports future action by helping you plan what to say next time."
+                        "Culture influences what people define as family.",
+                        "Different views of family and community can confusing between different cultures. They may be confused sad about a small wedding with only immedate family and friends.",
+                        "Situations like this are an excelent way to practice tolerance of ambiguity",
+                        "DAEA supports future action by helping you plan what to do in similar situations in the future."
                     ]
                 }
             ]
