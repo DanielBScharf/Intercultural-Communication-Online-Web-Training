@@ -62,3 +62,25 @@ Guidelines:
 - Do not rely on color alone to communicate meaning.
 - Form fields should have clear labels.
 - Animations should remain subtle and not interfere with learning.
+
+### guidedActivity
+
+`guidedActivity` is a flexible scenario/case-study activity.
+
+It should support any sequence of slides. Decision slides are optional.
+
+Supported slide types:
+
+- `story` — scenario text with optional image
+- `comic` — one or more comic/image panels
+- `reflection` — saved written response
+- `decision` — optional multiple-choice response
+- `reveal` — additional context or new information
+- `summary` — debrief and takeaways
+
+Use `guidedActivity` for:
+- narrative scenarios, such as the Prague example
+- critical incidents
+- reflective case studies
+
+Do not force decisions when the learning goal is analysis or reflection.

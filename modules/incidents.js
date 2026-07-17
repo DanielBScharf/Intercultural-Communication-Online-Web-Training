@@ -56,54 +56,28 @@ export const incidentsModule = {
                     title: "A Work Dinner",
                     body: [
                         "You are visiting a partner organization in another country. After a long day of meetings, your hosts invite the group to dinner.",
-                        "During the meal, several people raise glasses and encourage you to join each toast. You do not drink alcohol, but people keep smiling, refilling glasses, and saying, \"Come on, just one.\"",
-                        "You feel pressure building. You are unsure whether refusing again would seem rude or ungrateful."
+                        "Whenever you finish your drink one of your colleagues fills your glass whenever it is empty. It is a work night and you all have to be in the office in the morning. You eventually begin leaving your glass half full because you don't want to drink any more.",
+                        "Your colleague seems disappointed and becomes less engaged for the rest of the evening."
                     ]
                 },
                 {
                     slideType: "reflection",
-                    title: "Describe Before Judging",
+                    title: "First Reflection",
                     body: [
-                        "Start with observable details. Avoid deciding yet whether anyone is being rude, disrespectful, friendly, or pushy."
+                        "Begin with what is observable, then notice the assumptions that may appear quickly.",
+                        "There is no single correct answer. The goal is to slow down your interpretation."
                     ],
-                    prompt: "What happened in this incident? Describe only what you know from the scenario.",
-                    storageKey: "incidentDrinkingDescribe",
-                    placeholder: "Describe the observable details..."
-                },
-                {
-                    slideType: "decision",
-                    title: "Choose a Response",
-                    body: [
-                        "You want to respect the relationship, but you also want to keep your own boundary."
-                    ],
-                    question: "What would be the most thoughtful next step?",
-                    storageKey: "incidentDrinkingDecision",
-                    choices: [
-                        {
-                            label: "Clearly and politely state that you do not drink, then offer another way to join the toast.",
-                            value: "clear-boundary-alternative"
-                        },
-                        {
-                            label: "Drink anyway so nobody feels uncomfortable.",
-                            value: "drink-anyway"
-                        },
-                        {
-                            label: "Assume the hosts do not respect personal boundaries.",
-                            value: "assume-disrespect"
-                        },
-                        {
-                            label: "Stop participating in the dinner conversation.",
-                            value: "withdraw"
-                        }
-                    ]
+                    prompt: "Describe what happened. What assumptions might the visitor make about the hosts, and what assumptions might the hosts make about the visitor?",
+                    storageKey: "incidentDrinkingInitialReflection",
+                    placeholder: "Describe: ...\nAssumptions: ..."
                 },
                 {
                     slideType: "reveal",
-                    title: "More Context",
+                    title: "Additional Perspective",
                     body: [
-                        "In this setting, repeated offers may be intended as warmth, inclusion, or celebration rather than coercion.",
-                        "At the same time, your boundary still matters. Cultural understanding does not require ignoring your own needs or values.",
-                        "A useful response might combine respect and clarity: \"Thank you. I do not drink alcohol, but I would be happy to toast with water.\""
+                        "This sort of drinking is a farily common form of 'teambuilding' in many parts of the world. It's very common in China, South Korea, and Japan.",
+                        "At the same time, the visitor's boundary still matters. Cultural understanding does not require ignoring personal needs, health, religion, recovery, or values.",
+                        "The tension in this incident comes from different expectations about hospitality, participation, and how directly a refusal should be stated."
                     ]
                 },
                 {
@@ -112,9 +86,9 @@ export const incidentsModule = {
                     body: [
                         "Use DAEA to separate what happened from possible explanations, your reaction, and your future plan."
                     ],
-                    prompt: "How would you describe, analyze, evaluate, and apply what you learned from this incident?",
-                    storageKey: "incidentDrinkingDaea",
-                    placeholder: "Describe: ...\nAnalyze: ...\nEvaluate: ...\nApply: ..."
+                    prompt: "Analyze possible cultural perspectives. Evaluate your own reaction to the pressure or refusal. What might you do next time to communicate clearly while showing respect? Or do you just participate and hope you don't regret it in the morning?",
+                    storageKey: "incidentDrinkingDaeaReflection",
+                    placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."
                 },
                 {
                     slideType: "summary",
@@ -144,66 +118,40 @@ export const incidentsModule = {
                     slideType: "story",
                     title: "A Slow Discussion",
                     body: [
-                        "Your team is meeting with a partner organization to discuss a new project. You expect the meeting to end with a clear decision and a list of next steps.",
-                        "Instead, the conversation moves slowly. The other team asks many background questions, discusses relationships between departments, and says they will need to speak with several colleagues.",
-                        "Your team starts to feel frustrated. Some people think the other side is avoiding a decision."
+                        "Your team is meeting with a partner organization to discuss a new business agreement.",
+                        "You explain your proposal and ask if the other side agrees. The response is: 'That may be difficult'. You leave the meeting thinking negotiations are still ongoing",
+                        "Several days later you learn they believed they had already rejected the proposal."
                     ]
                 },
                 {
                     slideType: "reflection",
-                    title: "Notice the Evidence",
+                    title: "First Reflection",
                     body: [
-                        "Before labeling the discussion as inefficient or evasive, identify what actually happened."
+                        "Before labeling the discussion as inefficient, evasive, or unserious, pause and separate evidence from interpretation."
                     ],
-                    prompt: "What details from the scenario support your first interpretation? What details are still unclear?",
-                    storageKey: "incidentNegotiationEvidence",
-                    placeholder: "Evidence I have: ...\nInformation I still need: ..."
-                },
-                {
-                    slideType: "decision",
-                    title: "Choose a Response",
-                    body: [
-                        "You want progress, but you also do not want to damage trust by pushing too hard too soon."
-                    ],
-                    question: "What should your team do next?",
-                    storageKey: "incidentNegotiationDecision",
-                    choices: [
-                        {
-                            label: "Ask about their decision process and timeline before assuming avoidance.",
-                            value: "ask-process-timeline"
-                        },
-                        {
-                            label: "Tell them the meeting is unproductive unless they decide immediately.",
-                            value: "demand-decision"
-                        },
-                        {
-                            label: "Conclude that the partner organization is not serious.",
-                            value: "conclude-not-serious"
-                        },
-                        {
-                            label: "End the relationship and look for a faster partner.",
-                            value: "end-relationship"
-                        }
-                    ]
+                    prompt: "Describe what happened in the meeting. What assumptions might each side be making about progress, directness, authority, or trust?",
+                    storageKey: "incidentNegotiationInitialReflection",
+                    placeholder: "Describe: ...\nAssumptions: ..."
                 },
                 {
                     slideType: "reveal",
-                    title: "More Context",
+                    title: "Additional Perspective",
                     body: [
-                        "The other team may be working within a decision-making culture that values trust, internal consultation, and consensus before commitment.",
+                        "The other team may be working within a culture that worries that directly saying 'no' will cause the other person to save face.",
                         "Their indirect pace may not mean they are avoiding the decision. It may mean they are gathering support so the decision can succeed later.",
-                        "A helpful question might be: \"Can you help us understand who needs to be involved and what timeline would be realistic?\""
+                        "The misunderstanding grows when one side defines progress as a quick decision while the other defines progress as relationship-building and alignment."
                     ]
                 },
                 {
                     slideType: "reflection",
                     title: "DAEA Reflection",
                     body: [
-                        "Think about how expectations for speed, directness, and authority shaped the misunderstanding."
+                        "Use the additional perspective to examine your reaction without turning either side into a stereotype.",
+                        "Think about what information would help reduce ambiguity."
                     ],
-                    prompt: "Use DAEA to reflect on the negotiation incident. What did each side possibly see, assume, feel, and need next?",
-                    storageKey: "incidentNegotiationDaea",
-                    placeholder: "Describe: ...\nAnalyze: ...\nEvaluate: ...\nApply: ..."
+                    prompt: "Analyze possible cultural or organizational perspectives. Evaluate the frustration in this scenario. What could someone ask or do next time to understand the decision process more clearly?",
+                    storageKey: "incidentNegotiationDaeaReflection",
+                    placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."
                 },
                 {
                     slideType: "summary",
@@ -240,59 +188,33 @@ export const incidentsModule = {
                 },
                 {
                     slideType: "reflection",
-                    title: "Separate Intent from Impact",
+                    title: "First Reflection",
                     body: [
-                        "Both people may be trying to be polite. The problem is that their politeness scripts may be different."
+                        "Both people may be trying to be polite. The confusion comes from different expectations about offers, refusals, and directness."
                     ],
-                    prompt: "What did the guest intend? What did the host likely hear or understand?",
-                    storageKey: "incidentGuestHostIntent",
-                    placeholder: "Guest intention: ...\nHost interpretation: ..."
-                },
-                {
-                    slideType: "decision",
-                    title: "Choose a Response",
-                    body: [
-                        "Imagine you are the guest and realize the host took your refusal literally."
-                    ],
-                    question: "What could you say or do next?",
-                    storageKey: "incidentGuestHostDecision",
-                    choices: [
-                        {
-                            label: "Clarify kindly: \"Actually, if it is not too much trouble, I would enjoy a little more.\"",
-                            value: "clarify-kindly"
-                        },
-                        {
-                            label: "Stay hungry because changing your answer would be embarrassing.",
-                            value: "stay-hungry"
-                        },
-                        {
-                            label: "Assume the host is not generous.",
-                            value: "assume-not-generous"
-                        },
-                        {
-                            label: "Complain later that the host did not offer enough.",
-                            value: "complain-later"
-                        }
-                    ]
+                    prompt: "Describe what happened. What assumptions might the guest make about polite refusal, and what assumptions might the host make about accepting an answer?",
+                    storageKey: "incidentGuestHostInitialReflection",
+                    placeholder: "Describe: ...\nAssumptions: ..."
                 },
                 {
                     slideType: "reveal",
-                    title: "More Context",
+                    title: "Additional Perspective",
                     body: [
                         "In some contexts, an offer may be repeated even after a polite refusal. In others, accepting the first answer may be seen as respectful and attentive.",
                         "Neither pattern is automatically better. The misunderstanding happens because each person reads politeness through a different cultural perspective.",
-                        "A small clarification can repair the moment without blame."
+                        "A small clarification can repair the moment without blame, especially when people assume good intentions."
                     ]
                 },
                 {
                     slideType: "reflection",
                     title: "DAEA Reflection",
                     body: [
-                        "Use DAEA to examine the guest and host perspectives without turning either person into a stereotype."
+                        "Use DAEA to examine the guest and host perspectives without turning either person into a stereotype.",
+                        "Focus on what each person may have meant, felt, and needed."
                     ],
-                    prompt: "Describe the incident, analyze both politeness expectations, evaluate the feelings involved, and apply a future communication strategy.",
-                    storageKey: "incidentGuestHostDaea",
-                    placeholder: "Describe: ...\nAnalyze: ...\nEvaluate: ...\nApply: ..."
+                    prompt: "Analyze both politeness expectations. Evaluate your reaction to the confusion. What could a guest or host do next time to make the meaning clearer?",
+                    storageKey: "incidentGuestHostDaeaReflection",
+                    placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."
                 },
                 {
                     slideType: "summary",
