@@ -59,6 +59,17 @@ h6 {
     transform: translateX(-250px);
 }
 
+.sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(31, 41, 51, 0.28);
+    z-index: 1040;
+}
+
+.sidebar-backdrop[hidden] {
+    display: none;
+}
+
 .sidebar-toggle {
     position: absolute;
     top: 1rem;
@@ -369,6 +380,69 @@ h6 {
     padding: 1.5rem;
 }
 
+.reflection-summary-module {
+    margin-top: 2rem;
+}
+
+.reflection-summary-item {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+.reflection-summary-item h4 {
+    font-weight: 800;
+}
+
+.reflection-summary-block {
+    margin-top: 1rem;
+}
+
+.reflection-summary-block h5 {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+.reflection-summary-response {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    white-space: pre-wrap;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.comparison-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    height: 100%;
+}
+
+.comparison-card h4 {
+    color: var(--primary-dark);
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+}
+
+.comparison-card-learner {
+    background: #f8fafc;
+}
+
+.comparison-response {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
 /* Utilities */
 
 .text-primary {
@@ -500,4 +574,33 @@ h6 {
 .story-navigation {
     border-top: 1px solid var(--border);
     padding-top: 1.5rem;
+}
+
+@media print {
+    .course-sidebar,
+    .sidebar-backdrop,
+    .lesson-navigation,
+    .print-control {
+        display: none !important;
+    }
+
+    body {
+        background: #ffffff;
+    }
+
+    .course-screen {
+        min-height: auto;
+    }
+
+    .lesson-card {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .reflection-summary-item,
+    .module-summary {
+        break-inside: avoid;
+        box-shadow: none;
+    }
 }

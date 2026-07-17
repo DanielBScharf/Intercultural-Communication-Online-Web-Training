@@ -113,6 +113,8 @@ export const ambiguityModule = {
             ],
             prompt: "In one of those situations, were you comfortable? How did you feel? Was it necessarily a bad experience?",
             storageKey: "ambiguityUncomfortableReflection",
+            rationale: "This reflection helps learners distinguish discomfort from danger and connect that distinction to tolerance of ambiguity.",
+            learningObjectives: ["LO3"],
             placeholder: "Write your response here..."
         },
 

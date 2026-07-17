@@ -9,26 +9,17 @@ import { ambiguityModule } from "../modules/ambiguity.js";
 import { daeaModule } from "../modules/daea.js";
 import { pragueModule } from "../modules/prague.js";
 import { incidentsModule } from "../modules/incidents.js";
+import { finalReflectionModule } from "../modules/finalReflection.js";
 
 // Temporary placeholder modules.
 // We will replace these one at a time as we build them.
 
-const reflectionModule = {
-    key: "reflection",
-    title: "Final Reflection",
-    description: "Review your responses and reflect on your learning.",
-    lessons: [
-        {
-            id: "reflection-intro",
-            type: "moduleIntro",
-            title: "Final Reflection",
-            moduleLabel: "Module 7",
-            body: [
-                "This final module gives you an opportunity to think back on what you learned in this program."
-            ],
-            buttonText: "Begin Final Reflection"
-        }
-    ]
+const learningObjectives = {
+    LO1: "Explain what culture is and how it influences perception.",
+    LO2: "Identify stereotypes and assumptions.",
+    LO3: "Demonstrate and build tolerance of ambiguity.",
+    LO4: "Use DAEA to critically reflect on experiences.",
+    LO5: "Create a plan of action based on a critical reflection."
 };
 
 export const courseData = {
@@ -36,13 +27,8 @@ export const courseData = {
     creator: "Daniel Scharf",
     year: "2026",
 
-    objectives: [
-        "Explain what culture is and how it influences perception.",
-        "Identify stereotypes and assumptions.",
-        "Demonstrate and build tolerance of ambiguity.",
-        "Use DAEA to critically reflect on experiences.",
-        "Create a plan of action based on a critical reflection."
-    ],
+    learningObjectives,
+    objectives: Object.values(learningObjectives),
 
     modules: [
         cultureModule,
@@ -51,6 +37,6 @@ export const courseData = {
         daeaModule,
         pragueModule,
         incidentsModule,
-        reflectionModule
+        finalReflectionModule
     ]
 };

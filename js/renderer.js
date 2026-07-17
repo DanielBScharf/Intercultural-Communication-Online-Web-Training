@@ -61,6 +61,7 @@ const lessonRenderers = {
     contentImage: renderContentImage,
     reflection: renderReflection,
     reflectionImage: renderReflection,
+    reflectionSummary: renderReflectionSummary,
     twoColumn: renderTwoColumn,
     accordion: renderAccordion,
     sortingActivity: renderSortingActivity,
@@ -133,6 +134,19 @@ function renderPromptList(prompts = []) {
     `;
 }
 
+function renderTakeawayList(takeaways = []) {
+    if (!takeaways || !takeaways.length) return "";
+
+    return `
+        <div class="module-summary mt-4">
+            <h5>Key Takeaways</h5>
+            <ul>
+                ${takeaways.map(takeaway => `<li>${takeaway}</li>`).join("")}
+            </ul>
+        </div>
+    `;
+}
+
 function renderImage(image, imageAlt = "", label = "Image Placeholder") {
     if (image) {
         return `
@@ -190,7 +204,7 @@ function renderModuleComplete(lesson, context) {
                     <h2>${lesson.title}</h2>
 
                     <p class="lead">
-                        You completed ${lesson.completedModuleTitle}.
+                        ${lesson.completionMessage || `You completed ${lesson.completedModuleTitle}.`}
                     </p>
 
                     <div class="module-summary mt-4 text-start">
@@ -206,7 +220,7 @@ function renderModuleComplete(lesson, context) {
                         </button>
 
                         <button class="btn btn-primary" data-action="next">
-                            Begin Next Module
+                            ${lesson.buttonText || "Begin Next Module"}
                         </button>
                     </div>
 
@@ -229,6 +243,7 @@ function renderContentImage(lesson, context) {
                 ` : ""}
 
                 ${renderPromptList(lesson.prompts)}
+                ${renderTakeawayList(lesson.takeaways)}
             </div>
 
             <div class="col-lg-5">
@@ -241,26 +256,10 @@ function renderContentImage(lesson, context) {
 }
 
 function renderReflection(lesson, context) {
-    const savedValue = loadResponse(lesson.storageKey);
-
-    const reflectionMarkup = `
-        <div class="reflection-prompt mt-4">
-            <label for="${lesson.storageKey}" class="form-label fw-semibold">
-                ${lesson.prompt}
-            </label>
-
-            <textarea
-                id="${lesson.storageKey}"
-                class="form-control reflection-box"
-                rows="6"
-                data-storage-key="${lesson.storageKey}"
-                placeholder="${lesson.placeholder || "Write your response here..."}">${savedValue}</textarea>
-
-            <div class="save-status mt-2" id="${lesson.storageKey}Status">
-                Your response will be saved in this browser.
-            </div>
-        </div>
-    `;
+    const reflectionPrompts = getReflectionPrompts(lesson);
+    const reflectionMarkup = reflectionPrompts
+        .map(prompt => renderReflectionBox(prompt))
+        .join("");
 
     let content = "";
 
@@ -285,6 +284,43 @@ function renderReflection(lesson, context) {
     }
 
     return renderPageShell(lesson, content, context);
+}
+
+function getReflectionPrompts(lesson) {
+    if (lesson.prompts && lesson.prompts.length) {
+        return lesson.prompts;
+    }
+
+    return [
+        {
+            prompt: lesson.prompt,
+            storageKey: lesson.storageKey,
+            placeholder: lesson.placeholder
+        }
+    ];
+}
+
+function renderReflectionBox(prompt) {
+    const savedValue = loadResponse(prompt.storageKey);
+
+    return `
+        <div class="reflection-prompt mt-4">
+            <label for="${prompt.storageKey}" class="form-label fw-semibold">
+                ${prompt.prompt}
+            </label>
+
+            <textarea
+                id="${prompt.storageKey}"
+                class="form-control reflection-box"
+                rows="6"
+                data-storage-key="${prompt.storageKey}"
+                placeholder="${prompt.placeholder || "Write your response here..."}">${savedValue}</textarea>
+
+            <div class="save-status mt-2" id="${prompt.storageKey}Status">
+                Your response will be saved in this browser.
+            </div>
+        </div>
+    `;
 }
 
 function renderTwoColumn(lesson, context) {
@@ -340,15 +376,7 @@ function renderAccordion(lesson, context) {
                         data-bs-parent="#${accordionID}">
 
                         <div class="accordion-body">
-                            <div class="row g-4 align-items-center">
-                                <div class="col-md-4">
-                                    ${renderImage(item.image, item.imageAlt, item.title)}
-                                </div>
-
-                                <div class="col-md-8">
-                                    ${renderParagraphs(item.body)}
-                                </div>
-                            </div>
+                            ${renderAccordionItemBody(item, lesson, index)}
                         </div>
                     </div>
                 </div>
@@ -383,13 +411,287 @@ function renderGuidedActivity(lesson, context) {
     );
 }
 
+function renderReflectionSummary(lesson, context) {
+    const reflections = collectReflectionSummaryItems(context.courseData);
+    const learningObjectives = context.courseData.learningObjectives || {};
+    const objectiveCounts = countReflectionObjectives(
+        reflections,
+        learningObjectives
+    );
+    const savedCount = reflections.filter(reflection =>
+        loadResponse(reflection.storageKey).trim()
+    ).length;
+
+    const content = `
+        <p class="lead">
+            ${lesson.introduction}
+        </p>
+
+        <div class="module-summary mt-4">
+            <h3>How Your Reflections Supported the Learning Objectives</h3>
+
+            <ul>
+                ${Object.entries(learningObjectives).map(([objectiveID, objectiveText]) => `
+                    <li>
+                        <strong>${objectiveText}</strong>
+                        &mdash; addressed in ${objectiveCounts[objectiveID] || 0} reflection(s)
+                    </li>
+                `).join("")}
+            </ul>
+        </div>
+
+        <div class="alert alert-light mt-4">
+            <strong>Responses saved:</strong>
+            <span id="reflectionSummarySavedCount">${savedCount}</span> of ${reflections.length}
+        </div>
+
+        <button class="btn btn-outline-secondary mt-2 print-control" data-print-reflection-summary>
+            Print Reflection Summary
+        </button>
+
+        <div class="reflection-summary mt-4">
+            ${renderReflectionSummaryGroups(reflections, learningObjectives)}
+        </div>
+    `;
+
+    return renderPageShell(lesson, content, context);
+}
+
+function renderAccordionItemBody(item, lesson, index) {
+    if (item.storageKey && item.exampleResponse) {
+        return renderComparisonAccordionItem(item, lesson, index);
+    }
+
+    return `
+        <div class="row g-4 align-items-center">
+            <div class="col-md-4">
+                ${renderImage(item.image, item.imageAlt, item.title)}
+            </div>
+
+            <div class="col-md-8">
+                ${renderParagraphs(item.body)}
+            </div>
+        </div>
+    `;
+}
+
+function renderComparisonAccordionItem(item, lesson, index) {
+    const responseID = `${lesson.id}-comparison-${index}`;
+
+    return `
+        <section aria-labelledby="${responseID}-heading">
+            <h3 class="h5 mb-3" id="${responseID}-heading">
+                ${item.title} Comparison
+            </h3>
+
+            <div class="comparison-grid">
+                <div class="comparison-card comparison-card-learner">
+                    <h4 class="h6">Your Response</h4>
+                    <div
+                        class="comparison-response"
+                        data-comparison-response="${item.storageKey}">
+                    </div>
+                </div>
+
+                <div class="comparison-card comparison-card-example">
+                    <h4 class="h6">Example Response</h4>
+                    <ul class="mb-0">
+                        ${item.exampleResponse.map(example => `<li>${example}</li>`).join("")}
+                    </ul>
+                </div>
+            </div>
+        </section>
+    `;
+}
+
+function renderReflectionSummaryGroups(reflections, learningObjectives) {
+    const moduleGroups = groupReflectionsByModule(reflections);
+
+    return moduleGroups.map(group => `
+        <section class="reflection-summary-module">
+            <h3>${group.moduleTitle}</h3>
+
+            ${group.items.map(reflection => renderReflectionSummaryItem(
+                reflection,
+                learningObjectives
+            )).join("")}
+        </section>
+    `).join("");
+}
+
+function renderReflectionSummaryItem(reflection, learningObjectives) {
+    const objectiveTexts = resolveLearningObjectives(
+        reflection.learningObjectives,
+        learningObjectives
+    );
+
+    return `
+        <article class="reflection-summary-item">
+            <h4>${reflection.lessonTitle}</h4>
+
+            <div class="reflection-summary-block">
+                <h5>Prompt</h5>
+                <p>${reflection.prompt}</p>
+            </div>
+
+            <div class="reflection-summary-block">
+                <h5>Why this matters</h5>
+                <p>${reflection.rationale || "This reflection supports your review of the workshop."}</p>
+            </div>
+
+            <div class="reflection-summary-block">
+                <h5>
+                    Connected learning objective${objectiveTexts.length === 1 ? "" : "s"}:
+                </h5>
+                ${objectiveTexts.length ? `
+                    <ul>
+                        ${objectiveTexts.map(objective => `<li>${objective}</li>`).join("")}
+                    </ul>
+                ` : `
+                    <p>Learning objective alignment is not available for this reflection.</p>
+                `}
+            </div>
+
+            <div class="reflection-summary-block">
+                <h5>Learner response</h5>
+                <div
+                    class="reflection-summary-response"
+                    data-reflection-summary-response="${reflection.storageKey}">
+                </div>
+            </div>
+
+            <button
+                class="btn btn-outline-primary btn-sm print-control"
+                data-review-reflection="${reflection.lessonId}">
+                Review or revise this response
+            </button>
+        </article>
+    `;
+}
+
+function collectReflectionSummaryItems(courseData) {
+    if (!courseData || !courseData.modules) return [];
+
+    const seenStorageKeys = new Set();
+    const reflections = [];
+
+    courseData.modules.forEach(module => {
+        module.lessons.forEach(lesson => {
+            getLessonReflectionItems(lesson).forEach(reflection => {
+                if (!reflection.storageKey || seenStorageKeys.has(reflection.storageKey)) {
+                    return;
+                }
+
+                seenStorageKeys.add(reflection.storageKey);
+
+                reflections.push({
+                    ...reflection,
+                    lessonId: lesson.id,
+                    lessonTitle: lesson.title,
+                    moduleKey: module.key,
+                    moduleTitle: module.title
+                });
+            });
+        });
+    });
+
+    return reflections;
+}
+
+function getLessonReflectionItems(lesson) {
+    if (lesson.type === "reflection" || lesson.type === "reflectionImage") {
+        return getReflectionPrompts(lesson)
+            .filter(prompt => prompt.storageKey)
+            .map(prompt => ({
+                prompt: prompt.prompt,
+                storageKey: prompt.storageKey,
+                rationale: prompt.rationale || lesson.rationale,
+                learningObjectives:
+                    prompt.learningObjectives || lesson.learningObjectives || []
+            }));
+    }
+
+    if (lesson.type === "guidedActivity") {
+        return (lesson.slides || [])
+            .filter(slide => slide.slideType === "reflection" && slide.storageKey)
+            .map(slide => ({
+                prompt: slide.prompt,
+                storageKey: slide.storageKey,
+                rationale: slide.rationale,
+                learningObjectives: slide.learningObjectives || []
+            }));
+    }
+
+    if (lesson.type === "imageReveal") {
+        return (lesson.steps || [])
+            .filter(step => step.storageKey)
+            .map(step => ({
+                prompt: step.prompt,
+                storageKey: step.storageKey,
+                rationale: step.rationale,
+                learningObjectives: step.learningObjectives || []
+            }));
+    }
+
+    return [];
+}
+
+function groupReflectionsByModule(reflections) {
+    const groups = [];
+
+    reflections.forEach(reflection => {
+        let group = groups.find(item => item.moduleKey === reflection.moduleKey);
+
+        if (!group) {
+            group = {
+                moduleKey: reflection.moduleKey,
+                moduleTitle: reflection.moduleTitle,
+                items: []
+            };
+            groups.push(group);
+        }
+
+        group.items.push(reflection);
+    });
+
+    return groups;
+}
+
+function countReflectionObjectives(reflections, learningObjectives = {}) {
+    const counts = {};
+
+    Object.keys(learningObjectives).forEach(objectiveID => {
+        counts[objectiveID] = 0;
+    });
+
+    reflections.forEach(reflection => {
+        (reflection.learningObjectives || []).forEach(objectiveID => {
+            if (Object.prototype.hasOwnProperty.call(counts, objectiveID)) {
+                counts[objectiveID]++;
+            }
+        });
+    });
+
+    return counts;
+}
+
+function resolveLearningObjectives(objectiveIDs = [], learningObjectives = {}) {
+    return objectiveIDs
+        .map(objectiveID => learningObjectives[objectiveID])
+        .filter(Boolean);
+}
+
 // ---------- Events ----------
 
 function attachSharedLessonEvents(lesson, context) {
     document.querySelectorAll("[data-action='next']").forEach(button => {
         button.addEventListener("click", () => {
             if (lesson.type === "moduleComplete" && lesson.moduleKey) {
-                markModuleComplete(lesson.moduleKey);
+                if (context.completeModule) {
+                    context.completeModule(lesson.moduleKey);
+                } else {
+                    markModuleComplete(lesson.moduleKey);
+                }
             }
 
             if (context.nextLesson) {
@@ -428,6 +730,34 @@ function attachSharedLessonEvents(lesson, context) {
                 }, 1500);
             }
         });
+    });
+
+    document.querySelectorAll("[data-review-reflection]").forEach(button => {
+        button.addEventListener("click", () => {
+            context.goToLesson(button.dataset.reviewReflection);
+        });
+    });
+
+    document.querySelectorAll("[data-print-reflection-summary]").forEach(button => {
+        button.addEventListener("click", () => {
+            window.print();
+        });
+    });
+
+    document.querySelectorAll("[data-reflection-summary-response]").forEach(response => {
+        const savedResponse = loadResponse(response.dataset.reflectionSummaryResponse);
+
+        response.textContent = savedResponse.trim()
+            ? savedResponse
+            : "No response has been saved for this question.";
+    });
+
+    document.querySelectorAll("[data-comparison-response]").forEach(response => {
+        const savedResponse = loadResponse(response.dataset.comparisonResponse);
+
+        response.textContent = savedResponse.trim()
+            ? savedResponse
+            : "No response has been saved yet.";
     });
 }
 

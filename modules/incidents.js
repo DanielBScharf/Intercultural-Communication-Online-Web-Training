@@ -69,6 +69,8 @@ export const incidentsModule = {
                     ],
                     prompt: "Describe what happened. What assumptions might the visitor make about the hosts, and what assumptions might the hosts make about the visitor?",
                     storageKey: "incidentDrinkingInitialReflection",
+                    rationale: "This reflection helps learners identify assumptions before deciding what the drinking expectation means.",
+                    learningObjectives: ["LO2", "LO3"],
                     placeholder: "Describe: ...\nAssumptions: ..."
                 },
                 {
@@ -88,6 +90,8 @@ export const incidentsModule = {
                     ],
                     prompt: "Analyze possible cultural perspectives. Evaluate your own reaction to the pressure or refusal. What might you do next time to communicate clearly while showing respect? Or do you just participate and hope you don't regret it in the morning?",
                     storageKey: "incidentDrinkingDaeaReflection",
+                    rationale: "This reflection uses DAEA to balance cultural curiosity, personal boundaries, and future communication choices.",
+                    learningObjectives: ["LO4", "LO5"],
                     placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."
                 },
                 {
@@ -131,6 +135,8 @@ export const incidentsModule = {
                     ],
                     prompt: "Describe what happened in the meeting. What assumptions might each side be making about progress, directness, authority, or trust?",
                     storageKey: "incidentNegotiationInitialReflection",
+                    rationale: "This reflection asks learners to identify assumptions about communication and decision-making before judging the interaction.",
+                    learningObjectives: ["LO2", "LO3"],
                     placeholder: "Describe: ...\nAssumptions: ..."
                 },
                 {
@@ -151,6 +157,8 @@ export const incidentsModule = {
                     ],
                     prompt: "Analyze possible cultural or organizational perspectives. Evaluate the frustration in this scenario. What could someone ask or do next time to understand the decision process more clearly?",
                     storageKey: "incidentNegotiationDaeaReflection",
+                    rationale: "This reflection applies DAEA to indirect communication and turns frustration into clarifying questions.",
+                    learningObjectives: ["LO4", "LO5"],
                     placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."
                 },
                 {
@@ -194,6 +202,8 @@ export const incidentsModule = {
                     ],
                     prompt: "Describe what happened. What assumptions might you be making about the party and the invitation?",
                     storageKey: "incidentGuestHostInitialReflection",
+                    rationale: "This reflection helps learners examine assumptions about family, community, and invitations.",
+                    learningObjectives: ["LO1", "LO2"],
                     placeholder: "Describe: ...\nAssumptions: ..."
                 },
                 {
@@ -214,6 +224,8 @@ export const incidentsModule = {
                     ],
                     prompt: "Analyze your and their definitions of family. Evaluate your reaction to the confusion. What could you do in the future if you are invited to a wedding in a foreign country?",
                     storageKey: "incidentGuestHostDaeaReflection",
+                    rationale: "This reflection uses DAEA to compare cultural perspectives and plan how to respond to unfamiliar social expectations.",
+                    learningObjectives: ["LO1", "LO4", "LO5"],
                     placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."
                 },
                 {

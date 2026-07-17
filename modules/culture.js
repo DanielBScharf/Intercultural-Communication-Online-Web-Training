@@ -50,6 +50,8 @@ export const cultureModule = {
             moduleLabel: "Understanding Culture",
             prompt: "Write your definition of culture below.",
             storageKey: "cultureDefinition",
+            rationale: "This opening reflection surfaces learners' starting ideas about culture before the workshop introduces a shared definition.",
+            learningObjectives: ["LO1"],
             placeholder: "Write your definition here..."
         },
 
@@ -138,6 +140,8 @@ export const cultureModule = {
             imageAlt: "Culture iceberg graphic",
             prompt: "What are some visible and hidden aspects of your culture?",
             storageKey: "cultureIcebergReflection",
+            rationale: "This reflection helps learners apply the culture iceberg model to their own visible and hidden cultural influences.",
+            learningObjectives: ["LO1"],
             placeholder: "Write your ideas here..."
         },
 
@@ -236,6 +240,8 @@ export const cultureModule = {
             ],
             prompt: "What should you do when you encounter a cultural perspective you do not understand?",
             storageKey: "culturePerspectiveReflection",
+            rationale: "This reflection connects culture as perspective with the habit of pausing before judging unfamiliar viewpoints.",
+            learningObjectives: ["LO1", "LO3"],
             placeholder: "Write your thoughts here..."
         },
 

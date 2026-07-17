@@ -205,7 +205,12 @@ function renderSidebar() {
     const sidebar = document.getElementById("courseSidebar");
 
     sidebar.innerHTML = `
-        <button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle course navigation">
+        <button
+            id="sidebarToggle"
+            class="sidebar-toggle"
+            aria-label="Toggle course navigation"
+            aria-controls="courseSidebar"
+            aria-expanded="false">
             <i class="bi bi-list"></i>
         </button>
 
@@ -266,19 +271,31 @@ function renderSidebar() {
         </div>
     `;
 
+    const sidebarBackdrop = ensureSidebarBackdrop();
     const sidebarToggle = document.getElementById("sidebarToggle");
 
-    sidebarToggle.addEventListener("click", () => {
-        sidebar.classList.toggle("sidebar-hidden");
+    sidebarToggle.addEventListener("click", event => {
+        event.stopPropagation();
+        toggleSidebar();
+    });
+
+    sidebar.addEventListener("click", event => {
+        event.stopPropagation();
+    });
+
+    sidebarBackdrop.addEventListener("click", () => {
+        closeSidebar();
     });
 
     document.querySelector("[data-menu-link]").addEventListener("click", () => {
         renderHome();
+        closeSidebarAfterOverlayNavigation();
     });
 
     document.querySelectorAll("[data-sidebar-module]").forEach(button => {
         button.addEventListener("click", () => {
             goToModule(button.dataset.sidebarModule);
+            closeSidebarAfterOverlayNavigation();
         });
     });
 
@@ -292,6 +309,93 @@ function renderSidebar() {
             location.reload();
         }
     });
+
+    document.addEventListener("click", event => {
+        if (!isSidebarOpen() || sidebar.contains(event.target)) return;
+        closeSidebar();
+    });
+
+    document.addEventListener("keydown", event => {
+        if (event.key !== "Escape" || !isSidebarOpen()) return;
+
+        closeSidebar({ returnFocus: true });
+    });
+}
+
+function ensureSidebarBackdrop() {
+    let sidebarBackdrop = document.getElementById("sidebarBackdrop");
+
+    if (sidebarBackdrop) {
+        return sidebarBackdrop;
+    }
+
+    sidebarBackdrop = document.createElement("div");
+    sidebarBackdrop.id = "sidebarBackdrop";
+    sidebarBackdrop.className = "sidebar-backdrop";
+    sidebarBackdrop.setAttribute("aria-hidden", "true");
+    sidebarBackdrop.hidden = true;
+
+    document.body.appendChild(sidebarBackdrop);
+
+    return sidebarBackdrop;
+}
+
+// Keep menu state, backdrop visibility, and toggle accessibility in sync.
+function toggleSidebar() {
+    if (isSidebarOpen()) {
+        closeSidebar();
+    } else {
+        openSidebar();
+    }
+}
+
+function openSidebar() {
+    const sidebar = document.getElementById("courseSidebar");
+
+    sidebar.classList.remove("sidebar-hidden");
+    updateSidebarControls(true);
+}
+
+function closeSidebar(options = {}) {
+    const sidebar = document.getElementById("courseSidebar");
+    const sidebarToggle = document.getElementById("sidebarToggle");
+
+    sidebar.classList.add("sidebar-hidden");
+    updateSidebarControls(false);
+
+    if (options.returnFocus && sidebarToggle) {
+        sidebarToggle.focus();
+    }
+}
+
+// When the sidebar overlays lesson content, navigation should reveal the lesson.
+function closeSidebarAfterOverlayNavigation() {
+    if (isSidebarOpen() && isSidebarOverlayLayout()) {
+        closeSidebar();
+    }
+}
+
+function isSidebarOpen() {
+    const sidebar = document.getElementById("courseSidebar");
+    return sidebar && !sidebar.classList.contains("sidebar-hidden");
+}
+
+function isSidebarOverlayLayout() {
+    const sidebar = document.getElementById("courseSidebar");
+    return sidebar && getComputedStyle(sidebar).position === "fixed";
+}
+
+function updateSidebarControls(isOpen) {
+    const sidebarToggle = document.getElementById("sidebarToggle");
+    const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+
+    if (sidebarToggle) {
+        sidebarToggle.setAttribute("aria-expanded", String(isOpen));
+    }
+
+    if (sidebarBackdrop) {
+        sidebarBackdrop.hidden = !isOpen;
+    }
 }
 
 function updateSidebar() {
@@ -401,6 +505,7 @@ function buildLessonContext(lesson) {
     return {
         currentLesson: lesson,
         currentModule: courseData.modules[lesson.moduleIndex],
+        courseData,
         previousLesson,
         nextLesson,
         goToLesson,

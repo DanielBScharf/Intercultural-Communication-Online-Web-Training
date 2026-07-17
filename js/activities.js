@@ -16,6 +16,11 @@
 // - criticalIncident
 // ======================================
 
+import {
+    saveResponse,
+    loadResponse
+} from "./storage.js";
+
 export function renderSortingActivityContent(lesson) {
     const shuffledItems = shuffleItems(lesson.items);
 
@@ -731,7 +736,10 @@ export function renderGuidedActivityContent(lesson) {
                     Previous
                 </button>
 
-                <div class="story-progress small text-muted align-self-center" id="guidedProgress">
+                <div
+                    class="story-progress small text-muted align-self-center"
+                    id="guidedProgress"
+                    aria-live="polite">
                     ${slideCount ? `Slide 1 of ${slideCount}` : "No slides"}
                 </div>
 
@@ -756,6 +764,8 @@ export function initializeGuidedActivity(lesson) {
     const nextButton = document.getElementById("guidedNext");
     const progress = document.getElementById("guidedProgress");
 
+    // Render one slide at a time so each guided activity can define
+    // its own sequence without changing the shared component.
     function renderCurrentGuidedSlide() {
         if (!slides.length) {
             container.innerHTML = renderGuidedSlide(null, lesson, currentSlideIndex);
@@ -795,6 +805,8 @@ export function initializeGuidedActivity(lesson) {
     renderCurrentGuidedSlide();
 }
 
+// Route each slide to the matching renderer. Slide order is controlled
+// entirely by module content.
 function renderGuidedSlide(slide, lesson, index) {
     if (!slide) {
         return `
@@ -806,10 +818,10 @@ function renderGuidedSlide(slide, lesson, index) {
 
     switch (slide.slideType) {
         case "story":
-            return renderGuidedSlideStory(slide);
+            return renderGuidedSlideStory(slide, lesson, index);
 
         case "comic":
-            return renderGuidedSlideComic(slide);
+            return renderGuidedSlideComic(slide, lesson, index);
 
         case "reflection":
             return renderGuidedSlideReflection(slide, lesson, index);
@@ -818,7 +830,7 @@ function renderGuidedSlide(slide, lesson, index) {
             return renderGuidedSlideDecision(slide, lesson, index);
 
         case "reveal":
-            return renderGuidedSlideReveal(slide);
+            return renderGuidedSlideReveal(slide, lesson, index);
 
         case "summary":
             return renderGuidedSlideSummary(slide);
@@ -832,13 +844,19 @@ function renderGuidedSlide(slide, lesson, index) {
     }
 }
 
-function renderGuidedSlideStory(slide) {
+function renderGuidedSlideStory(slide, lesson, index) {
     return `
         <div class="story-page-card">
 
             <h3>${slide.title}</h3>
 
-            ${renderStoryImage(slide.image, slide.imageAlt)}
+            ${renderGuidedImage(
+                slide.image,
+                slide.imageAlt,
+                slide.longDescription,
+                `${lesson.id}-slide-${index}`,
+                "Scenario Image"
+            )}
 
             ${renderStoryParagraphs(slide.body)}
 
@@ -846,7 +864,7 @@ function renderGuidedSlideStory(slide) {
     `;
 }
 
-function renderGuidedSlideComic(slide) {
+function renderGuidedSlideComic(slide, lesson, index) {
     const panels = slide.panels || [];
 
     return `
@@ -858,13 +876,16 @@ function renderGuidedSlideComic(slide) {
 
             <div class="row g-4 mt-2">
 
-                ${panels.map(panel => `
+                ${panels.map((panel, panelIndex) => `
                     <div class="col-md-6">
-                        <img
-                            src="${panel.image}"
-                            alt="${panel.alt || ""}"
-                            class="img-fluid rounded shadow-sm story-comic-panel"
-                            onerror="this.outerHTML='<div class=&quot;placeholder-image rounded shadow-sm&quot;>${panel.label || "Comic Panel"}</div>'">
+                        ${renderGuidedImage(
+                            panel.image,
+                            panel.alt,
+                            panel.longDescription,
+                            `${lesson.id}-slide-${index}-panel-${panelIndex}`,
+                            panel.label || "Comic Panel",
+                            "story-comic-panel"
+                        )}
                     </div>
                 `).join("")}
 
@@ -929,6 +950,8 @@ function renderGuidedSlideDecision(slide, lesson, index) {
                     return `
                         <button
                             class="btn ${savedValue === choiceValue ? "btn-primary" : "btn-outline-primary"} guided-choice"
+                            type="button"
+                            aria-pressed="${savedValue === choiceValue ? "true" : "false"}"
                             data-guided-choice-index="${choiceIndex}"
                             data-guided-storage-key="${storageKey}">
                             ${choiceLabel}
@@ -946,13 +969,19 @@ function renderGuidedSlideDecision(slide, lesson, index) {
     `;
 }
 
-function renderGuidedSlideReveal(slide) {
+function renderGuidedSlideReveal(slide, lesson, index) {
     return `
         <div class="story-page-card story-reveal">
 
             <h3>${slide.title}</h3>
 
-            ${renderStoryImage(slide.image, slide.imageAlt)}
+            ${renderGuidedImage(
+                slide.image,
+                slide.imageAlt,
+                slide.longDescription,
+                `${lesson.id}-slide-${index}`,
+                "Scenario Image"
+            )}
 
             ${renderStoryParagraphs(slide.body)}
 
@@ -985,6 +1014,26 @@ function renderGuidedSlideSummary(slide) {
 }
 
 function attachGuidedSlideEvents(slide) {
+    // Optional image descriptions are available to keyboard and screen reader users.
+    document.querySelectorAll("[data-guided-description-toggle]").forEach(button => {
+        button.addEventListener("click", () => {
+            const description = document.getElementById(
+                button.dataset.guidedDescriptionToggle
+            );
+
+            if (!description) return;
+
+            const isExpanded = button.getAttribute("aria-expanded") === "true";
+
+            description.classList.toggle("d-none", isExpanded);
+            button.setAttribute("aria-expanded", String(!isExpanded));
+            button.textContent = isExpanded
+                ? "View image description"
+                : "Hide image description";
+        });
+    });
+
+    // Reflection responses are restored on render and saved as the learner types.
     document.querySelectorAll(".guided-response").forEach(textarea => {
         textarea.addEventListener("input", () => {
             const storageKey = textarea.dataset.guidedStorageKey;
@@ -1003,6 +1052,7 @@ function attachGuidedSlideEvents(slide) {
         });
     });
 
+    // Decision slides are optional; when present, selected choices persist.
     document.querySelectorAll(".guided-choice").forEach(button => {
         button.addEventListener("click", () => {
             const storageKey = button.dataset.guidedStorageKey;
@@ -1014,10 +1064,12 @@ function attachGuidedSlideEvents(slide) {
             document.querySelectorAll(".guided-choice").forEach(choiceButton => {
                 choiceButton.classList.remove("btn-primary");
                 choiceButton.classList.add("btn-outline-primary");
+                choiceButton.setAttribute("aria-pressed", "false");
             });
 
             button.classList.remove("btn-outline-primary");
             button.classList.add("btn-primary");
+            button.setAttribute("aria-pressed", "true");
 
             const status = document.getElementById(`${storageKey}Status`);
 
@@ -1036,6 +1088,44 @@ function getGuidedStorageKey(slide, lesson, index) {
     return slide.storageKey || `${lesson.id}-slide-${index}`;
 }
 
+function renderGuidedImage(
+    image,
+    imageAlt = "",
+    longDescription = "",
+    descriptionID,
+    label = "Image Placeholder",
+    imageClass = "lesson-image mb-4"
+) {
+    if (!image) return "";
+
+    const descriptionMarkup = longDescription ? `
+        <button
+            class="btn btn-outline-secondary btn-sm mb-3"
+            type="button"
+            aria-expanded="false"
+            aria-controls="${descriptionID}-description"
+            data-guided-description-toggle="${descriptionID}-description">
+            View image description
+        </button>
+
+        <div
+            class="alert alert-light d-none"
+            id="${descriptionID}-description">
+            ${longDescription}
+        </div>
+    ` : "";
+
+    return `
+        <img
+            src="${image}"
+            alt="${imageAlt}"
+            class="img-fluid rounded shadow-sm ${imageClass}"
+            onerror="this.outerHTML='<div class=&quot;placeholder-image rounded shadow-sm mb-4&quot;>${label}</div>'">
+
+        ${descriptionMarkup}
+    `;
+}
+
 function getGuidedChoiceValue(choice) {
     return typeof choice === "string" ? choice : choice.value || choice.label;
 }
@@ -1045,22 +1135,9 @@ function getGuidedChoiceLabel(choice) {
 }
 
 function saveGuidedResponse(storageKey, value) {
-    localStorage.setItem(
-        `interculturalWorkshop_response_${storageKey}`,
-        JSON.stringify(value)
-    );
+    saveResponse(storageKey, value);
 }
 
 function loadGuidedResponse(storageKey) {
-    const saved = localStorage.getItem(
-        `interculturalWorkshop_response_${storageKey}`
-    );
-
-    if (!saved) return "";
-
-    try {
-        return JSON.parse(saved);
-    } catch {
-        return "";
-    }
+    return loadResponse(storageKey);
 }

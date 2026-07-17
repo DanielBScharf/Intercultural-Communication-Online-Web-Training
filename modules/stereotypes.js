@@ -58,6 +58,8 @@ export const stereotypesModule = {
             ],
             prompt: "What are some stereotypes of your culture? What are some common stereotypes of other cultures? Are they true?",
             storageKey: "stereotypesReflection",
+            rationale: "This reflection asks learners to notice stereotypes and question whether broad claims are supported by evidence.",
+            learningObjectives: ["LO2"],
             placeholder: "Write your response here..."
         },
 

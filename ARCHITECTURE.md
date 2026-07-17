@@ -85,3 +85,76 @@ Use `guidedActivity` for:
 
 Do not force decisions when the learning goal is analysis or reflection.
 
+### reflectionSummary
+
+`reflectionSummary` gathers written learner reflections from across the course and presents them in course order.
+
+It is intended for end-of-course review, metacognition, and personal action planning.
+
+Use `reflectionSummary` for a reusable review page that connects:
+
+- the original reflection prompt,
+- why the reflection was included,
+- the learning objective or objectives it supports,
+- and the learner's saved response.
+
+Requirements:
+
+- Derive prompts and saved-response identifiers from course lesson data whenever possible.
+- Discover written responses from reflection lessons, guided activity reflection slides, and image reveal steps.
+- Group responses by module.
+- Display unanswered prompts without treating them as errors.
+- Never expose internal storage keys or implementation identifiers.
+- Render learner responses as plain text rather than HTML.
+- Reflect the most recently saved response.
+- Allow learners to return to the relevant lesson to revise a response when navigation data is available.
+- Support an accessible, print-friendly layout.
+- Do not require every reflection to be completed before the learner may finish the course.
+- Display a saved-response count near the top of the page.
+- Display learning-objective alignment counts as prompt alignment information, never as learner scores.
+
+Rendering order:
+
+1. Page title and introduction from the lesson object.
+2. Learning objective alignment summary.
+3. Responses saved count.
+4. Print Reflection Summary button.
+5. Reflections grouped by module.
+6. Prompt, rationale, connected learning objective wording, learner response, and review/revise control for each reflection.
+
+Print support:
+
+- Browser print is used.
+- Sidebar, progress controls, lesson navigation, and print/revision controls are hidden in print layout.
+- The printable page keeps reflection content, objective alignment, and learner responses visible.
+
+Accessibility:
+
+- Use semantic headings for the page, modules, and individual reflection entries.
+- Buttons must be keyboard accessible.
+- Learner responses must be inserted as plain text.
+- Objective IDs and storage keys must not be displayed.
+- Missing objective IDs should not break rendering.
+- Empty responses should display a clear message.
+
+Navigation:
+
+- When available, each reflection entry should include a "Review or revise this response" button.
+- The button should use the existing lesson navigation flow to return to the lesson that collected the response.
+
+### Learning-objective alignment
+
+Each saved reflection may include a `learningObjectives` array containing stable objective IDs.
+
+Learning-objective definitions and learner-facing wording must be centralized in course data. Renderers should resolve IDs to their displayed wording rather than duplicating objective text.
+
+The reflection summary should:
+
+- display the connected objective or objectives beneath each prompt,
+- display learner-facing objective wording rather than internal IDs,
+- include objective alignment even when a reflection is unanswered,
+- summarize how many prompts address each objective,
+- treat these counts as alignment information rather than grades or completion measures,
+- and handle missing or invalid objective IDs without breaking the page.
+
+Objective alignment must be intentionally authored in course data. It should not be inferred automatically from prompt text.

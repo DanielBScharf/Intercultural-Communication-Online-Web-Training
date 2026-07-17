@@ -42,7 +42,7 @@ export const pragueModule = {
                     slideType: "story",
                     title: "Arrival in Prague",
                     body: [
-                        "You are studying abroad at a one month course (not a language course) in Prague with a small group of classmates.",
+                        "You are studying abroad at a one month course (not a language course) in Prague with a small group of classmates. (Note, this incident occurred before live AI translation services were widely available.)",
                         "On your first week, the instructors suggest you to buy a montly rail pass to get around the city cheaper and more easily.",
                         "The only instructions you recieved were to bring the train brochure, the amount that the pass costs, and your passport. You were told that you can do it without speaking Czech just point and they will understand."
                     ],
@@ -85,6 +85,8 @@ export const pragueModule = {
                     ],
                     prompt: "What do you notice in the first four panels?",
                     storageKey: "pragueInitialDescription",
+                    rationale: "This reflection asks learners to slow down and describe the situation before interpreting the interaction.",
+                    learningObjectives: ["LO3", "LO4"],
                     placeholder: "Describe what you can see or hear without interpreting it yet..."
                 },
                 {
@@ -162,6 +164,8 @@ export const pragueModule = {
                     ],
                     prompt: "Describe, Analyze, Evaluate, and Apply: What happened, what might explain it, how did you react, and what could you do next time?",
                     storageKey: "pragueDaeaReflection",
+                    rationale: "This reflection applies DAEA to a realistic intercultural misunderstanding and asks learners to plan a better future response.",
+                    learningObjectives: ["LO4", "LO5"],
                     placeholder: "Describe: ...\nAnalyze: ...\nEvaluate: ...\nApply: ..."
                 },
                 {
