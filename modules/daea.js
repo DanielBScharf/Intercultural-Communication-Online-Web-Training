@@ -47,6 +47,7 @@ export const daeaModule = {
             storageKey: "reflectionDefinition",
             rationale: "This reflection captures learners' initial understanding of reflection before the DAEA framework is introduced.",
             learningObjectives: ["LO4"],
+            competencies: ["IC4"],
             placeholder: "Write your response here..."
         },
 
@@ -140,6 +141,7 @@ export const daeaModule = {
             storageKey: "daeaDescribeResponse",
             rationale: "This reflection gives learners practice separating observation from interpretation.",
             learningObjectives: ["LO4"],
+            competencies: ["IC4"],
             placeholder: "Example: woman, hands near face, dark sky..."
         },
 
@@ -184,6 +186,7 @@ export const daeaModule = {
             storageKey: "daeaAnalyzeResponse",
             rationale: "This reflection helps learners generate possible explanations without treating their first interpretation as certain.",
             learningObjectives: ["LO3", "LO4"],
+            competencies: ["IC3", "IC4"],
             placeholder: "Write your analysis here..."
         },
 
@@ -226,6 +229,7 @@ export const daeaModule = {
             storageKey: "daeaEvaluateResponse",
             rationale: "This reflection asks learners to notice feelings and judgments so those reactions do not control the whole interpretation.",
             learningObjectives: ["LO4"],
+            competencies: ["IC4"],
             placeholder: "Write your evaluation here..."
         },
 
@@ -259,7 +263,7 @@ export const daeaModule = {
             type: "accordion",
             title: "Compare Your Reactions",
             moduleLabel: "Critical Reflection / DAEA",
-            intro: "Compare your responses with the example responses. Your answers may be similar, different, or the same—and that's expected. Different people notice, analyze, and evaluate the same situation in different ways based on their experiences, perspectives, and cultural backgrounds. The goal is not to find the 'correct' answer, but to become more aware of how we interpret what we see.",
+            intro: "Compare your responses with the example responses. Your answers may be similar, different, or the same—and that's expected. Different people notice, analyze, and evaluate the same situation in different ways based on their experiences, perspectives, and cultural backgrounds. Like we said in the culture lesson, culture is the lens through which we see the world, your reactions may be different from mine. The goal is not to find the 'correct' answer, but to become more aware of how we interpret what we see.",
             items: [
                 {
                     title: "Describe",
@@ -349,6 +353,7 @@ export const daeaModule = {
             storageKey: "daeaApplyResponse",
             rationale: "This reflection turns the DAEA process into a plan for future action after new context changes the learner's interpretation.",
             learningObjectives: ["LO4", "LO5"],
+            competencies: ["IC4", "IC5"],
             placeholder: "Write your response here..."
         },
 

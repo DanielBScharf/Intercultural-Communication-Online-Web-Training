@@ -71,6 +71,7 @@ export const incidentsModule = {
                     storageKey: "incidentDrinkingInitialReflection",
                     rationale: "This reflection helps learners identify assumptions before deciding what the drinking expectation means.",
                     learningObjectives: ["LO2", "LO3"],
+                    competencies: ["IC2", "IC3"],
                     placeholder: "Describe: ...\nAssumptions: ..."
                 },
                 {
@@ -92,6 +93,7 @@ export const incidentsModule = {
                     storageKey: "incidentDrinkingDaeaReflection",
                     rationale: "This reflection uses DAEA to balance cultural curiosity, personal boundaries, and future communication choices.",
                     learningObjectives: ["LO4", "LO5"],
+                    competencies: ["IC4", "IC5"],
                     placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."
                 },
                 {
@@ -137,6 +139,7 @@ export const incidentsModule = {
                     storageKey: "incidentNegotiationInitialReflection",
                     rationale: "This reflection asks learners to identify assumptions about communication and decision-making before judging the interaction.",
                     learningObjectives: ["LO2", "LO3"],
+                    competencies: ["IC2", "IC3"],
                     placeholder: "Describe: ...\nAssumptions: ..."
                 },
                 {
@@ -159,6 +162,7 @@ export const incidentsModule = {
                     storageKey: "incidentNegotiationDaeaReflection",
                     rationale: "This reflection applies DAEA to indirect communication and turns frustration into clarifying questions.",
                     learningObjectives: ["LO4", "LO5"],
+                    competencies: ["IC4", "IC5"],
                     placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."
                 },
                 {
@@ -204,6 +208,7 @@ export const incidentsModule = {
                     storageKey: "incidentGuestHostInitialReflection",
                     rationale: "This reflection helps learners examine assumptions about family, community, and invitations.",
                     learningObjectives: ["LO1", "LO2"],
+                    competencies: ["IC1", "IC2"],
                     placeholder: "Describe: ...\nAssumptions: ..."
                 },
                 {
@@ -226,6 +231,7 @@ export const incidentsModule = {
                     storageKey: "incidentGuestHostDaeaReflection",
                     rationale: "This reflection uses DAEA to compare cultural perspectives and plan how to respond to unfamiliar social expectations.",
                     learningObjectives: ["LO1", "LO4", "LO5"],
+                    competencies: ["IC1", "IC4", "IC5"],
                     placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."
                 },
                 {

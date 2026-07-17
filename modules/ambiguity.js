@@ -115,6 +115,7 @@ export const ambiguityModule = {
             storageKey: "ambiguityUncomfortableReflection",
             rationale: "This reflection helps learners distinguish discomfort from danger and connect that distinction to tolerance of ambiguity.",
             learningObjectives: ["LO3"],
+            competencies: ["IC3"],
             placeholder: "Write your response here..."
         },
 

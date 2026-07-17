@@ -60,6 +60,7 @@ export const stereotypesModule = {
             storageKey: "stereotypesReflection",
             rationale: "This reflection asks learners to notice stereotypes and question whether broad claims are supported by evidence.",
             learningObjectives: ["LO2"],
+            competencies: ["IC2"],
             placeholder: "Write your response here..."
         },
 

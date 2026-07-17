@@ -52,6 +52,7 @@ export const cultureModule = {
             storageKey: "cultureDefinition",
             rationale: "This opening reflection surfaces learners' starting ideas about culture before the workshop introduces a shared definition.",
             learningObjectives: ["LO1"],
+            competencies: ["IC1"],
             placeholder: "Write your definition here..."
         },
 
@@ -142,6 +143,7 @@ export const cultureModule = {
             storageKey: "cultureIcebergReflection",
             rationale: "This reflection helps learners apply the culture iceberg model to their own visible and hidden cultural influences.",
             learningObjectives: ["LO1"],
+            competencies: ["IC1"],
             placeholder: "Write your ideas here..."
         },
 
@@ -242,7 +244,61 @@ export const cultureModule = {
             storageKey: "culturePerspectiveReflection",
             rationale: "This reflection connects culture as perspective with the habit of pausing before judging unfamiliar viewpoints.",
             learningObjectives: ["LO1", "LO3"],
+            competencies: ["IC1", "IC3"],
             placeholder: "Write your thoughts here..."
+        },
+
+        {
+            id: "culture-definition-revisited",
+            type: "reflection",
+            title: "Revisiting Your Definition of Culture",
+            moduleLabel: "Understanding Culture",
+            body: [
+                "At the beginning of this module, you wrote your own definition of culture. Throughout this module, you explored visible and invisible aspects of culture, examined culture as the lens through which we interpret the world, and considered how people may view the same situation differently. Before moving on, take a few minutes to reflect on how your understanding has changed."
+            ],
+            reviewResponse: {
+                title: "Your Original Definition",
+                storageKey: "cultureDefinition",
+                emptyMessage: "No original definition has been saved."
+            },
+            rationale: "This reflection encourages you to think about how your understanding has developed throughout the module. Rather than looking for one correct definition of culture, the goal is to recognize how learning can expand the way we interpret ideas and experiences.",
+            learningObjectives: ["LO1", "LO4"],
+            competencies: ["IC6", "IC7", "IC8"],
+            prompts: [
+                {
+                    label: "Reflection",
+                    prompt: "How has your understanding of culture changed after completing this module? Was there anything about culture that you had not previously considered? Explain how your thinking has changed.",
+                    storageKey: "cultureReflectionGrowth",
+                    rationale: "This reflection encourages you to think about how your understanding has developed throughout the module. Rather than looking for one correct definition of culture, the goal is to recognize how learning can expand the way we interpret ideas and experiences.",
+                    learningObjectives: ["LO1", "LO4"],
+                    competencies: ["IC6", "IC7", "IC8"],
+                    placeholder: "Write your reflection here..."
+                },
+                {
+                    label: "Your Current Definition of Culture",
+                    prompt: "Using what you have learned in this module, write your current personal definition of culture.",
+                    storageKey: "currentCultureDefinition",
+                    rationale: "This reflection encourages you to think about how your understanding has developed throughout the module. Rather than looking for one correct definition of culture, the goal is to recognize how learning can expand the way we interpret ideas and experiences.",
+                    learningObjectives: ["LO1", "LO4"],
+                    competencies: ["IC6", "IC7", "IC8"],
+                    placeholder: "Write your current definition here..."
+                }
+            ],
+            comparison: {
+                title: "Compare Your Definitions",
+                items: [
+                    {
+                        title: "Your Original Definition",
+                        storageKey: "cultureDefinition",
+                        emptyMessage: "No original definition has been saved."
+                    },
+                    {
+                        title: "Your Current Definition",
+                        storageKey: "currentCultureDefinition",
+                        emptyMessage: "No current definition has been saved."
+                    }
+                ]
+            }
         },
 
         {

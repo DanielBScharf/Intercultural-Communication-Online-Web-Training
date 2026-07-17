@@ -87,6 +87,7 @@ export const pragueModule = {
                     storageKey: "pragueInitialDescription",
                     rationale: "This reflection asks learners to slow down and describe the situation before interpreting the interaction.",
                     learningObjectives: ["LO3", "LO4"],
+                    competencies: ["IC3", "IC4"],
                     placeholder: "Describe what you can see or hear without interpreting it yet..."
                 },
                 {
@@ -100,19 +101,19 @@ export const pragueModule = {
                     storageKey: "pragueDecision",
                     choices: [
                         {
-                            label: "Wait and observe a little longer",
+                            label: "Wait and try to communicate a little longer",
                             value: "wait-and-observe"
                         },
                         {
-                            label: "Assume the host is being rude",
+                            label: "Assume the woman is being rude and or angry",
                             value: "assume-rude"
                         },
                         {
-                            label: "Politely ask a clarifying question",
+                            label: "Politely ask another stranger for help",
                             value: "ask-question"
                         },
                         {
-                            label: "Leave and rejoin the group later",
+                            label: "Leave and ask your friends for help",
                             value: "leave"
                         }
                     ]
@@ -166,6 +167,7 @@ export const pragueModule = {
                     storageKey: "pragueDaeaReflection",
                     rationale: "This reflection applies DAEA to a realistic intercultural misunderstanding and asks learners to plan a better future response.",
                     learningObjectives: ["LO4", "LO5"],
+                    competencies: ["IC4", "IC5"],
                     placeholder: "Describe: ...\nAnalyze: ...\nEvaluate: ...\nApply: ..."
                 },
                 {

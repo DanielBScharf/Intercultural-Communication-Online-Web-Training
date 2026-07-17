@@ -95,7 +95,7 @@ Use `reflectionSummary` for a reusable review page that connects:
 
 - the original reflection prompt,
 - why the reflection was included,
-- the learning objective or objectives it supports,
+- the competency or competencies the learner practiced,
 - and the learner's saved response.
 
 Requirements:
@@ -111,30 +111,31 @@ Requirements:
 - Support an accessible, print-friendly layout.
 - Do not require every reflection to be completed before the learner may finish the course.
 - Display a saved-response count near the top of the page.
-- Display learning-objective alignment counts as prompt alignment information, never as learner scores.
+- Aggregate practiced competencies once at the bottom of the page.
+- Present competencies as practice opportunities, never as scores or mastery claims.
 
 Rendering order:
 
 1. Page title and introduction from the lesson object.
-2. Learning objective alignment summary.
-3. Responses saved count.
-4. Print Reflection Summary button.
-5. Reflections grouped by module.
-6. Prompt, rationale, connected learning objective wording, learner response, and review/revise control for each reflection.
+2. Responses saved count.
+3. Print Reflection Summary button.
+4. Reflections grouped by module.
+5. Reflection Prompt, Why this Reflection Matters, Competencies Practiced, Learner Response, and review/revise control for each reflection.
+6. Competencies practiced across the workshop, listed once.
 
 Print support:
 
 - Browser print is used.
 - Sidebar, progress controls, lesson navigation, and print/revision controls are hidden in print layout.
-- The printable page keeps reflection content, objective alignment, and learner responses visible.
+- The printable page keeps reflection content, competency metadata, and learner responses visible.
 
 Accessibility:
 
 - Use semantic headings for the page, modules, and individual reflection entries.
 - Buttons must be keyboard accessible.
 - Learner responses must be inserted as plain text.
-- Objective IDs and storage keys must not be displayed.
-- Missing objective IDs should not break rendering.
+- Competency IDs and storage keys must not be displayed.
+- Missing competency IDs should not break rendering.
 - Empty responses should display a clear message.
 
 Navigation:
@@ -158,3 +159,26 @@ The reflection summary should:
 - and handle missing or invalid objective IDs without breaking the page.
 
 Objective alignment must be intentionally authored in course data. It should not be inferred automatically from prompt text.
+
+### Competency metadata
+
+Each saved reflection may include a `competencies` array containing stable competency IDs.
+
+Competency definitions and learner-facing wording must be centralized in course data. Renderers should resolve IDs to displayed wording rather than duplicating competency text.
+
+The reflection summary should:
+
+- display the competency or competencies practiced beneath each prompt,
+- display learner-facing competency wording rather than internal IDs,
+- include competency metadata even when a reflection is unanswered,
+- aggregate each practiced competency once at the bottom of the page,
+- frame competencies as learning opportunities rather than evidence of mastery,
+- and handle missing or invalid competency IDs without breaking the page.
+
+Competency metadata must be intentionally authored in module data. It should not be inferred automatically from prompt text.
+
+### Rationale metadata
+
+Each saved reflection should include a concise `rationale` field explaining why the reflection matters instructionally.
+
+The reflection summary displays this rationale under the label "Why this Reflection Matters." Rationale text belongs in module data, not in renderer logic.

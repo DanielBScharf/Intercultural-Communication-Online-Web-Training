@@ -42,6 +42,7 @@ export const finalReflectionModule = {
                     storageKey: "finalReflectionUsefulConcept",
                     rationale: "This reflection asks learners to identify the course idea they expect to transfer into future intercultural situations.",
                     learningObjectives: ["LO5"],
+                    competencies: ["IC5"],
                     placeholder: "Write your reflection here..."
                 },
                 {
@@ -49,6 +50,7 @@ export const finalReflectionModule = {
                     storageKey: "finalReflectionDifferentResponse",
                     rationale: "This reflection connects tolerance of ambiguity with a concrete plan for responding to unfamiliar situations.",
                     learningObjectives: ["LO3", "LO5"],
+                    competencies: ["IC3", "IC5"],
                     placeholder: "Write your reflection here..."
                 },
                 {
@@ -56,6 +58,7 @@ export const finalReflectionModule = {
                     storageKey: "finalReflectionDisagreement",
                     rationale: "This reflection invites learners to critically examine course ideas rather than accepting them without analysis.",
                     learningObjectives: ["LO4"],
+                    competencies: ["IC4"],
                     placeholder: "Write your reflection here..."
                 },
                 {
@@ -63,6 +66,7 @@ export const finalReflectionModule = {
                     storageKey: "finalReflectionActionPlan",
                     rationale: "This reflection turns workshop learning into an action plan for future intercultural communication.",
                     learningObjectives: ["LO5"],
+                    competencies: ["IC5"],
                     placeholder: "Write your reflection here..."
                 },
                 {
@@ -70,6 +74,7 @@ export const finalReflectionModule = {
                     storageKey: "finalReflectionFurtherQuestion",
                     rationale: "This reflection emphasizes intercultural competence as continued curiosity and lifelong learning.",
                     learningObjectives: ["LO1", "LO5"],
+                    competencies: ["IC1", "IC5"],
                     placeholder: "Write your reflection here..."
                 }
             ]
@@ -95,9 +100,11 @@ export const finalReflectionModule = {
         {
             id: "reflection-journey-summary",
             type: "reflectionSummary",
-            title: "Your Reflection Journey",
+            title: "Your Intercultural Learning Journey",
             moduleLabel: "Final Reflection",
-            introduction: "Throughout this workshop, you have reflected on your experiences, assumptions, reactions, and plans for future action. Review your responses below and notice how your thinking developed. Each reflection also explains why it was included and which learning objective it supports."
+            introduction: "This page helps you review how your thinking developed throughout the workshop. As you read your saved responses, notice the habits and competencies you practiced: recognizing perspective, questioning assumptions, staying open in ambiguity, reflecting critically, and planning future action.",
+            competencySummaryTitle: "Competencies You Practiced Throughout This Workshop",
+            competencySummaryText: "These reflections demonstrate opportunities to practice the habits associated with intercultural competence. Continued growth occurs through real-world experiences followed by thoughtful reflection."
         },
 
         {
