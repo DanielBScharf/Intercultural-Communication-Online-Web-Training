@@ -276,7 +276,7 @@ export const cultureModule = {
                 },
                 {
                     label: "Your Current Definition of Culture",
-                    prompt: "Using what you have learned in this module, write your current personal definition of culture.",
+                    prompt: "Using what you have learned in this module, would you like to update your definition of culture?.",
                     storageKey: "currentCultureDefinition",
                     rationale: "This reflection encourages you to think about how your understanding has developed throughout the module. Rather than looking for one correct definition of culture, the goal is to recognize how learning can expand the way we interpret ideas and experiences.",
                     learningObjectives: ["LO1", "LO4"],
