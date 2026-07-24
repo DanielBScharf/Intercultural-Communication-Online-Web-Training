@@ -152,6 +152,14 @@ This project demonstrates:
 * Modular content architecture
 * Basic learner progress persistence
 
+## Project Documentation
+
+This project was intentionally documented to demonstrate the instructional design process behind the final product.
+
+- 📘 Design Decisions
+- 🏗 Technical Architecture
+- ♿ Accessibility Considerations
+
 ## License
 
 This project is currently for portfolio and educational purposes.
