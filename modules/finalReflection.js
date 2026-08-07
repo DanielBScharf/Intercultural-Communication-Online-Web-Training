@@ -40,6 +40,7 @@ export const finalReflectionModule = {
                 {
                     prompt: "Which concept or strategy from this workshop do you think will be most useful to you? Why did you choose it, and in what kinds of situations might you use it?",
                     storageKey: "finalReflectionUsefulConcept",
+                    reflectionTitle: "Most Useful Concept",
                     rationale: "This reflection asks learners to identify the course idea they expect to transfer into future intercultural situations.",
                     learningObjectives: ["LO5"],
                     competencies: ["IC5"],
@@ -48,6 +49,7 @@ export const finalReflectionModule = {
                 {
                     prompt: "What is one thing you will do differently the next time you encounter a situation you do not fully understand? Explain how this response might affect the way you interpret or navigate the situation.",
                     storageKey: "finalReflectionDifferentResponse",
+                    reflectionTitle: "Responding Differently",
                     rationale: "This reflection connects tolerance of ambiguity with a concrete plan for responding to unfamiliar situations.",
                     learningObjectives: ["LO3", "LO5"],
                     competencies: ["IC3", "IC5"],
@@ -56,22 +58,16 @@ export const finalReflectionModule = {
                 {
                     prompt: "Was there anything in this workshop that you questioned or disagreed with? What was it, and why did you respond that way?",
                     storageKey: "finalReflectionDisagreement",
+                    reflectionTitle: "Questions or Disagreements",
                     rationale: "This reflection invites learners to critically examine course ideas rather than accepting them without analysis.",
                     learningObjectives: ["LO4"],
                     competencies: ["IC4"],
                     placeholder: "Write your reflection here..."
                 },
                 {
-                    prompt: "What is one specific idea or strategy from this workshop that you plan to apply in the future? Describe when, where, or how you will put it into practice.",
-                    storageKey: "finalReflectionActionPlan",
-                    rationale: "This reflection turns workshop learning into an action plan for future intercultural communication.",
-                    learningObjectives: ["LO5"],
-                    competencies: ["IC5"],
-                    placeholder: "Write your reflection here..."
-                },
-                {
                     prompt: "What question about culture, communication, or intercultural experiences are you leaving this workshop with that you would like to explore further?",
                     storageKey: "finalReflectionFurtherQuestion",
+                    reflectionTitle: "Questions to Explore",
                     rationale: "This reflection emphasizes intercultural competence as continued curiosity and lifelong learning.",
                     learningObjectives: ["LO1", "LO5"],
                     competencies: ["IC1", "IC5"],

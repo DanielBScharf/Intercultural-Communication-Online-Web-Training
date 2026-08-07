@@ -219,6 +219,7 @@ The project also demonstrates an evolving collaborative workflow. Early developm
 - Cloud saving
 - Analytics
 - Data collection
+- AI-supported reflective coaching
 - ...
 
 ---

@@ -381,26 +381,49 @@ h6 {
 }
 
 .reflection-summary-module {
-    margin-top: 2rem;
+    margin-top: 2.5rem;
+}
+
+.reflection-summary-module > h3 {
+    border-bottom: 2px solid var(--border);
+    font-weight: 800;
+    padding-bottom: 0.75rem;
+}
+
+.reflection-summary-reflection {
+    margin-top: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.reflection-summary-reflection > summary {
+    padding: 1rem 1.25rem;
+    font-size: 1.15rem;
+    font-weight: 800;
+    cursor: pointer;
+    background: #f8fafc;
+}
+
+.reflection-summary-reflection > summary:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: -3px;
+}
+
+.reflection-summary-reflection[open] > summary {
+    border-bottom: 1px solid var(--border);
 }
 
 .reflection-summary-item {
     background: #ffffff;
-    border: 1px solid var(--border);
-    border-radius: 1rem;
     padding: 1.5rem;
-    margin-top: 1rem;
-}
-
-.reflection-summary-item h4 {
-    font-weight: 800;
 }
 
 .reflection-summary-block {
     margin-top: 1rem;
 }
 
-.reflection-summary-block h5 {
+.reflection-summary-block h4 {
     font-size: 1rem;
     font-weight: 800;
     color: var(--primary-dark);
@@ -412,6 +435,42 @@ h6 {
     border-radius: 0.75rem;
     padding: 1rem;
     white-space: pre-wrap;
+}
+
+.reflection-definition-comparison {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.reflection-definition-card {
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1rem;
+}
+
+.reflection-definition-card h6 {
+    font-weight: 800;
+}
+
+.reflection-learning-outcomes {
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+}
+
+.reflection-learning-outcomes summary {
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.reflection-learning-outcomes summary:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+}
+
+.reflection-learning-outcomes ul {
+    margin-bottom: 0;
+    margin-top: 0.75rem;
 }
 
 .comparison-grid {
@@ -599,8 +658,15 @@ h6 {
     }
 
     .reflection-summary-item,
+    .reflection-summary-reflection,
     .module-summary {
         break-inside: avoid;
         box-shadow: none;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .reflection-summary-item {
+        padding: 1rem;
     }
 }

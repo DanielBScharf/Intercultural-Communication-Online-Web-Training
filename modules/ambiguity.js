@@ -155,6 +155,19 @@ export const ambiguityModule = {
         },
 
         {
+            id: "ambiguity-daily-life-reflection",
+            type: "reflection",
+            title: "Applying Tolerance of Ambiguity",
+            moduleLabel: "Tolerance of Ambiguity",
+            body: [
+                "Apply tolerance of ambiguity to a situation you may encounter in your daily life."
+            ],
+            prompt: "Think of a situation in your daily life where you may not have all the information or know what to expect. How could you use tolerance of ambiguity to respond more thoughtfully in that situation?",
+            storageKey: "ambiguityDailyLifeReflection",
+            placeholder: "Write your response here..."
+        },
+
+        {
             id: "ambiguity-complete",
             type: "moduleComplete",
             title: "Great job!",

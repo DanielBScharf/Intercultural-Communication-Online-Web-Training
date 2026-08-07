@@ -153,6 +153,19 @@ export const stereotypesModule = {
         },
 
         {
+            id: "stereotypes-assumption-check",
+            type: "reflection",
+            title: "Checking an Assumption",
+            moduleLabel: "Stereotypes",
+            body: [
+                "Use what you practiced in the stereotype and observation activity to consider how you could check an assumption instead of accepting it as complete information."
+            ],
+            prompt: "Imagine you realize that one of your expectations about another culture is based on a stereotype or incomplete information. What could you do to check that assumption and develop a more accurate understanding?",
+            storageKey: "stereotypesAssumptionCheckReflection",
+            placeholder: "Write your response here..."
+        },
+
+        {
             id: "stereotypes-complete",
             type: "moduleComplete",
             title: "Great job!",
