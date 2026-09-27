@@ -91,6 +91,8 @@ Do not force decisions when the learning goal is analysis or reflection.
 
 It is intended for end-of-course review, metacognition, and personal action planning.
 
+`reflectionSummary` is a post-workshop review destination, not an instructional module lesson. It lives in course-level data, remains hidden until all instructional modules are complete, and does not count toward module completion or progress.
+
 Use `reflectionSummary` for a reusable review page that connects:
 
 - the original reflection prompt,
@@ -107,12 +109,15 @@ Requirements:
 - Never expose internal storage keys or implementation identifiers.
 - Render learner responses as plain text rather than HTML.
 - Reflect the most recently saved response.
-- Allow learners to return to the relevant lesson to revise a response when navigation data is available.
+- Allow learners to revise saved responses in place without creating new storage keys.
+- Keep a separate "Return to Activity" action when navigation data is available.
 - Support an accessible, print-friendly layout.
 - Do not require every reflection to be completed before the learner may finish the course.
 - Display a saved-response count near the top of the page.
 - Aggregate practiced competencies once at the bottom of the page.
 - Present competencies as practice opportunities, never as scores or mastery claims.
+- Reveal the navigation item only after all instructional modules are complete.
+- Do not include the summary page in the instructional lesson sequence or module count.
 
 Rendering order:
 
@@ -140,8 +145,13 @@ Accessibility:
 
 Navigation:
 
-- When available, each reflection entry should include a "Review or revise this response" button.
-- The button should use the existing lesson navigation flow to return to the lesson that collected the response.
+- Each reflection entry should include an "Edit Response" control for inline revision.
+- Inline edits should commit only when the learner selects "Save Changes"; typing in the summary should not autosave.
+- Each reflection entry should include a separate "Return to Activity" button when the original lesson can be reopened.
+- The "Return to Activity" button should use the existing lesson navigation flow to return to the lesson that collected the response.
+- After the final instructional module is completed, the app may route learners to the Reflection Summary automatically.
+- The Reflection Summary navigation item should remain available after completion and should be keyboard accessible.
+- A first-time reveal animation may be used for the navigation item, but it must respect `prefers-reduced-motion` and must not be required for understanding.
 
 ### Learning-objective alignment
 

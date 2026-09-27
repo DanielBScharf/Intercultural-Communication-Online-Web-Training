@@ -47,8 +47,59 @@ import {
     renderImage
 } from "./layout.js";
 
+export function renderReflectionPurposeDisclosure(reflection, competencyDefinitions = {}) {
+    if (reflection?.showPurposeDisclosure === false) return "";
+    if (!reflection?.rationale && !reflection?.competencies?.length) return "";
+
+    const competencies = (reflection.competencies || [])
+        .map(competencyID => competencyDefinitions[competencyID])
+        .filter(Boolean);
+
+    if (!reflection.rationale && !competencies.length) return "";
+
+    return `
+        <details class="reflection-purpose mt-3">
+            <summary>Why does this reflection matter?</summary>
+
+            <div class="reflection-purpose-content">
+                ${reflection.rationale ? `
+                    <section class="reflection-summary-block">
+                        <h3>Why This Reflection Matters</h3>
+                        ${renderRationaleParagraphs(reflection.rationale)}
+                    </section>
+                ` : ""}
+
+                ${competencies.length ? `
+                    <section class="reflection-summary-block">
+                        <h3>Competencies Practiced</h3>
+                        <ul>
+                            ${competencies.map(competency => `<li>${competency}</li>`).join("")}
+                        </ul>
+                    </section>
+                ` : ""}
+            </div>
+        </details>
+    `;
+}
+
+function renderRationaleParagraphs(rationale) {
+    if (!rationale) return "";
+
+    const paragraphs = Array.isArray(rationale)
+        ? rationale
+        : rationale.split(/\n\s*\n/);
+
+    return paragraphs
+        .map(paragraph => `<p>${paragraph.trim()}</p>`)
+        .join("");
+}
+
 export function renderReflection(lesson, context) {
     const savedValue = loadResponse(lesson.storageKey);
+    const purposeMarkup = renderReflectionPurposeDisclosure(
+        lesson,
+        context.courseData?.competencies || {}
+    );
 
     const reflectionMarkup = `
         <div class="reflection-prompt mt-4">
@@ -69,6 +120,8 @@ export function renderReflection(lesson, context) {
             </div>
 
         </div>
+
+        ${purposeMarkup}
     `;
 
     let content = "";

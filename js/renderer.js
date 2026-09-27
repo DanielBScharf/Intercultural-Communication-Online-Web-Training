@@ -36,6 +36,7 @@ import {
 } from "./metaData/reflectionsMetadata.js";
 
 import { learningOutcomes } from "./metaData/learningOutcomes.js";
+import { renderReflectionPurposeDisclosure } from "./renderers/reflection.js";
 
 export function renderLesson(lesson, context) {
     const app = document.getElementById("app");
@@ -57,8 +58,8 @@ export function renderLesson(lesson, context) {
     attachSharedLessonEvents(lesson, context);
     initializeSortingActivity(lesson);
     initializeImageReveal(lesson);
-    initializeStoryActivity(lesson);
-    initializeGuidedActivity(lesson);
+    initializeStoryActivity(lesson, context);
+    initializeGuidedActivity(lesson, context);
 }
 
 const lessonRenderers = {
@@ -88,6 +89,8 @@ function renderPageShell(lesson, content, context) {
                         ${lesson.moduleLabel || context.currentModule.title}
                     </p>
 
+                    ${renderModulePosition(context.modulePosition)}
+
                     <h2>${lesson.title}</h2>
 
                     ${content}
@@ -100,24 +103,60 @@ function renderPageShell(lesson, content, context) {
     `;
 }
 
+function renderModulePosition(position) {
+    if (!position || !position.total) return "";
+
+    const segments = Array.from({ length: position.total }, (_, index) => {
+        const segmentPosition = index + 1;
+        const state = segmentPosition < position.currentIndex
+            ? "past"
+            : segmentPosition === position.currentIndex
+                ? "current"
+                : "upcoming";
+
+        return `<span class="module-position-segment is-${state}"></span>`;
+    }).join("");
+
+    return `
+        <div
+            class="module-position"
+            role="group"
+            aria-label="Section ${position.currentIndex} of ${position.total} in ${position.moduleName}">
+            <div
+                class="module-position-segments"
+                style="--module-position-total: ${position.total}"
+                aria-hidden="true">
+                ${segments}
+            </div>
+            <span class="module-position-count" aria-hidden="true">
+                ${position.currentIndex} of ${position.total}
+            </span>
+        </div>
+    `;
+}
+
 function renderLessonNavigation(context) {
+    const showNextButton = context.currentLesson?.type !== "reflectionSummary";
+
     return `
         <div class="lesson-navigation">
-            <button class="btn btn-outline-secondary"
+            <button class="btn btn-outline-secondary secondary-navigation-button"
                 data-action="previous"
                 ${!context.previousLesson ? "disabled" : ""}>
                 Previous
             </button>
 
-            <button class="btn btn-outline-secondary" data-action="menu">
+            <button class="btn btn-outline-secondary secondary-navigation-button" data-action="menu">
                 Return to Menu
             </button>
 
-            <button class="btn btn-primary"
-                data-action="next"
-                ${!context.nextLesson ? "disabled" : ""}>
-                Next
-            </button>
+            ${showNextButton ? `
+                <button class="btn btn-primary"
+                    data-action="next"
+                    ${!context.nextLesson ? "disabled" : ""}>
+                    Next
+                </button>
+            ` : ""}
         </div>
     `;
 }
@@ -150,6 +189,18 @@ function renderTakeawayList(takeaways = []) {
                 ${takeaways.map(takeaway => `<li>${takeaway}</li>`).join("")}
             </ul>
         </div>
+    `;
+}
+
+function renderExampleList(examples = [], className = "") {
+    if (!examples.length) return "";
+
+    const classAttribute = className ? ` class="${className}"` : "";
+
+    return `
+        <ul${classAttribute}>
+            ${examples.map(example => `<li>${example}</li>`).join("")}
+        </ul>
     `;
 }
 
@@ -221,13 +272,13 @@ function renderModuleComplete(lesson, context) {
                     </div>
 
                     <div class="mt-4">
-                        <button class="btn btn-outline-secondary me-2"
+                        <button class="btn btn-outline-secondary secondary-navigation-button me-2"
                             data-action="previous"
                             ${!context.previousLesson ? "disabled" : ""}>
                             Previous
                         </button>
 
-                        <button class="btn btn-outline-secondary me-2" data-action="menu">
+                        <button class="btn btn-outline-secondary secondary-navigation-button me-2" data-action="menu">
                             Return to Menu
                         </button>
 
@@ -270,10 +321,9 @@ function renderContentImage(lesson, context) {
 function renderReflection(lesson, context) {
     const reflectionPrompts = getReflectionPrompts(lesson);
     const reflectionMarkup = reflectionPrompts
-        .map(prompt => renderReflectionBox(prompt))
+        .map(prompt => renderReflectionBox(prompt, lesson, context))
         .join("");
     const reviewMarkup = renderReflectionReview(lesson, context);
-    const purposeMarkup = renderReflectionPurpose(lesson, context);
     const comparisonMarkup = renderReflectionComparison(lesson);
 
     let content = "";
@@ -288,7 +338,6 @@ function renderReflection(lesson, context) {
                 <div class="col-lg-7">
                     ${renderParagraphs(lesson.body)}
                     ${reviewMarkup}
-                    ${purposeMarkup}
                     ${reflectionMarkup}
                     ${comparisonMarkup}
                 </div>
@@ -298,7 +347,6 @@ function renderReflection(lesson, context) {
         content = `
             ${renderParagraphs(lesson.body)}
             ${reviewMarkup}
-            ${purposeMarkup}
             ${reflectionMarkup}
             ${comparisonMarkup}
         `;
@@ -321,10 +369,20 @@ function getReflectionPrompts(lesson) {
     ];
 }
 
-function renderReflectionBox(prompt) {
+function renderReflectionBox(prompt, lesson, context) {
     const savedValue = loadResponse(prompt.storageKey);
     const label = prompt.label || prompt.prompt;
     const promptID = `${prompt.storageKey}Prompt`;
+    const hasPromptMetadata = Boolean(
+        prompt.rationale || prompt.competencies?.length
+    );
+    const purposeSource = hasPromptMetadata ? prompt : lesson;
+    const purposeMarkup = lesson.showPurposeDisclosure === false
+        ? ""
+        : renderReflectionPurposeDisclosure(
+            purposeSource,
+            context.courseData?.competencies || {}
+        );
 
     return `
         <div class="reflection-prompt mt-4">
@@ -350,6 +408,8 @@ function renderReflectionBox(prompt) {
                 Your response will be saved in this browser.
             </div>
         </div>
+
+        ${purposeMarkup}
     `;
 }
 
@@ -364,35 +424,6 @@ function renderReflectionReview(lesson) {
                 data-saved-response-display="${lesson.reviewResponse.storageKey}"
                 data-empty-message="${lesson.reviewResponse.emptyMessage || "No response has been saved."}">
             </div>
-        </section>
-    `;
-}
-
-function renderReflectionPurpose(lesson, context) {
-    if (!lesson.rationale && !lesson.competencies) return "";
-
-    const competencies = resolveCompetencies(
-        lesson.competencies || [],
-        context.courseData?.competencies || {}
-    );
-
-    return `
-        <section class="reflection-purpose mt-4">
-            ${lesson.rationale ? `
-                <div class="reflection-summary-block">
-                    <h3>Why this Reflection Matters</h3>
-                    <p>${lesson.rationale}</p>
-                </div>
-            ` : ""}
-
-            ${competencies.length ? `
-                <div class="reflection-summary-block">
-                    <h3>Competencies Practiced</h3>
-                    <ul>
-                        ${competencies.map(competency => `<li>${competency}</li>`).join("")}
-                    </ul>
-                </div>
-            ` : ""}
         </section>
     `;
 }
@@ -421,19 +452,21 @@ function renderReflectionComparison(lesson) {
 }
 
 function renderTwoColumn(lesson, context) {
+    const isCultureSurfaceComparison = lesson.id === "culture-iceberg-details";
     const content = `
         <div class="row g-4 mt-3">
             <div class="col-md-6">
-                <div class="info-column">
+                <div class="info-column${isCultureSurfaceComparison ? " info-column-visible" : ""}">
                     <h5>${lesson.leftTitle}</h5>
                     <ul>${lesson.leftItems.map(item => `<li>${item}</li>`).join("")}</ul>
                 </div>
             </div>
 
             <div class="col-md-6">
-                <div class="info-column">
+                <div class="info-column${isCultureSurfaceComparison ? " info-column-hidden" : ""}">
                     <h5>${lesson.rightTitle}</h5>
-                    <ul>${lesson.rightItems.map(item => `<li>${item}</li>`).join("")}</ul>
+                    ${lesson.rightDescription ? `<p>${lesson.rightDescription}</p>` : ""}
+                    ${renderExampleList(lesson.rightItems)}
                 </div>
             </div>
         </div>
@@ -563,6 +596,8 @@ function renderComparisonAccordionItem(item, lesson, index) {
                 ${item.title} Comparison
             </h3>
 
+            ${item.description ? `<p>${item.description}</p>` : ""}
+
             <div class="comparison-grid">
                 <div class="comparison-card comparison-card-learner">
                     <h4 class="h6">Your Response</h4>
@@ -574,9 +609,7 @@ function renderComparisonAccordionItem(item, lesson, index) {
 
                 <div class="comparison-card comparison-card-example">
                     <h4 class="h6">Example Response</h4>
-                    <ul class="mb-0">
-                        ${item.exampleResponse.map(example => `<li>${example}</li>`).join("")}
-                    </ul>
+                    ${renderExampleList(item.exampleResponse, "mb-0")}
                 </div>
             </div>
         </section>
@@ -602,17 +635,21 @@ function renderReflectionSummaryGroups(reflections) {
 }
 
 function renderReflectionSummaryDisclosure(reflection) {
+    const promptID = `reflection-summary-prompt-${reflection.storageKey}`;
+    const editorID = `reflection-summary-editor-${reflection.storageKey}`;
+
     return `
         <details
             class="reflection-summary-reflection"
             data-reflection-id="${reflection.reflectionId}"
-            data-reflection-lesson="${reflection.lessonId}">
+            data-reflection-lesson="${reflection.lessonId}"
+            data-reflection-storage-key="${reflection.storageKey}">
             <summary>${reflection.reflectionTitle || "Reflection"}</summary>
 
             <article class="reflection-summary-item">
                 <div class="reflection-summary-block">
                     <h4>Reflection Prompt</h4>
-                    <p>${reflection.prompt}</p>
+                    <p id="${promptID}">${reflection.prompt}</p>
                 </div>
 
                 <div class="reflection-summary-block">
@@ -632,11 +669,53 @@ function renderReflectionSummaryDisclosure(reflection) {
 
                 ${renderLearningOutcomesDisclosure(reflection.learningOutcomes)}
 
-                <button
-                    class="btn btn-outline-primary btn-sm print-control"
-                    data-review-reflection="${reflection.lessonId}">
-                    Review or revise this response
-                </button>
+                <div class="reflection-summary-actions print-control">
+                    <button
+                        class="btn btn-outline-primary btn-sm"
+                        data-edit-reflection="${reflection.storageKey}"
+                        aria-controls="${editorID}">
+                        Edit Response
+                    </button>
+
+                    <button
+                        class="btn btn-outline-secondary btn-sm"
+                        data-review-reflection="${reflection.lessonId}">
+                        Return to Activity
+                    </button>
+                </div>
+
+                <div
+                    id="${editorID}"
+                    class="reflection-summary-editor print-control"
+                    data-reflection-editor="${reflection.storageKey}"
+                    hidden>
+                    <label
+                        class="form-label fw-semibold"
+                        for="${editorID}-field">
+                        Edit your response
+                    </label>
+
+                    <textarea
+                        id="${editorID}-field"
+                        class="form-control reflection-summary-edit-field"
+                        rows="6"
+                        data-reflection-edit-field="${reflection.storageKey}"
+                        aria-describedby="${promptID}"></textarea>
+
+                    <div class="reflection-summary-edit-actions">
+                        <button
+                            class="btn btn-primary btn-sm"
+                            data-save-reflection-edit="${reflection.storageKey}">
+                            Save Changes
+                        </button>
+
+                        <button
+                            class="btn btn-outline-secondary btn-sm"
+                            data-cancel-reflection-edit="${reflection.storageKey}">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
             </article>
         </details>
     `;
@@ -834,12 +913,6 @@ function collectPracticedCompetencies(reflections) {
     return practicedCompetencies;
 }
 
-function resolveCompetencies(competencyIDs = [], competencies = {}) {
-    return competencyIDs
-        .map(competencyID => competencies[competencyID])
-        .filter(Boolean);
-}
-
 // ---------- Events ----------
 
 function attachSharedLessonEvents(lesson, context) {
@@ -899,6 +972,24 @@ function attachSharedLessonEvents(lesson, context) {
         });
     });
 
+    document.querySelectorAll("[data-edit-reflection]").forEach(button => {
+        button.addEventListener("click", () => {
+            openReflectionSummaryEditor(button.dataset.editReflection);
+        });
+    });
+
+    document.querySelectorAll("[data-save-reflection-edit]").forEach(button => {
+        button.addEventListener("click", () => {
+            saveReflectionSummaryEdit(button.dataset.saveReflectionEdit);
+        });
+    });
+
+    document.querySelectorAll("[data-cancel-reflection-edit]").forEach(button => {
+        button.addEventListener("click", () => {
+            closeReflectionSummaryEditor(button.dataset.cancelReflectionEdit);
+        });
+    });
+
     document.querySelectorAll(".reflection-summary details > summary").forEach(summary => {
         summary.addEventListener("keydown", event => {
             if (event.key !== "Enter" && event.key !== " ") return;
@@ -935,6 +1026,80 @@ function attachSharedLessonEvents(lesson, context) {
     });
 
     updateSavedResponseDisplays();
+}
+
+function openReflectionSummaryEditor(storageKey) {
+    const editor = document.querySelector(`[data-reflection-editor="${storageKey}"]`);
+    const editButton = document.querySelector(`[data-edit-reflection="${storageKey}"]`);
+    const textarea = document.querySelector(`[data-reflection-edit-field="${storageKey}"]`);
+
+    if (!editor || !textarea) return;
+
+    textarea.value = loadResponse(storageKey);
+    editor.hidden = false;
+
+    if (editButton) {
+        editButton.hidden = true;
+    }
+
+    textarea.focus();
+}
+
+function saveReflectionSummaryEdit(storageKey) {
+    const textarea = document.querySelector(`[data-reflection-edit-field="${storageKey}"]`);
+
+    if (!textarea) return;
+
+    saveResponse(storageKey, textarea.value);
+    updateReflectionSummaryResponseDisplays(storageKey);
+    updateReflectionSummarySavedCount();
+    closeReflectionSummaryEditor(storageKey);
+}
+
+function closeReflectionSummaryEditor(storageKey) {
+    const editor = document.querySelector(`[data-reflection-editor="${storageKey}"]`);
+    const editButton = document.querySelector(`[data-edit-reflection="${storageKey}"]`);
+    const textarea = document.querySelector(`[data-reflection-edit-field="${storageKey}"]`);
+
+    if (textarea) {
+        textarea.value = loadResponse(storageKey);
+    }
+
+    if (editor) {
+        editor.hidden = true;
+    }
+
+    if (editButton) {
+        editButton.hidden = false;
+        editButton.focus();
+    }
+}
+
+function updateReflectionSummaryResponseDisplays(targetStorageKey = null) {
+    document.querySelectorAll("[data-reflection-summary-response]").forEach(response => {
+        const storageKey = response.dataset.reflectionSummaryResponse;
+
+        if (targetStorageKey && storageKey !== targetStorageKey) return;
+
+        const savedResponse = loadResponse(storageKey);
+
+        response.textContent = savedResponse.trim()
+            ? savedResponse
+            : "No response has been saved for this question.";
+    });
+}
+
+function updateReflectionSummarySavedCount() {
+    const savedCount = document.getElementById("reflectionSummarySavedCount");
+
+    if (!savedCount) return;
+
+    const storageKeys = Array.from(document.querySelectorAll("[data-reflection-storage-key]"))
+        .map(reflection => reflection.dataset.reflectionStorageKey);
+
+    savedCount.textContent = storageKeys.filter(storageKey =>
+        loadResponse(storageKey).trim()
+    ).length;
 }
 
 function updateSavedResponseDisplays(targetStorageKey = null) {

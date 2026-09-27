@@ -21,6 +21,8 @@ import {
     loadResponse
 } from "./storage.js";
 
+import { renderReflectionPurposeDisclosure } from "./renderers/reflection.js";
+
 export function renderSortingActivityContent(lesson) {
     const shuffledItems = shuffleItems(lesson.items);
 
@@ -394,7 +396,7 @@ export function renderStoryActivityContent(lesson) {
 
             <div class="story-navigation mt-4 d-flex justify-content-between gap-3">
 
-                <button class="btn btn-outline-secondary" id="storyPrevious">
+                <button class="btn btn-outline-secondary secondary-navigation-button" id="storyPrevious">
                     Previous
                 </button>
 
@@ -412,7 +414,7 @@ export function renderStoryActivityContent(lesson) {
     `;
 }
 
-export function initializeStoryActivity(lesson) {
+export function initializeStoryActivity(lesson, context = {}) {
     if (lesson.type !== "storyActivity") return;
 
     let currentPageIndex = 0;
@@ -425,7 +427,11 @@ export function initializeStoryActivity(lesson) {
     function renderCurrentStoryPage() {
         const page = lesson.pages[currentPageIndex];
 
-        container.innerHTML = renderStoryPage(page, lesson);
+        container.innerHTML = renderStoryPage(
+            page,
+            lesson,
+            context.courseData?.competencies || {}
+        );
 
         progress.textContent =
             `Page ${currentPageIndex + 1} of ${lesson.pages.length}`;
@@ -457,7 +463,7 @@ export function initializeStoryActivity(lesson) {
     renderCurrentStoryPage();
 }
 
-function renderStoryPage(page, lesson) {
+function renderStoryPage(page, lesson, competencyDefinitions = {}) {
     switch (page.pageType) {
         case "story":
             return renderStoryPageStory(page);
@@ -466,7 +472,7 @@ function renderStoryPage(page, lesson) {
             return renderStoryPageComic(page);
 
         case "reflection":
-            return renderStoryPageReflection(page);
+            return renderStoryPageReflection(page, competencyDefinitions);
 
         case "decision":
             return renderStoryPageDecision(page);
@@ -526,8 +532,12 @@ function renderStoryPageComic(page) {
     `;
 }
 
-function renderStoryPageReflection(page) {
+function renderStoryPageReflection(page, competencyDefinitions = {}) {
     const savedValue = loadStoryResponse(page.storageKey);
+    const purposeMarkup = renderReflectionPurposeDisclosure(
+        page,
+        competencyDefinitions
+    );
 
     return `
         <div class="story-page-card">
@@ -550,6 +560,8 @@ function renderStoryPageReflection(page) {
             <div class="save-status mt-2" id="${page.storageKey}Status">
                 Your response will be saved in this browser.
             </div>
+
+            ${purposeMarkup}
 
         </div>
     `;
@@ -732,7 +744,7 @@ export function renderGuidedActivityContent(lesson) {
 
             <div class="story-navigation mt-4 d-flex justify-content-between gap-3">
 
-                <button class="btn btn-outline-secondary" id="guidedPrevious">
+                <button class="btn btn-outline-secondary secondary-navigation-button" id="guidedPrevious">
                     Previous
                 </button>
 
@@ -753,7 +765,7 @@ export function renderGuidedActivityContent(lesson) {
     `;
 }
 
-export function initializeGuidedActivity(lesson) {
+export function initializeGuidedActivity(lesson, context = {}) {
     if (lesson.type !== "guidedActivity") return;
 
     let currentSlideIndex = 0;
@@ -768,7 +780,12 @@ export function initializeGuidedActivity(lesson) {
     // its own sequence without changing the shared component.
     function renderCurrentGuidedSlide() {
         if (!slides.length) {
-            container.innerHTML = renderGuidedSlide(null, lesson, currentSlideIndex);
+            container.innerHTML = renderGuidedSlide(
+                null,
+                lesson,
+                currentSlideIndex,
+                context.courseData?.competencies || {}
+            );
             previousButton.disabled = true;
             nextButton.disabled = true;
             progress.textContent = "No slides";
@@ -777,7 +794,12 @@ export function initializeGuidedActivity(lesson) {
 
         const slide = slides[currentSlideIndex];
 
-        container.innerHTML = renderGuidedSlide(slide, lesson, currentSlideIndex);
+        container.innerHTML = renderGuidedSlide(
+            slide,
+            lesson,
+            currentSlideIndex,
+            context.courseData?.competencies || {}
+        );
 
         progress.textContent =
             `Slide ${currentSlideIndex + 1} of ${slides.length}`;
@@ -807,7 +829,7 @@ export function initializeGuidedActivity(lesson) {
 
 // Route each slide to the matching renderer. Slide order is controlled
 // entirely by module content.
-function renderGuidedSlide(slide, lesson, index) {
+function renderGuidedSlide(slide, lesson, index, competencyDefinitions = {}) {
     if (!slide) {
         return `
             <div class="alert alert-warning">
@@ -824,7 +846,12 @@ function renderGuidedSlide(slide, lesson, index) {
             return renderGuidedSlideComic(slide, lesson, index);
 
         case "reflection":
-            return renderGuidedSlideReflection(slide, lesson, index);
+            return renderGuidedSlideReflection(
+                slide,
+                lesson,
+                index,
+                competencyDefinitions
+            );
 
         case "decision":
             return renderGuidedSlideDecision(slide, lesson, index);
@@ -895,9 +922,18 @@ function renderGuidedSlideComic(slide, lesson, index) {
     `;
 }
 
-function renderGuidedSlideReflection(slide, lesson, index) {
+function renderGuidedSlideReflection(
+    slide,
+    lesson,
+    index,
+    competencyDefinitions = {}
+) {
     const storageKey = getGuidedStorageKey(slide, lesson, index);
     const savedValue = loadGuidedResponse(storageKey);
+    const purposeMarkup = renderReflectionPurposeDisclosure(
+        slide,
+        competencyDefinitions
+    );
 
     return `
         <div class="story-page-card">
@@ -920,6 +956,8 @@ function renderGuidedSlideReflection(slide, lesson, index) {
             <div class="save-status mt-2" id="${storageKey}Status">
                 Your response will be saved in this browser.
             </div>
+
+            ${purposeMarkup}
 
         </div>
     `;

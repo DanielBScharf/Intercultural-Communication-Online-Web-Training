@@ -37,10 +37,22 @@ export const courseData = {
     title: "Intercultural Communication Workshop",
     creator: "Daniel Scharf",
     year: "2026",
+    heroImage: "images/tolerance/intercultural_connection.png",
+    heroImageAlt: "People connecting through intercultural communication",
 
     learningObjectives,
     competencies,
     objectives: Object.values(learningObjectives),
+
+    reflectionSummary: {
+        id: "reflection-summary",
+        type: "reflectionSummary",
+        title: "Reflection Summary",
+        moduleLabel: "Post-Workshop Review",
+        introduction: "This page brings together the reflections you completed throughout the workshop. Use it to review how your thinking developed, revisit the strategies you practiced, and consider how you might apply them in future intercultural experiences. If your perspectives have changed since you completed some of the previous modules, you can also update and change your responses to reflect those changes.",
+        competencySummaryTitle: "Competencies You Practiced Throughout This Workshop",
+        competencySummaryText: "These reflections demonstrate opportunities to practice the habits associated with intercultural competence. Continued growth occurs through real-world experiences followed by thoughtful reflection."
+    },
 
     modules: [
         cultureModule,

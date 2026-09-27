@@ -28,6 +28,8 @@ export const pragueModule = {
                 "This module gives you a chance to apply DAEA to a realistic intercultural scenario.",
                 "You will move through the story one slide at a time, pause to reflect, make a decision, and then compare your reaction with more context."
             ],
+            image: "images/comic/prague-panel-1.png",
+            imageAlt: "Student arriving at Prague's main railway station",
             buttonText: "Begin Module 5"
         },
 
@@ -86,6 +88,7 @@ export const pragueModule = {
                     prompt: "What do you notice in the first four panels?",
                     storageKey: "pragueInitialDescription",
                     reflectionTitle: "First Impressions",
+                    showPurposeDisclosure: false,
                     rationale: "This reflection asks learners to slow down and describe the situation before interpreting the interaction.",
                     learningObjectives: ["LO3", "LO4"],
                     competencies: ["IC3", "IC4"],
@@ -164,10 +167,12 @@ export const pragueModule = {
                         "Use DAEA to think through the scenario.",
                         "Separate what happened from what you thought it meant, how you felt, and what you would do next."
                     ],
-                    prompt: "Describe, Analyze, Evaluate, and Apply: What happened, what might explain it, how did you react, and what could you do next time?",
+                    prompt: "Describe, Analyze, Evaluate, and Apply: What happened? What might explain what happened? How did the person in the situation react, and how might their emotions have affected their interpretation of the experience? What could they have done to better understand the situation? How might you apply what you learned from this incident if you encounter a similar situation?",
                     storageKey: "pragueDaeaReflection",
                     reflectionTitle: "Reconsidering the Situation",
-                    rationale: "This reflection applies DAEA to a realistic intercultural misunderstanding and asks learners to plan a better future response.",
+                    rationale: `The Prague incident shows how emotional reactions can influence judgment when important information is missing. Looking back at the experience through DAEA makes it possible to separate what actually happened from the interpretations and emotions that developed in the moment.
+
+Considering different perspectives and asking what information was missing can lead to a different understanding of the same experience. The goal is not to ignore an emotional reaction, but to recognize it as one part of the experience rather than treating it as evidence of what another person's behavior means.`,
                     learningObjectives: ["LO4", "LO5"],
                     competencies: ["IC4", "IC5"],
                     placeholder: "Describe: ...\nAnalyze: ...\nEvaluate: ...\nApply: ..."

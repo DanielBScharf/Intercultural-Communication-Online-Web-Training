@@ -12,10 +12,15 @@
 // type: "guidedActivity" creates a reusable slide-based activity.
 // ======================================
 
+const criticalIncidentReflectionRationale = `Think back to the cultural iceberg. There may be deeper values, expectations, assumptions, or communication norms influencing this situation that are not immediately visible. You may not yet have enough information to understand why someone behaved the way they did.
+
+Then consider tolerance of ambiguity. How can you respond when you do not have all of the information? Instead of immediately filling in the gaps yourself, consider what you could observe, ask, or investigate. Seeking information and remaining open to more than one explanation can help you navigate unfamiliar intercultural situations without assuming that your first interpretation is the only possible one.`;
+
 export const incidentsModule = {
     key: "incidents",
     title: "Critical Incidents",
     description: "Practice intercultural reflection with realistic scenarios.",
+    image: "images/daea/critical_reflection.png",
 
     lessons: [
         {
@@ -27,6 +32,8 @@ export const incidentsModule = {
                 "This module gives you practice with critical incidents: short intercultural situations where people may interpret the same moment in different ways.",
                 "You will use culture as perspective, stereotypes, tolerance of ambiguity, and DAEA reflection to slow down before judging what happened."
             ],
+            image: "images/daea/critical_reflection.png",
+            imageAlt: "A learner critically examining an intercultural situation",
             buttonText: "Begin Module 6"
         },
 
@@ -35,6 +42,8 @@ export const incidentsModule = {
             type: "contentImage",
             title: "What Are Critical Incidents?",
             moduleLabel: "Critical Incidents",
+            image: "images/tolerance/navigating_uncertainty.jpg",
+            imageAlt: "A person navigating an unfamiliar and uncertain situation",
             body: [
                 "A critical incident is a moment when something feels confusing, uncomfortable, surprising, or difficult because expectations are not shared.",
                 "The incident is not always dramatic. It may be a short conversation, a social expectation, a silence, a refusal, or a decision-making process that feels unfamiliar.",
@@ -70,6 +79,7 @@ export const incidentsModule = {
                     prompt: "Describe what happened. What assumptions might the visitor make about the hosts, and what assumptions might the hosts make about the visitor?",
                     storageKey: "incidentDrinkingInitialReflection",
                     reflectionTitle: "First Impressions",
+                    showPurposeDisclosure: false,
                     rationale: "This reflection helps learners identify assumptions before deciding what the drinking expectation means.",
                     learningObjectives: ["LO2", "LO3"],
                     competencies: ["IC2", "IC3"],
@@ -93,7 +103,7 @@ export const incidentsModule = {
                     prompt: "Analyze possible cultural perspectives. Evaluate your own reaction to the pressure or refusal. What might you do next time to communicate clearly while showing respect?",
                     storageKey: "incidentDrinkingDaeaReflection",
                     reflectionTitle: "Reconsidering the Situation",
-                    rationale: "This reflection uses DAEA to balance cultural curiosity, personal boundaries, and future communication choices.",
+                    rationale: criticalIncidentReflectionRationale,
                     learningObjectives: ["LO4", "LO5"],
                     competencies: ["IC4", "IC5"],
                     placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."
@@ -140,6 +150,7 @@ export const incidentsModule = {
                     prompt: "Describe what happened in the meeting. What assumptions might each side be making about progress, directness, authority, or trust?",
                     storageKey: "incidentNegotiationInitialReflection",
                     reflectionTitle: "First Impressions",
+                    showPurposeDisclosure: false,
                     rationale: "This reflection asks learners to identify assumptions about communication and decision-making before judging the interaction.",
                     learningObjectives: ["LO2", "LO3"],
                     competencies: ["IC2", "IC3"],
@@ -164,7 +175,7 @@ export const incidentsModule = {
                     prompt: "Analyze possible cultural or organizational perspectives. Evaluate the frustration in this scenario. What could someone ask or do next time to understand the decision process more clearly?",
                     storageKey: "incidentNegotiationDaeaReflection",
                     reflectionTitle: "Reconsidering the Situation",
-                    rationale: "This reflection applies DAEA to indirect communication and turns frustration into clarifying questions.",
+                    rationale: criticalIncidentReflectionRationale,
                     learningObjectives: ["LO4", "LO5"],
                     competencies: ["IC4", "IC5"],
                     placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."
@@ -211,6 +222,7 @@ export const incidentsModule = {
                     prompt: "Describe what happened. What assumptions might you be making about the party and the invitation?",
                     storageKey: "incidentGuestHostInitialReflection",
                     reflectionTitle: "First Impressions",
+                    showPurposeDisclosure: false,
                     rationale: "This reflection helps learners examine assumptions about family, community, and invitations.",
                     learningObjectives: ["LO1", "LO2"],
                     competencies: ["IC1", "IC2"],
@@ -235,7 +247,7 @@ export const incidentsModule = {
                     prompt: "Analyze your and their definitions of family. Evaluate your reaction to the confusion. What could you do in the future if you are invited to a wedding in a foreign country?",
                     storageKey: "incidentGuestHostDaeaReflection",
                     reflectionTitle: "Reconsidering the Situation",
-                    rationale: "This reflection uses DAEA to compare cultural perspectives and plan how to respond to unfamiliar social expectations.",
+                    rationale: criticalIncidentReflectionRationale,
                     learningObjectives: ["LO1", "LO4", "LO5"],
                     competencies: ["IC1", "IC4", "IC5"],
                     placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."

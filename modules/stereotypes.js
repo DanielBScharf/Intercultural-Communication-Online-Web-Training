@@ -18,7 +18,7 @@ export const stereotypesModule = {
     key: "stereotypes",
     title: "Stereotypes",
     description: "Explore stereotypes, why people use them, and how to respond to them.",
-    image: "images/culture/intercultural-image.png",
+    image: "images/stereotype/american_stereotypes.png",
 
     lessons: [
         {
@@ -29,6 +29,8 @@ export const stereotypesModule = {
             body: [
                 "In this module, you will explore stereotypes, why people use them, how they can sometimes fill gaps in knowledge, and why they can also be dangerous."
             ],
+            image: "images/stereotype/american_stereotypes.png",
+            imageAlt: "Illustration of common stereotypes about American culture",
             buttonText: "Begin Module 2"
         },
 
@@ -37,8 +39,8 @@ export const stereotypesModule = {
             type: "contentImage",
             title: "What is Stereotyping?",
             moduleLabel: "Stereotypes",
-            image: "images/culture/intercultural-image.png",
-            imageAlt: "People from different cultures interacting",
+            image: "images/stereotype/limited_view.png",
+            imageAlt: "Illustration showing how stereotypes create a limited view of people",
             body: [
                 "Stereotypes are simplified ideas about groups of people.",
                 "People often use stereotypes because they do not know everything about every culture. In that sense, stereotypes can feel useful because they help fill a gap in knowledge.",
@@ -58,7 +60,9 @@ export const stereotypesModule = {
             ],
             prompt: "What are some stereotypes of your culture? What are some common stereotypes of other cultures? Are they true?",
             storageKey: "stereotypesReflection",
-            rationale: "This reflection asks learners to notice stereotypes and question whether broad claims are supported by evidence.",
+            rationale: `When you think about stereotypes of your own culture, you may quickly recognize examples that do not accurately describe you or people you know. Stereotypes rely on incomplete and generalized information. Even when a stereotype appears to describe some members of a group, it cannot tell you what a particular individual will think, value, or do.
+
+The important question is what you do with that knowledge. Do you hold onto the same incomplete picture, or update it as you receive new information? Also consider how stereotypes influence behavior. If you know that a generalization may not accurately describe the person in front of you, should you act as though it does?`,
             learningObjectives: ["LO2"],
             competencies: ["IC2"],
             placeholder: "Write your response here..."
@@ -69,8 +73,8 @@ export const stereotypesModule = {
             type: "contentImage",
             title: "How Do You Recognize Stereotypes?",
             moduleLabel: "Stereotypes",
-            image: "images/culture/stereotypes.png",
-            imageAlt: "Image representing stereotypes or assumptions",
+            image: "images/stereotype/group_variation.png",
+            imageAlt: "Illustration showing variation among people within the same group",
             body: [
                 "Stereotypes are usually broad statements applied to a whole group of people.",
                 "They often sound like: “All ____ are ____.”",

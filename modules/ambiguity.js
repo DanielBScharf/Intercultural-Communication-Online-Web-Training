@@ -18,7 +18,7 @@ export const ambiguityModule = {
     key: "ambiguity",
     title: "Tolerance of Ambiguity",
     description: "Build comfort with unfamiliar, unclear, and unpredictable situations.",
-    image: "images/culture/intercultural-image.png",
+    image: "images/tolerance/intercultural_connection.png",
 
     lessons: [
         {
@@ -29,6 +29,8 @@ export const ambiguityModule = {
             body: [
                 "This module introduces the concept of tolerance of ambiguity, why it matters, and how it can help you respond more effectively in unfamiliar intercultural situations."
             ],
+            image: "images/tolerance/intercultural_connection.png",
+            imageAlt: "People building connection across cultures",
             buttonText: "Begin Module 3"
         },
 
@@ -37,7 +39,7 @@ export const ambiguityModule = {
             type: "contentImage",
             title: "How to Work Best with People of Other Cultures",
             moduleLabel: "Tolerance of Ambiguity",
-            image: "images/culture/ambiguity.png",
+            image: "images/tolerance/navigating_uncertainty.jpg",
             imageAlt: "Person navigating an unfamiliar situation",
             body: [
                 "A key intercultural skill is tolerance of ambiguity.",
@@ -51,7 +53,7 @@ export const ambiguityModule = {
             type: "contentImage",
             title: "Where is This Skill Useful?",
             moduleLabel: "Tolerance of Ambiguity",
-            image: "images/culture/ambiguity.png",
+            image: "images/tolerance/navigating_ambiguit.png",
             imageAlt: "Person outside of their comfort zone",
             body: [
                 "Tolerance of ambiguity is useful almost everywhere.",
@@ -69,6 +71,8 @@ export const ambiguityModule = {
             items: [
                 {
                     title: "Change Your Mindset",
+                    image: "images/tolerance/mindset.png",
+                    imageAlt: "A learner shifting toward an open and curious mindset",
                     body: [
                         "View confusing and ambiguous situations as opportunities to learn.",
                         "Try to get into a learning mindset instead of immediately making a judgment.",
@@ -77,14 +81,18 @@ export const ambiguityModule = {
                 },
                 {
                     title: "Practice",
+                    image: "images/tolerance/practice.png",
+                    imageAlt: "A person practicing comfort with an unfamiliar experience",
                     body: [
-                        "Try new things. Pick up a new hobby, try a new recipe, join a new group, or watch a new sport.",
+                        "Try new things. Pick up a new hobby, try a food you've never had before, join a new group, or watch a new sport.",
                         "Intentionally place yourself in situations where you do not have full control.",
                         "Small experiences with uncertainty can help build your comfort with larger ambiguous situations."
                     ]
                 },
                 {
                     title: "Embrace the Unknown",
+                    image: "images/tolerance/embrace_unknown.png",
+                    imageAlt: "A person stepping forward into an unknown situation",
                     body: [
                         "Understand that you cannot always be in control.",
                         "Enter new situations with an open mind and fewer fixed expectations.",
@@ -93,6 +101,8 @@ export const ambiguityModule = {
                 },
                 {
                     title: "Be Curious",
+                    image: "images/tolerance/curiosity.png",
+                    imageAlt: "A curious learner exploring an unfamiliar situation",
                     body: [
                         "Think of the situation as an opportunity to gain experience and learn something new.",
                         "The more you approach unfamiliar situations with curiosity instead of fear, the more you can learn from them."
@@ -113,7 +123,9 @@ export const ambiguityModule = {
             ],
             prompt: "In one of those situations, were you comfortable? How did you feel? Was it necessarily a bad experience?",
             storageKey: "ambiguityUncomfortableReflection",
-            rationale: "This reflection helps learners distinguish discomfort from danger and connect that distinction to tolerance of ambiguity.",
+            rationale: `This section asks you to think and act outside of your comfort zone. Tolerance of ambiguity is the ability to adapt safely to situations where you do not have all of the information without allowing your immediate emotional reaction to determine your judgment. Being outside of your comfort zone is, by definition, not always comfortable. However, discomfort is not necessarily the same as danger.
+
+This can be one of the biggest challenges, and one of the most important skills, when interacting across cultures. You will not always understand everything that is happening. Being able to remain open, gather more information, and adapt to an unfamiliar environment can help you make the most of an intercultural experience.`,
             learningObjectives: ["LO3"],
             competencies: ["IC3"],
             placeholder: "Write your response here..."
@@ -144,7 +156,7 @@ export const ambiguityModule = {
             type: "contentImage",
             title: "How to Practice Tolerance of Ambiguity",
             moduleLabel: "Tolerance of Ambiguity",
-            image: "images/culture/ambiguity.png",
+            image: "images/tolerance/ambiguity_practice.png",
             imageAlt: "Person reflecting in an unfamiliar situation",
             body: [
                 "Tolerance of ambiguity helps us avoid making immediate judgments when we encounter the unknown.",

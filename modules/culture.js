@@ -25,11 +25,16 @@
 // - js/renderer.js decides how each lesson type appears.
 // - js/storage.js saves learner responses.
 // ======================================
+
+const cultureDefinitionReflectionRationale = `As you gain more information, your definition of culture may expand or change. Feel free to add to or revise the definition you wrote earlier. With more experience and reflection, your definition may change again. That is a sign that you are continuing to think about culture and what it means rather than treating your first understanding as permanent.
+
+You will have another opportunity to revisit your definition at the end of the workshop.`;
+
 export const cultureModule = {
     key: "culture",
     title: "Understanding Culture",
     description: "This module provides a definition of culture and explains why culture is important.",
-    image: "images/culture/culture-intro.png",
+    image: "images/culture/understanding-culture.png",
 
     lessons: [
         {
@@ -40,6 +45,8 @@ export const cultureModule = {
             body: [
                 "This module provides a definition of culture and explains why culture is important for understanding communication, behavior, and perspective."
             ],
+            image: "images/culture/understanding-culture.png",
+            imageAlt: "People exploring how culture shapes communication and perspective",
             buttonText: "Begin Module 1"
         },
 
@@ -61,8 +68,8 @@ export const cultureModule = {
             type: "contentImage",
             title: "What is Culture?",
             moduleLabel: "Understanding Culture",
-            image: "images/culture/intercultural-image.png",
-            imageAlt: "General intercultural communication image",
+            image: "images/culture/what-is-culture.png",
+            imageAlt: "Illustration introducing the meaning of culture",
             body: [
                 "Culture is the shared beliefs, ideas, customs, behaviors, arts, languages, patterns of thought, means of expression, identities, preferences, and other practices shared, learned, and practiced by a group of people."
             ],
@@ -78,8 +85,8 @@ export const cultureModule = {
             type: "contentImage",
             title: "Culture is Shared",
             moduleLabel: "Understanding Culture",
-            image: "images/culture/subcultures.png",
-            imageAlt: "Mosaic of different subcultures within one culture",
+            image: "images/culture/culture-is-shared.png",
+            imageAlt: "People sharing cultural knowledge and practices",
             body: [
                 "Culture is shared among groups of people, but it is not always the same for everyone in a society.",
                 "Think about the following questions:"
@@ -97,7 +104,7 @@ export const cultureModule = {
             type: "contentImage",
             title: "Culture is Like an Iceberg",
             moduleLabel: "Understanding Culture",
-            image: "images/iceberg/iceberg.png",
+            image: "images/culture/cultural-iceberg.png",
             imageAlt: "Culture iceberg graphic",
             body: [
                 "Culture is often described like an iceberg.",
@@ -137,11 +144,13 @@ export const cultureModule = {
             type: "reflectionImage",
             title: "Your Culture Iceberg",
             moduleLabel: "Understanding Culture",
-            image: "images/iceberg/iceberg.png",
+            image: "images/culture/cultural-iceberg.png",
             imageAlt: "Culture iceberg graphic",
             prompt: "What are some visible and hidden aspects of your culture?",
             storageKey: "cultureIcebergReflection",
-            rationale: "This reflection helps learners apply the culture iceberg model to their own visible and hidden cultural influences.",
+            rationale: `It can be difficult, but important, to identify both the visible and hidden aspects of your own culture. We do not always examine our own cultural assumptions closely, especially the hidden ones. At the same time, cultural practices that differ from our own can quickly seem surprising, confusing, or unusual. Examining the hidden aspects of your own culture can help you recognize that many of your own behaviors and expectations also have cultural explanations.
+
+If this is difficult, start with the visible “what” of your culture. Then ask “why?” Looking underneath visible practices can help you identify some of the values, beliefs, assumptions, and expectations that influence them.`,
             learningObjectives: ["LO1"],
             competencies: ["IC1"],
             placeholder: "Write your ideas here..."
@@ -184,7 +193,7 @@ export const cultureModule = {
             type: "contentImage",
             title: "Culture is a Lens",
             moduleLabel: "Understanding Culture",
-            image: "images/culture/culture-lens.png",
+            image: "images/culture/cultural-lens.png",
             imageAlt: "Two people viewing the same cultural event differently",
             body: [
                 "Culture is one of the lenses through which we see the world.",
@@ -203,7 +212,7 @@ export const cultureModule = {
             items: [
                 {
                     title: "German Beer Culture",
-                    image: "images/culture/german-beer.png",
+                    image: "images/culture/german_beer.png",
                     imageAlt: "German beer culture image",
                     body: [
                         "When I moved to Germany, it was strange to me that colleagues and adult students might drink beer during lunch or bring beer to class for a birthday.",
@@ -212,7 +221,7 @@ export const cultureModule = {
                 },
                 {
                     title: "Japanese Bathhouse",
-                    image: "images/culture/japanese-bathhouse.png",
+                    image: "images/culture/japanese_bath.png",
                     imageAlt: "Japanese bathhouse image",
                     body: [
                         "In Japan, it can be common to use shared bathing spaces, especially in certain hotels, inns, or public baths.",
@@ -221,7 +230,7 @@ export const cultureModule = {
                 },
                 {
                     title: "Natto",
-                    image: "images/culture/natto.png",
+                    image: "images/culture/natto.jpg",
                     imageAlt: "Natto image",
                     body: [
                         "Natto is a common Japanese breakfast food made from fermented soybeans.",
@@ -234,7 +243,7 @@ export const cultureModule = {
         {
             id: "culture-perspective",
             type: "reflection",
-            title: "Whose Perspective is Correct?",
+            title: "Whose Perspective Is Correct?",
             moduleLabel: "Understanding Culture",
             body: [
                 "It is often a matter of perspective.",
@@ -242,7 +251,9 @@ export const cultureModule = {
             ],
             prompt: "What should you do when you encounter a cultural perspective you do not understand?",
             storageKey: "culturePerspectiveReflection",
-            rationale: "This reflection connects culture as perspective with the habit of pausing before judging unfamiliar viewpoints.",
+            rationale: `There may not be one simple answer. Aspects of your culture may seem confusing or strange to someone from another culture, just as aspects of another culture may initially seem confusing or strange to you. Your perspective makes sense within the cultural experiences that helped shape it, but someone else's perspective may make sense within theirs.
+
+When you encounter a very different cultural perspective, take a moment before judging it. Consider how some of your own cultural practices might appear to someone unfamiliar with them. You do not have to agree with every perspective, but trying to understand the context behind it can help you respond more thoughtfully.`,
             learningObjectives: ["LO1", "LO3"],
             competencies: ["IC1", "IC3"],
             placeholder: "Write your thoughts here..."
@@ -261,7 +272,7 @@ export const cultureModule = {
                 storageKey: "cultureDefinition",
                 emptyMessage: "No original definition has been saved."
             },
-            rationale: "This reflection encourages you to think about how your understanding has developed throughout the module. Rather than looking for one correct definition of culture, the goal is to recognize how learning can expand the way we interpret ideas and experiences.",
+            rationale: cultureDefinitionReflectionRationale,
             learningObjectives: ["LO1", "LO4"],
             competencies: ["IC6", "IC7", "IC8"],
             prompts: [
@@ -270,7 +281,7 @@ export const cultureModule = {
                     prompt: "How has your understanding of culture changed after completing this module? Was there anything about culture that you had not previously considered? Explain how your thinking has changed.",
                     storageKey: "cultureReflectionGrowth",
                     reflectionTitle: "How My Understanding Changed",
-                    rationale: "This reflection encourages you to think about how your understanding has developed throughout the module. Rather than looking for one correct definition of culture, the goal is to recognize how learning can expand the way we interpret ideas and experiences.",
+                    rationale: cultureDefinitionReflectionRationale,
                     learningObjectives: ["LO1", "LO4"],
                     competencies: ["IC6", "IC7", "IC8"],
                     placeholder: "Write your reflection here..."
@@ -280,7 +291,7 @@ export const cultureModule = {
                     prompt: "Using what you have learned in this module, would you like to update your definition of culture?.",
                     storageKey: "currentCultureDefinition",
                     reflectionTitle: "My Revised Definition",
-                    rationale: "This reflection encourages you to think about how your understanding has developed throughout the module. Rather than looking for one correct definition of culture, the goal is to recognize how learning can expand the way we interpret ideas and experiences.",
+                    rationale: cultureDefinitionReflectionRationale,
                     learningObjectives: ["LO1", "LO4"],
                     competencies: ["IC6", "IC7", "IC8"],
                     placeholder: "Write your current definition here..."

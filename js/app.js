@@ -6,11 +6,17 @@
 import { courseData } from "./courseData.js";
 import { renderLesson } from "./renderer.js";
 import {
+    saveItem,
+    loadItem,
     saveCurrentLesson,
     loadCurrentLesson,
+    saveCompletedModules,
     loadCompletedModules,
     resetAllProgress
 } from "./storage.js";
+
+const REFLECTION_SUMMARY_ID = "reflection-summary";
+const REFLECTION_SUMMARY_INTRODUCED_KEY = "reflectionSummaryIntroduced";
 
 // -------------------------------
 // App State
@@ -18,8 +24,11 @@ import {
 
 const appState = {
     currentLessonId: loadCurrentLesson(),
-    completedModules: loadCompletedModules()
+    completedModules: loadCompletedModules(),
+    reflectionSummaryIntroduced: loadItem(REFLECTION_SUMMARY_INTRODUCED_KEY, false)
 };
+
+let shouldAnimateReflectionSummaryUnlock = false;
 
 // -------------------------------
 // Course Indexes
@@ -50,7 +59,17 @@ courseData.modules.forEach((module, moduleIndex) => {
 function initApp() {
     renderSidebar();
 
-    if (appState.currentLessonId && lessonIndex[appState.currentLessonId]) {
+    if (isWorkshopComplete() && !appState.reflectionSummaryIntroduced) {
+        introduceReflectionSummary({ animate: true });
+    }
+
+    // Reflection Summary is a post-workshop page, not part of the lesson index.
+    if (
+        appState.currentLessonId === REFLECTION_SUMMARY_ID &&
+        isReflectionSummaryAvailable()
+    ) {
+        goToReflectionSummary();
+    } else if (appState.currentLessonId && lessonIndex[appState.currentLessonId]) {
         goToLesson(appState.currentLessonId);
     } else {
         renderHome();
@@ -89,19 +108,83 @@ function renderHome() {
                         </p>
 
                         <button class="btn btn-primary btn-lg mt-3" id="startCourse">
-                            Begin First Module
+                            Begin Workshop
                         </button>
 
                     </div>
 
                     <div class="col-lg-5">
-                        <div class="placeholder-image rounded shadow-sm">
-                            Hero Image
-                        </div>
+                        <img
+                            src="${courseData.heroImage}"
+                            alt="${courseData.heroImageAlt}"
+                            class="img-fluid rounded shadow-sm hero-image">
                     </div>
 
                 </div>
 
+            </div>
+        </section>
+
+        <section class="container project-development-section my-5" aria-labelledby="workInProgressTitle">
+            <div class="project-development-content">
+                <div class="project-status-callout">
+                    <h2 class="h4 mb-2" id="workInProgressTitle">
+                        Work in Progress
+                    </h2>
+
+                    <p class="mb-0">
+                        This workshop is an active instructional design project and is still being developed and refined. Core learning activities are functional, but some features, accessibility improvements, and supporting resources are still planned.
+                    </p>
+                </div>
+
+                <details class="project-roadmap mt-3">
+                    <summary>Future Development Plans</summary>
+
+                    <div class="project-roadmap-content">
+                        <ul class="project-roadmap-list">
+                            <li>
+                                <strong>REFLECTION RESULTS BY EMAIL</strong>
+                                <span>Allow learners to send themselves a copy of their workshop reflections and takeaways after completing the workshop.</span>
+                            </li>
+                            <li>
+                                <strong>EXPANDED ACCESSIBILITY</strong>
+                                <span>Continue accessibility testing and refinement, including keyboard navigation, screen-reader support, alternative text and descriptions, responsive behavior, and reduced-motion support.</span>
+                            </li>
+                            <li>
+                                <strong>LOCALIZATION</strong>
+                                <span>Explore additional language support, beginning with Spanish localization.</span>
+                            </li>
+                            <li>
+                                <strong>ADDITIONAL SCENARIOS AND ACTIVITIES</strong>
+                                <span>Expand the collection of intercultural critical incidents and opportunities to practice applying workshop strategies.</span>
+                            </li>
+                            <li>
+                                <strong>LEARNER RESOURCES</strong>
+                                <span>Develop downloadable or printable resources that learners can use after completing the workshop.</span>
+                            </li>
+                            <li>
+                                <strong>ONGOING EVALUATION</strong>
+                                <span>Conduct learner testing and use feedback to refine content, interactions, and instructional sequencing.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+
+                <div class="project-documentation mt-4">
+                    <h2 class="h4 mb-2">
+                        Interested in how this workshop was designed?
+                    </h2>
+
+                    <p>
+                        This project includes documentation of the instructional design decisions, learning architecture, development process, and technical implementation.
+                    </p>
+
+                    <a
+                        class="project-documentation-link"
+                        href="https://github.com/DanielBScharf/Intercultural-Communication-Online-Web-Training/blob/feature/guided-activity/docs/DESIGN_DECISIONS.md">
+                        View Project Documentation <span aria-hidden="true">→</span>
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -155,6 +238,13 @@ function renderHome() {
                     <div class="col-md-6 col-lg-4">
 
                         <div class="card module-card h-100">
+
+                            ${module.image ? `
+                                <img
+                                    src="${module.image}"
+                                    alt=""
+                                    class="card-img-top module-card-image">
+                            ` : ""}
 
                             <div class="card-body d-flex flex-column">
 
@@ -261,6 +351,14 @@ function renderSidebar() {
                     </button>
                 `).join("")}
 
+                <button
+                    class="sidebar-link reflection-summary-link"
+                    data-reflection-summary-link
+                    hidden>
+                    <span class="status-dot"></span>
+                    Reflection Summary
+                </button>
+
             </nav>
 
             <button id="resetProgress"
@@ -297,6 +395,11 @@ function renderSidebar() {
             goToModule(button.dataset.sidebarModule);
             closeSidebarAfterOverlayNavigation();
         });
+    });
+
+    document.querySelector("[data-reflection-summary-link]").addEventListener("click", () => {
+        goToReflectionSummary();
+        closeSidebarAfterOverlayNavigation();
     });
 
     document.getElementById("resetProgress").addEventListener("click", () => {
@@ -399,6 +502,8 @@ function updateSidebarControls(isOpen) {
 }
 
 function updateSidebar() {
+    const isReflectionSummaryCurrent = appState.currentLessonId === REFLECTION_SUMMARY_ID;
+
     const currentLesson = appState.currentLessonId
         ? lessonIndex[appState.currentLessonId]
         : null;
@@ -411,7 +516,7 @@ function updateSidebar() {
         link.classList.remove("active", "completed");
     });
 
-    if (!currentLesson) {
+    if (!currentLesson && !isReflectionSummaryCurrent) {
         const menuLink = document.querySelector("[data-menu-link]");
         if (menuLink) menuLink.classList.add("active");
     }
@@ -430,15 +535,48 @@ function updateSidebar() {
         }
     });
 
-    updateProgressText(currentLesson, currentModule);
+    updateReflectionSummarySidebarLink(isReflectionSummaryCurrent);
+    updateProgressText(currentLesson, currentModule, isReflectionSummaryCurrent);
 }
 
-function updateProgressText(currentLesson, currentModule) {
+function updateReflectionSummarySidebarLink(isCurrent) {
+    const summaryLink = document.querySelector("[data-reflection-summary-link]");
+
+    if (!summaryLink) return;
+
+    // Keep the review destination hidden until the existing module progress is complete.
+    const isAvailable = isReflectionSummaryAvailable();
+    summaryLink.hidden = !isAvailable;
+
+    if (!isAvailable) return;
+
+    if (isCurrent) {
+        summaryLink.classList.add("active");
+    }
+
+    if (!shouldAnimateReflectionSummaryUnlock) return;
+
+    shouldAnimateReflectionSummaryUnlock = false;
+
+    // The reveal is decorative, so reduced-motion users get the same unlock without motion.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    summaryLink.classList.add("summary-unlock-animation");
+
+    summaryLink.addEventListener("animationend", () => {
+        summaryLink.classList.remove("summary-unlock-animation");
+    }, { once: true });
+}
+
+function updateProgressText(currentLesson, currentModule, isReflectionSummaryCurrent = false) {
     const currentModuleTitle = document.getElementById("currentModuleTitle");
     const lessonCounter = document.getElementById("lessonCounter");
     const moduleCounter = document.getElementById("moduleCounter");
 
-    if (!currentLesson || !currentModule) {
+    if (isReflectionSummaryCurrent) {
+        currentModuleTitle.textContent = "Reflection Summary";
+        lessonCounter.textContent = "Post-workshop review";
+    } else if (!currentLesson || !currentModule) {
         currentModuleTitle.textContent = "Course Menu";
         lessonCounter.textContent = "Select a module to begin";
     } else {
@@ -448,7 +586,9 @@ function updateProgressText(currentLesson, currentModule) {
             `Lesson ${currentLesson.lessonIndexInModule + 1} of ${currentModule.lessons.length}: ${currentLesson.title}`;
     }
 
-    const completedCount = Object.keys(appState.completedModules).length;
+    const completedCount = courseData.modules.filter(module =>
+        appState.completedModules[module.key]
+    ).length;
 
     moduleCounter.textContent =
         `${completedCount} of ${courseData.modules.length} modules complete`;
@@ -470,6 +610,11 @@ function goToModule(moduleKey) {
 }
 
 function goToLesson(lessonId) {
+    if (lessonId === REFLECTION_SUMMARY_ID) {
+        goToReflectionSummary();
+        return;
+    }
+
     const lesson = lessonIndex[lessonId];
 
     if (!lesson) {
@@ -491,8 +636,29 @@ function goToLesson(lessonId) {
     });
 }
 
+function goToReflectionSummary() {
+    if (!isReflectionSummaryAvailable()) {
+        console.warn("Reflection Summary is available after the workshop is complete.");
+        return;
+    }
+
+    const lesson = courseData.reflectionSummary;
+
+    appState.currentLessonId = REFLECTION_SUMMARY_ID;
+    saveCurrentLesson(REFLECTION_SUMMARY_ID);
+
+    renderLesson(lesson, buildReflectionSummaryContext(lesson));
+    updateSidebar();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
 function buildLessonContext(lesson) {
     const sequenceIndex = lessonSequence.findIndex(item => item.id === lesson.id);
+    const currentModule = courseData.modules[lesson.moduleIndex];
 
     const previousLesson = sequenceIndex > 0
         ? lessonSequence[sequenceIndex - 1]
@@ -502,32 +668,101 @@ function buildLessonContext(lesson) {
         ? lessonSequence[sequenceIndex + 1]
         : null;
 
+    const modulePosition = getModulePosition(lesson, currentModule);
+
     return {
         currentLesson: lesson,
-        currentModule: courseData.modules[lesson.moduleIndex],
+        currentModule,
         courseData,
         previousLesson,
         nextLesson,
+        modulePosition,
         goToLesson,
         goToMenu: renderHome,
         completeModule
     };
 }
 
-function completeModule(moduleKey) {
-    appState.completedModules[moduleKey] = true;
+function getModulePosition(lesson, module) {
+    if (!module || lesson.type === "moduleIntro" || lesson.type === "moduleComplete") {
+        return null;
+    }
 
-    localStorage.setItem(
-        "interculturalWorkshop_completedModules",
-        JSON.stringify(appState.completedModules)
+    const instructionalLessons = module.lessons.filter(moduleLesson =>
+        moduleLesson.type !== "moduleIntro" && moduleLesson.type !== "moduleComplete"
+    );
+    const instructionalIndex = instructionalLessons.findIndex(moduleLesson =>
+        moduleLesson.id === lesson.id
     );
 
+    if (instructionalIndex < 0) return null;
+
+    return {
+        currentIndex: instructionalIndex + 1,
+        total: instructionalLessons.length,
+        moduleName: module.title
+    };
+}
+
+function completeModule(moduleKey) {
+    const wasWorkshopComplete = isWorkshopComplete();
+
+    appState.completedModules[moduleKey] = true;
+    saveCompletedModules(appState.completedModules);
+
+    const isNowWorkshopComplete = isWorkshopComplete();
+
+    if (isNowWorkshopComplete && !wasWorkshopComplete) {
+        introduceReflectionSummary({ animate: true });
+    }
+
     updateSidebar();
+
+    if (isNowWorkshopComplete && isFinalInstructionalModule(moduleKey)) {
+        goToReflectionSummary();
+    }
 }
 
 // -------------------------------
 // Helpers
 // -------------------------------
+
+function buildReflectionSummaryContext(lesson) {
+    return {
+        currentLesson: lesson,
+        currentModule: {
+            title: lesson.moduleLabel || lesson.title
+        },
+        courseData,
+        previousLesson: lessonSequence[lessonSequence.length - 1] || null,
+        nextLesson: null,
+        goToLesson,
+        goToMenu: renderHome,
+        completeModule
+    };
+}
+
+function introduceReflectionSummary(options = {}) {
+    if (appState.reflectionSummaryIntroduced) return;
+
+    appState.reflectionSummaryIntroduced = true;
+    saveItem(REFLECTION_SUMMARY_INTRODUCED_KEY, true);
+
+    shouldAnimateReflectionSummaryUnlock = Boolean(options.animate);
+}
+
+function isReflectionSummaryAvailable() {
+    return isWorkshopComplete();
+}
+
+function isWorkshopComplete() {
+    return courseData.modules.every(module => appState.completedModules[module.key]);
+}
+
+function isFinalInstructionalModule(moduleKey) {
+    const finalModule = courseData.modules[courseData.modules.length - 1];
+    return finalModule && moduleKey === finalModule.key;
+}
 
 function getModuleButtonText(moduleKey) {
     if (appState.completedModules[moduleKey]) {

@@ -15,6 +15,7 @@ export const finalReflectionModule = {
     key: "final-reflection",
     title: "Final Reflection",
     description: "Reflect on the workshop and identify how you will apply what you have learned.",
+    image: "images/daea/reflection.jpg",
 
     lessons: [
         {
@@ -25,6 +26,8 @@ export const finalReflectionModule = {
             body: [
                 "This final module gives you time to reflect on what you learned and how you will continue practicing intercultural competence."
             ],
+            image: "images/daea/reflection.jpg",
+            imageAlt: "Mountains reflected in a calm lake",
             buttonText: "Begin Final Reflection"
         },
 
@@ -33,6 +36,7 @@ export const finalReflectionModule = {
             type: "reflection",
             title: "Workshop Reflection",
             moduleLabel: "Final Reflection",
+            showPurposeDisclosure: false,
             body: [
                 "Please take a few minutes to reflect on the questions below. As you respond, remember that explaining why is just as important as explaining what."
             ],
@@ -81,6 +85,8 @@ export const finalReflectionModule = {
             type: "contentImage",
             title: "Continue the Practice",
             moduleLabel: "Final Reflection",
+            image: "images/culture/cultural-lens.png",
+            imageAlt: "People viewing the world through different cultural lenses",
             body: [
                 "Intercultural competence does not mean knowing everything about every culture. It means recognizing that your own perspective is only one way of understanding the world. It also means remaining curious, delaying judgment, and continuing to reflect when you encounter something unfamiliar."
             ],
@@ -91,16 +97,6 @@ export const finalReflectionModule = {
                 "Critical reflection helps separate observation, interpretation, judgment, and future action.",
                 "Intercultural competence develops through continued practice."
             ]
-        },
-
-        {
-            id: "reflection-journey-summary",
-            type: "reflectionSummary",
-            title: "Your Intercultural Learning Journey",
-            moduleLabel: "Final Reflection",
-            introduction: "This page helps you review how your thinking developed throughout the workshop. As you read your saved responses, notice the habits and competencies you practiced: recognizing perspective, questioning assumptions, staying open in ambiguity, reflecting critically, and planning future action.",
-            competencySummaryTitle: "Competencies You Practiced Throughout This Workshop",
-            competencySummaryText: "These reflections demonstrate opportunities to practice the habits associated with intercultural competence. Continued growth occurs through real-world experiences followed by thoughtful reflection."
         },
 
         {
