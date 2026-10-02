@@ -7,6 +7,10 @@ export const lessons = {
     id: "culture-iceberg-reflection",
     title: "Your Culture Iceberg",
   },
+  "culture-hidden-misunderstanding-reflection": {
+    id: "culture-hidden-misunderstanding-reflection",
+    title: "Hidden Culture and Misunderstandings",
+  },
   "culture-perspective": {
     id: "culture-perspective",
     title: "Whose Perspective Is Correct?",
@@ -98,6 +102,19 @@ export const reflections = {
       "You applied the Cultural Iceberg model to your own experience by identifying both visible and less visible aspects of culture.",
     howThisBuildsYourSkills:
       "Recognizing less visible aspects of culture can help you look beyond immediately observable behaviors and consider the values, expectations, and experiences that may influence them.",
+  },
+
+  cultureHiddenMisunderstandingReflection: {
+    reflectionId: "cultureHiddenMisunderstandingReflection",
+    lessonId: "culture-hidden-misunderstanding-reflection",
+    reflectionTitle: "Hidden Culture and Misunderstandings",
+    competencies: ["culturalAwareness", "perspectiveTaking", "criticalReflection", "curiosity", "delayingJudgment"],
+    designPrinciples: ["recognizeIncompletePicture", "multipleInterpretations", "delayJudgment", "seekInformation"],
+    learningOutcomes: ["culturalAwareness", "toleranceOfAmbiguity"],
+    whatYouPracticed:
+      "You considered how hidden values, expectations, or assumptions could lead people from different cultural backgrounds to interpret the same behavior differently.",
+    howThisBuildsYourSkills:
+      "Looking beneath observable behavior helps you recognize when your first interpretation may be incomplete. Considering other explanations can encourage curiosity, help you delay judgment, and identify where more information would help you understand a situation.",
   },
 
   culturePerspectiveReflection: {

@@ -189,6 +189,19 @@ If this is difficult, start with the visible “what” of your culture. Then as
         },
 
         {
+            id: "culture-hidden-misunderstanding-reflection",
+            type: "reflection",
+            title: "Hidden Culture and Misunderstandings",
+            moduleLabel: "Understanding Culture",
+            prompt: "How could a hidden aspect of culture lead to a misunderstanding between people from different cultural backgrounds? Think of an example, or explain how differences in values, expectations, or assumptions could affect the way people interpret the same behavior.",
+            storageKey: "cultureHiddenMisunderstandingReflection",
+            rationale: "Hidden aspects of culture can influence how people communicate, make decisions, show respect, respond to disagreement, and interpret other people's behavior. When those influences are not visible, it can be easy to explain unfamiliar behavior using your own expectations. Recognizing that there may be something beneath the surface can help you pause, seek more information, and consider other explanations before reaching a conclusion.",
+            learningObjectives: ["LO1", "LO3"],
+            competencies: ["IC1", "IC2", "IC3"],
+            placeholder: "Write your thoughts here..."
+        },
+
+        {
             id: "culture-hidden-matters",
             type: "hiddenCulture",
             title: "Why Hidden Culture Matters",
@@ -213,7 +226,7 @@ If this is difficult, start with the visible “what” of your culture. Then as
                 "Communication norms",
                 "Relationship expectations"
             ],
-            qualification: "This does not mean that every Japanese or Korean person communicates indirectly, or that every American communicates directly. Culture can influence behavior, but it does not determine how every individual will act. The goal is not to replace one assumption with another. It is to recognize that there may be hidden explanations to behaviors that you have not yet considered.",
+            qualification: "This does not mean that every Japanese or Korean person communicates indirectly, or that every American communicates directly. Culture can influence behavior, but it does not determine how every individual will act. The goal is not to replace one assumption with another. It is to recognize that there may be explanations you have not yet considered.",
             takeawayTitle: "Look beneath the surface.",
             takeaway: "When a behavior seems confusing, frustrating, or inappropriate, ask what hidden values or expectations might help explain it before deciding what it means."
         },
