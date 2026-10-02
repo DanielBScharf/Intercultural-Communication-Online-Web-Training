@@ -72,7 +72,7 @@ export const cultureModule = {
             image: "images/culture/what-is-culture.png",
             imageAlt: "Illustration introducing the meaning of culture",
             body: [
-                "A basic definition of culture is the shared beliefs, ideas, customs, behaviors, arts, languages, patterns of thought, means of expression, identities, preferences, and other practices shared, learned, and practiced by a group of people. This acts as an informal and shared agreement among that group. This also does not overwrite individuals who may rebel or ignore parts of their own culture."
+                "A basic definition of culture is the shared beliefs, ideas, customs, behaviors, arts, languages, patterns of thought, means of expression, identities, preferences, and other practices shared, learned, and practiced by a group of people. This acts as an informal and shared agreement among that group. This also does not rule out individuals who may rebel or ignore parts of their own culture."
             ],
             prompts: [
                 "What is the same or different from your definition?",

@@ -29,6 +29,7 @@ export function renderSortingActivityContent(lesson) {
     const shuffledItems = shuffleItems(lesson.items);
 
     lesson.currentItemOrder = shuffledItems;
+    if (lesson.interaction === "currentItem") return renderCurrentItemSorting(lesson, shuffledItems);
 
     return `
         <p class="lead">${lesson.instructions}</p>
@@ -92,6 +93,10 @@ export function renderSortingActivityContent(lesson) {
 
 export function initializeSortingActivity(lesson) {
     if (lesson.type !== "sortingActivity") return;
+    if (lesson.interaction === "currentItem") {
+        initializeCurrentItemSorting(lesson);
+        return;
+    }
 
     let selectedItem = null;
     let sortedCount = 0;
@@ -196,6 +201,110 @@ export function initializeSortingActivity(lesson) {
                 `;
             }
         });
+    });
+}
+
+function renderCurrentItemSorting(lesson, items) {
+    return `
+        <p class="lead">${lesson.instructions}</p>
+        <section class="sorting-focal" aria-labelledby="sortingFocalTitle">
+            <div class="sorting-focal-header">
+                <h3 id="sortingFocalTitle" class="h5 mb-0">Sort the Cultural Element</h3>
+                <span id="sortingCounter" class="sorting-counter">1 of ${items.length}</span>
+            </div>
+            <h4 id="sortingCurrentItem" class="sorting-current-item" tabindex="-1" aria-describedby="sortingCounter">${items[0].text}</h4>
+            <div role="group" aria-labelledby="sortingQuestion">
+                <p id="sortingQuestion" class="fw-semibold">Where does this belong?</p>
+                <div class="sorting-category-choices">
+                    ${lesson.categories.map(category => `
+                        <button type="button" class="btn btn-outline-primary" data-current-sort-choice="${category.key}"
+                            aria-describedby="sortingCurrentItem sortingFeedback">${category.title}</button>
+                    `).join("")}
+                </div>
+            </div>
+            <div id="sortingFeedback" class="mt-3" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
+            <button type="button" id="sortingNextItem" class="btn btn-primary mt-3" hidden>Next Item</button>
+        </section>
+        <section class="sorting-reference mt-4" aria-labelledby="sortingReferenceTitle">
+            <h3 id="sortingReferenceTitle" class="h5">Your Sorted Items</h3>
+            <div class="row g-4 mt-1">
+                ${lesson.categories.map(category => `
+                    <div class="col-md-6">
+                        <div class="sort-column">
+                            <h4 class="h5">${category.title}</h4>
+                            <p class="text-muted">${category.description}</p>
+                            <div class="sorted-items" data-category-items="${category.key}"></div>
+                        </div>
+                    </div>
+                `).join("")}
+            </div>
+        </section>
+    `;
+}
+
+function initializeCurrentItemSorting(lesson) {
+    const items = lesson.currentItemOrder || lesson.items;
+    let index = 0;
+    let answered = false;
+    const currentItem = document.getElementById("sortingCurrentItem");
+    const counter = document.getElementById("sortingCounter");
+    const feedback = document.getElementById("sortingFeedback");
+    const nextButton = document.getElementById("sortingNextItem");
+    const choices = [...document.querySelectorAll("[data-current-sort-choice]")];
+
+    function addToReferenceList() {
+        const item = items[index];
+        document.querySelector(`[data-category-items="${item.answer}"]`)
+            .appendChild(createSortedItemReview(item, index));
+    }
+
+    choices.forEach(button => button.addEventListener("click", () => {
+        if (answered) return;
+        const item = items[index];
+        const correct = button.dataset.currentSortChoice === item.answer;
+        feedback.innerHTML = "";
+        const message = document.createElement("div");
+        message.className = `alert ${correct ? "alert-success" : "alert-warning"} mb-0`;
+        if (!correct) {
+            message.textContent = item.answer === "hidden"
+                ? "Look again. Is this something you can directly observe, or is it an underlying value, expectation, or assumption that may influence what you can see?"
+                : "Look again. Can you directly observe this behavior, practice, or expression of culture, even if its meaning may be influenced by something less visible?";
+        } else {
+            answered = true;
+            choices.forEach(choice => { choice.disabled = true; });
+            const acknowledgement = document.createElement("strong");
+            acknowledgement.textContent = "That's it.";
+            const explanation = document.createElement("p");
+            explanation.className = "mt-2 mb-0";
+            explanation.textContent = item.feedback;
+            message.append(acknowledgement, explanation);
+        }
+        feedback.appendChild(message);
+        if (!correct) return;
+        if (index < items.length - 1) {
+            nextButton.hidden = false;
+            nextButton.focus();
+        } else {
+            addToReferenceList();
+            const completion = document.createElement("p");
+            completion.className = "fw-semibold mt-3 mb-0";
+            completion.textContent = `Excellent! ${items.length} / ${items.length} correct. You successfully identified examples of visible and less visible culture.`;
+            feedback.appendChild(completion);
+            feedback.focus();
+        }
+    }));
+
+    nextButton.addEventListener("click", () => {
+        if (!answered || index >= items.length - 1) return;
+        addToReferenceList();
+        index++;
+        answered = false;
+        currentItem.textContent = items[index].text;
+        counter.textContent = `${index + 1} of ${items.length}`;
+        feedback.innerHTML = "";
+        nextButton.hidden = true;
+        choices.forEach(button => { button.disabled = false; });
+        currentItem.focus();
     });
 }
 
