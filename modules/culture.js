@@ -55,9 +55,9 @@ export const cultureModule = {
             type: "reflection",
             title: "What is Culture?",
             moduleLabel: "Understanding Culture",
-            prompt: "Write your definition of culture below.",
+            prompt: "When you start to think about it defining culture can be complecated. To get you to start thinking about culture write your definition of culture below.",
             storageKey: "cultureDefinition",
-            rationale: "This opening reflection surfaces learners' starting ideas about culture before the workshop introduces a shared definition.",
+            rationale: "Here you get a chance to define culture yourself, before the module begins. Later you will be given several chances to update your definition with new ideas from this series.",
             learningObjectives: ["LO1"],
             competencies: ["IC1"],
             placeholder: "Write your definition here..."
@@ -71,12 +71,12 @@ export const cultureModule = {
             image: "images/culture/what-is-culture.png",
             imageAlt: "Illustration introducing the meaning of culture",
             body: [
-                "Culture is the shared beliefs, ideas, customs, behaviors, arts, languages, patterns of thought, means of expression, identities, preferences, and other practices shared, learned, and practiced by a group of people."
+                "A basic definition of culture is the shared beliefs, ideas, customs, behaviors, arts, languages, patterns of thought, means of expression, identities, preferences, and other practices shared, learned, and practiced by a group of people. This acts as an informal and shared agreement among that group. This also does not overwrite individuals who may rebel or ignore parts of their own culture."
             ],
             prompts: [
                 "What is the same or different from your definition?",
                 "Why are they different?",
-                "Is defining culture easy?"
+                "Why can defining culture be difficult?"
             ]
         },
 
@@ -88,14 +88,14 @@ export const cultureModule = {
             image: "images/culture/culture-is-shared.png",
             imageAlt: "People sharing cultural knowledge and practices",
             body: [
-                "Culture is shared among groups of people, but it is not always the same for everyone in a society.",
+                "Culture is shared among groups of people, but it is not always the same for everyone in a society. There can be sub-cultures, micro-cultures, and area cultures. Certain interests and groups can have their own culture. Businesses can have their own cultue, while individual offices in a larger corporation can have their own culture.",
                 "Think about the following questions:"
             ],
             prompts: [
                 "Did your grandparents behave differently from you?",
                 "Do elderly people and children in your area believe or act the same as you?",
                 "Do people from the city behave the same as people from rural areas?",
-                "Do you act the same regardless of where you are or the context you are in?"
+                "Do you act the same regardless of where you are or the context you are in? (Can culture be context specific?)"
             ]
         },
 
@@ -109,7 +109,7 @@ export const cultureModule = {
             body: [
                 "Culture is often described like an iceberg.",
                 "You can easily see what is above the surface, but there is a lot more hidden below that is harder to see.",
-                "In essence, what is above the water is what you see; what is below the water is why."
+                "In essence, the 'what' of your culture is above the water is what you see; what is below the water is the 'why' you do or believe it."
             ]
         },
 
