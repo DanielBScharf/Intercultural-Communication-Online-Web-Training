@@ -65,7 +65,7 @@ export const incidentsModule = {
                     title: "A Work Dinner",
                     body: [
                         "You are visiting a partner organization in another country. After a long day of meetings, your hosts invite the group to dinner.",
-                        "Whenever you finish your drink one of your colleagues fills your glass whenever it is empty. It is a work night and you all have to be in the office in the morning. You eventually begin leaving your glass half full because you don't want to drink any more.",
+                        "Whenever you finish your drink, one of your colleagues fills your glass whenever it is empty. It is a work night, and you all have to be in the office in the morning. You eventually begin leaving your glass half full because you don't want to drink any more.",
                         "Your colleague seems disappointed and becomes less engaged for the rest of the evening."
                     ]
                 },
@@ -78,6 +78,7 @@ export const incidentsModule = {
                     ],
                     prompt: "Describe what happened. What assumptions might the visitor make about the hosts, and what assumptions might the hosts make about the visitor?",
                     storageKey: "incidentDrinkingInitialReflection",
+                    required: true,
                     reflectionTitle: "First Impressions",
                     showPurposeDisclosure: false,
                     rationale: "This reflection helps learners identify assumptions before deciding what the drinking expectation means.",
@@ -89,7 +90,7 @@ export const incidentsModule = {
                     slideType: "reveal",
                     title: "Additional Perspective",
                     body: [
-                        "This sort of drinking is a farily common form of 'teambuilding' in many parts of the world. It's very common in China, South Korea, and Japan.",
+                        "This sort of drinking is a fairly common form of 'team building' in many parts of the world. It's very common in China, South Korea, and Japan.",
                         "At the same time, the visitor's boundary still matters. Cultural understanding does not require ignoring personal needs, health, religion, recovery, or values.",
                         "The tension in this incident comes from different expectations about hospitality, participation, and how directly a refusal should be stated."
                     ]
@@ -102,6 +103,7 @@ export const incidentsModule = {
                     ],
                     prompt: "Analyze possible cultural perspectives. Evaluate your own reaction to the pressure or refusal. What might you do next time to communicate clearly while showing respect?",
                     storageKey: "incidentDrinkingDaeaReflection",
+                    required: true,
                     reflectionTitle: "Reconsidering the Situation",
                     rationale: criticalIncidentReflectionRationale,
                     learningObjectives: ["LO4", "LO5"],
@@ -137,7 +139,7 @@ export const incidentsModule = {
                     title: "Vague Communication",
                     body: [
                         "Your team is meeting with a partner organization to discuss a new business agreement.",
-                        "You explain your proposal and ask if the other side agrees. The response is: 'That may be difficult'. You leave the meeting thinking negotiations are still ongoing",
+                        "You explain your proposal and ask if the other side agrees. The response is: 'That may be difficult.' You leave the meeting thinking negotiations are still ongoing.",
                         "Several days later you learn they believed they had already rejected the proposal."
                     ]
                 },
@@ -149,6 +151,7 @@ export const incidentsModule = {
                     ],
                     prompt: "Describe what happened in the meeting. What assumptions might each side be making about progress, directness, authority, or trust?",
                     storageKey: "incidentNegotiationInitialReflection",
+                    required: true,
                     reflectionTitle: "First Impressions",
                     showPurposeDisclosure: false,
                     rationale: "This reflection asks learners to identify assumptions about communication and decision-making before judging the interaction.",
@@ -162,7 +165,7 @@ export const incidentsModule = {
                     body: [
                         "The other team may be working within a culture that worries that directly saying 'no' can be seen as rude and will cause the other person to lose face.",
                         "Their indirect communication may not mean they are avoiding the decision. In their eyes they gave you the most direct way to say no that they could.",
-                        "The misunderstanding can also build over reluctance to share information. In many cultures, the spread of information, including in decision making is very top down. If upper managment says something is not possible they may not share their reasoning, or allow further negotiation."
+                        "The misunderstanding can also build over reluctance to share information. In many cultures, the spread of information, including in decision making, is very top-down. If upper management says something is not possible, they may not share their reasoning or allow further negotiation."
                     ]
                 },
                 {
@@ -174,6 +177,7 @@ export const incidentsModule = {
                     ],
                     prompt: "Analyze possible cultural or organizational perspectives. Evaluate the frustration in this scenario. What could someone ask or do next time to understand the decision process more clearly?",
                     storageKey: "incidentNegotiationDaeaReflection",
+                    required: true,
                     reflectionTitle: "Reconsidering the Situation",
                     rationale: criticalIncidentReflectionRationale,
                     learningObjectives: ["LO4", "LO5"],
@@ -217,10 +221,11 @@ export const incidentsModule = {
                     slideType: "reflection",
                     title: "First Reflection",
                     body: [
-                        "Many different cultures see \"family\" events and parties, such as weddings, differently. While you may think of it as a family event they may see it as a comunity celebration"
+                        "Many different cultures see \"family\" events and parties, such as weddings, differently. While you may think of it as a family event, they may see it as a community celebration."
                     ],
                     prompt: "Describe what happened. What assumptions might you be making about the party and the invitation?",
                     storageKey: "incidentGuestHostInitialReflection",
+                    required: true,
                     reflectionTitle: "First Impressions",
                     showPurposeDisclosure: false,
                     rationale: "This reflection helps learners examine assumptions about family, community, and invitations.",
@@ -232,9 +237,9 @@ export const incidentsModule = {
                     slideType: "reveal",
                     title: "Additional Perspective",
                     body: [
-                        "In some cultures \"family\" is defined differently and is expanded beyond the \"nuclear family\" to include extanded family, neighbors, church members, members of the same community, and even historical affiliations. Someone could say \"it's just family\" but mean 300+ people",
+                        "In some cultures \"family\" is defined differently and is expanded beyond the \"nuclear family\" to include extended family, neighbors, church members, members of the same community, and even historical affiliations. Someone could say \"it's just family\" but mean 300+ people.",
                         "There are also sometimes social obligations of hospitality. People in some cultures may feel obligated to invite the entire community to events like this.",
-                        "In many cultures around the world weddings are community celebrations instead of private family events. They are meant to build social bonds and cohesion. As well as to introduce the new \"family\" into the larger community family."
+                        "In many cultures around the world, weddings are community celebrations instead of private family events. They are meant to build social bonds and cohesion, as well as to introduce the new \"family\" into the larger community family."
                     ]
                 },
                 {
@@ -246,6 +251,7 @@ export const incidentsModule = {
                     ],
                     prompt: "Analyze your and their definitions of family. Evaluate your reaction to the confusion. What could you do in the future if you are invited to a wedding in a foreign country?",
                     storageKey: "incidentGuestHostDaeaReflection",
+                    required: true,
                     reflectionTitle: "Reconsidering the Situation",
                     rationale: criticalIncidentReflectionRationale,
                     learningObjectives: ["LO1", "LO4", "LO5"],
@@ -256,13 +262,13 @@ export const incidentsModule = {
                     slideType: "summary",
                     title: "Takeaways",
                     body: [
-                        "This incident shows how hidden cultural differences in definition of family and community.",
+                        "This incident shows hidden cultural differences in the definition of family and community.",
                         "A \"family wedding\" may be a huge celebration with the entire community present."
                     ],
                     points: [
                         "Culture influences what people define as family.",
-                        "Different views of family and community can confusing between different cultures. They may be confused sad about a small wedding with only immedate family and friends.",
-                        "Situations like this are an excelent way to practice tolerance of ambiguity",
+                        "Different views of family and community can cause confusion between different cultures. They may be confused sad about a small wedding with only immediate family and friends.",
+                        "Situations like this are an excellent way to practice tolerance of ambiguity.",
                         "DAEA supports future action by helping you plan what to do in similar situations in the future."
                     ]
                 }

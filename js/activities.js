@@ -22,6 +22,8 @@ import {
 } from "./storage.js";
 
 import { renderReflectionPurposeDisclosure } from "./renderers/reflection.js";
+import { renderResponseValidation, initializeResponseValidation, validateRequiredFields, saveResponseDrafts } from "./reflectionValidation.js";
+import { updateNavigationOrder } from "./responsiveNavigation.js";
 
 export function renderSortingActivityContent(lesson) {
     const shuffledItems = shuffleItems(lesson.items);
@@ -84,7 +86,7 @@ export function renderSortingActivityContent(lesson) {
 
         </div>
 
-        <div id="sortingFeedback" class="mt-4"></div>
+        <div id="sortingFeedback" class="mt-4" role="status" aria-live="polite" aria-atomic="true"></div>
     `;
 }
 
@@ -131,16 +133,21 @@ export function initializeSortingActivity(lesson) {
 
             const userChoice = choiceButton.dataset.sortChoice;
             const correctAnswer = selectedItem.data.answer;
+            const hasItemFeedback = Boolean(selectedItem.data.feedback);
 
             if (userChoice === correctAnswer) {
                 const targetColumn =
                     document.querySelector(`[data-category-items="${correctAnswer}"]`);
 
                 if (targetColumn) {
-                    const pill = document.createElement("div");
-                    pill.className = "sorted-pill sorted-pill-enter";
-                    pill.textContent = selectedItem.data.text;
-                    targetColumn.appendChild(pill);
+                    if (hasItemFeedback) {
+                        targetColumn.appendChild(createSortedItemReview(selectedItem.data, selectedItem.index));
+                    } else {
+                        const pill = document.createElement("div");
+                        pill.className = "sorted-pill sorted-pill-enter";
+                        pill.textContent = selectedItem.data.text;
+                        targetColumn.appendChild(pill);
+                    }
                 }
 
                 selectedItem.button.disabled = true;
@@ -157,6 +164,7 @@ export function initializeSortingActivity(lesson) {
                         <strong>Correct.</strong>
                         "${selectedItem.data.text}" belongs in
                         ${getCategoryTitle(lesson, correctAnswer)}.
+                        ${selectedItem.data.feedback ? `<p class="mt-2 mb-0">${selectedItem.data.feedback}</p>` : ""}
                     </div>
                 `;
 
@@ -164,7 +172,7 @@ export function initializeSortingActivity(lesson) {
                 choicePanel.classList.add("d-none");
 
                 if (sortedCount === lesson.items.length) {
-                    feedback.innerHTML = `
+                    feedback.innerHTML = (hasItemFeedback ? feedback.innerHTML : "") + `
                         <div class="alert alert-success">
                             <strong>Excellent!</strong>
                             ${sortedCount} / ${lesson.items.length} correct.
@@ -172,6 +180,12 @@ export function initializeSortingActivity(lesson) {
                             You successfully identified examples of visible and hidden culture.
                         </div>
                     `;
+                }
+
+                if (hasItemFeedback) {
+                    const nextItem = document.querySelector(".culture-sort-item:not(:disabled)");
+                    if (nextItem) nextItem.focus();
+                    else document.querySelector("[data-action='next']")?.focus();
                 }
             } else {
                 feedback.innerHTML = `
@@ -183,6 +197,73 @@ export function initializeSortingActivity(lesson) {
             }
         });
     });
+}
+
+function createSortedItemReview(item, index) {
+    const review = document.createElement("div");
+    review.className = "sorted-item-review";
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "sorted-pill sorted-pill-enter sorted-review-button";
+    button.textContent = item.text;
+
+    const description = document.createElement("div");
+    description.id = `sorted-item-description-${index}`;
+    description.className = "sorted-review-description";
+    description.textContent = item.feedback;
+    description.hidden = true;
+    button.setAttribute("aria-describedby", description.id);
+    button.setAttribute("aria-controls", description.id);
+    button.setAttribute("aria-expanded", "false");
+    review.append(button, description);
+
+    let pinned = false;
+    let dismissed = false;
+    const show = () => {
+        if (dismissed) return;
+        description.hidden = false;
+        button.setAttribute("aria-expanded", "true");
+    };
+    const hide = () => {
+        description.hidden = true;
+        button.setAttribute("aria-expanded", "false");
+    };
+
+    review.addEventListener("pointerenter", event => {
+        if (event.pointerType === "touch") return;
+        dismissed = false;
+        show();
+    });
+    review.addEventListener("pointerleave", () => {
+        dismissed = false;
+        if (!pinned && !review.contains(document.activeElement)) hide();
+    });
+    button.addEventListener("focus", () => {
+        dismissed = false;
+        show();
+    });
+    review.addEventListener("focusout", event => {
+        if (review.contains(event.relatedTarget)) return;
+        pinned = false;
+        dismissed = false;
+        hide();
+    });
+    button.addEventListener("click", () => {
+        pinned = !pinned;
+        dismissed = !pinned;
+        if (pinned) show();
+        else hide();
+    });
+    review.addEventListener("keydown", event => {
+        if (event.key !== "Escape") return;
+        pinned = false;
+        dismissed = true;
+        hide();
+        event.stopPropagation();
+    });
+
+    return review;
 }
 
 export function renderImageRevealContent(lesson) {
@@ -394,7 +475,7 @@ export function renderStoryActivityContent(lesson) {
 
             <div id="storyPageContainer"></div>
 
-            <div class="story-navigation mt-4 d-flex justify-content-between gap-3">
+            <div class="story-navigation mt-4 d-flex justify-content-between gap-3" data-responsive-navigation>
 
                 <button class="btn btn-outline-secondary secondary-navigation-button" id="storyPrevious">
                     Previous
@@ -742,7 +823,7 @@ export function renderGuidedActivityContent(lesson) {
 
             <div id="guidedSlideContainer"></div>
 
-            <div class="story-navigation mt-4 d-flex justify-content-between gap-3">
+            <div class="story-navigation mt-4 d-flex justify-content-between gap-3" data-responsive-navigation>
 
                 <button class="btn btn-outline-secondary secondary-navigation-button" id="guidedPrevious">
                     Previous
@@ -755,6 +836,7 @@ export function renderGuidedActivityContent(lesson) {
                     ${slideCount ? `Slide 1 of ${slideCount}` : "No slides"}
                 </div>
 
+                <button class="btn btn-outline-secondary secondary-navigation-button" id="guidedSkip" hidden>Skip for Now</button>
                 <button class="btn btn-primary" id="guidedNext">
                     Next
                 </button>
@@ -768,13 +850,15 @@ export function renderGuidedActivityContent(lesson) {
 export function initializeGuidedActivity(lesson, context = {}) {
     if (lesson.type !== "guidedActivity") return;
 
-    let currentSlideIndex = 0;
+    let currentSlideIndex = Math.max(0, getGuidedSlides(lesson).findIndex(slide =>
+        slide.storageKey === context.initialReflectionStorageKey));
 
     const slides = getGuidedSlides(lesson);
     const container = document.getElementById("guidedSlideContainer");
     const previousButton = document.getElementById("guidedPrevious");
     const nextButton = document.getElementById("guidedNext");
     const progress = document.getElementById("guidedProgress");
+    const skipButton = document.getElementById("guidedSkip");
 
     // Render one slide at a time so each guided activity can define
     // its own sequence without changing the shared component.
@@ -806,8 +890,11 @@ export function initializeGuidedActivity(lesson, context = {}) {
 
         previousButton.disabled = currentSlideIndex === 0;
         nextButton.disabled = currentSlideIndex === slides.length - 1;
+        const canSkip = slide.slideType === "reflection" && slide.required === true;
+        skipButton.hidden = !canSkip;
+        document.querySelectorAll("[data-action='skip']").forEach(button => { button.hidden = !canSkip; });
 
-        attachGuidedSlideEvents(slide);
+        attachGuidedSlideEvents(slide, context);
     }
 
     previousButton.addEventListener("click", () => {
@@ -817,14 +904,21 @@ export function initializeGuidedActivity(lesson, context = {}) {
         }
     });
 
-    nextButton.addEventListener("click", () => {
+    context.advanceGuidedActivity = (skip = false) => {
+        saveResponseDrafts(container);
+        if (!skip && !validateRequiredFields(container)) return;
         if (currentSlideIndex < slides.length - 1) {
             currentSlideIndex++;
             renderCurrentGuidedSlide();
+        } else if (context.nextLesson) {
+            context.goToLesson(context.nextLesson.id);
         }
-    });
+    };
+    nextButton.addEventListener("click", () => context.advanceGuidedActivity(false));
+    skipButton.addEventListener("click", () => context.advanceGuidedActivity(true));
 
     renderCurrentGuidedSlide();
+    updateNavigationOrder();
 }
 
 // Route each slide to the matching renderer. Slide order is controlled
@@ -951,8 +1045,12 @@ function renderGuidedSlideReflection(
                 class="form-control reflection-box guided-response"
                 rows="6"
                 data-guided-storage-key="${storageKey}"
+                data-required-response="${slide.required === true}"
+                aria-required="${slide.required === true}"
+                aria-describedby="${storageKey}Validation"
                 placeholder="${slide.placeholder || "Write your response here..."}">${savedValue}</textarea>
 
+            ${renderResponseValidation(storageKey)}
             <div class="save-status mt-2" id="${storageKey}Status">
                 Your response will be saved in this browser.
             </div>
@@ -1051,7 +1149,8 @@ function renderGuidedSlideSummary(slide) {
     `;
 }
 
-function attachGuidedSlideEvents(slide) {
+function attachGuidedSlideEvents(slide, context = {}) {
+    initializeResponseValidation(document.getElementById("guidedSlideContainer"));
     // Optional image descriptions are available to keyboard and screen reader users.
     document.querySelectorAll("[data-guided-description-toggle]").forEach(button => {
         button.addEventListener("click", () => {
@@ -1077,6 +1176,7 @@ function attachGuidedSlideEvents(slide) {
             const storageKey = textarea.dataset.guidedStorageKey;
 
             saveGuidedResponse(storageKey, textarea.value);
+            context.onResponsesChanged?.();
 
             const status = document.getElementById(`${storageKey}Status`);
 

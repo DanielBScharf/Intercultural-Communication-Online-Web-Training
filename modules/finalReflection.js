@@ -44,6 +44,7 @@ export const finalReflectionModule = {
                 {
                     prompt: "Which concept or strategy from this workshop do you think will be most useful to you? Why did you choose it, and in what kinds of situations might you use it?",
                     storageKey: "finalReflectionUsefulConcept",
+                    required: true,
                     reflectionTitle: "Most Useful Concept",
                     rationale: "This reflection asks learners to identify the course idea they expect to transfer into future intercultural situations.",
                     learningObjectives: ["LO5"],
@@ -53,6 +54,7 @@ export const finalReflectionModule = {
                 {
                     prompt: "What is one thing you will do differently the next time you encounter a situation you do not fully understand? Explain how this response might affect the way you interpret or navigate the situation.",
                     storageKey: "finalReflectionDifferentResponse",
+                    required: true,
                     reflectionTitle: "Responding Differently",
                     rationale: "This reflection connects tolerance of ambiguity with a concrete plan for responding to unfamiliar situations.",
                     learningObjectives: ["LO3", "LO5"],
@@ -62,6 +64,7 @@ export const finalReflectionModule = {
                 {
                     prompt: "Was there anything in this workshop that you questioned or disagreed with? What was it, and why did you respond that way?",
                     storageKey: "finalReflectionDisagreement",
+                    required: false,
                     reflectionTitle: "Questions or Disagreements",
                     rationale: "This reflection invites learners to critically examine course ideas rather than accepting them without analysis.",
                     learningObjectives: ["LO4"],
@@ -71,6 +74,7 @@ export const finalReflectionModule = {
                 {
                     prompt: "What question about culture, communication, or intercultural experiences are you leaving this workshop with that you would like to explore further?",
                     storageKey: "finalReflectionFurtherQuestion",
+                    required: true,
                     reflectionTitle: "Questions to Explore",
                     rationale: "This reflection emphasizes intercultural competence as continued curiosity and lifelong learning.",
                     learningObjectives: ["LO1", "LO5"],

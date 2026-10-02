@@ -44,9 +44,9 @@ export const pragueModule = {
                     slideType: "story",
                     title: "Arrival in Prague",
                     body: [
-                        "You are studying abroad at a one month course (not a language course) in Prague with a small group of classmates. (Note, this incident occurred before live AI translation services were widely available.)",
-                        "On your first week, the instructors suggest you to buy a montly rail pass to get around the city cheaper and more easily.",
-                        "The only instructions you recieved were to bring the train brochure, the amount that the pass costs, and your passport. You were told that you can do it without speaking Czech just point and they will understand."
+                        "You are studying abroad at a one-month course (not a language course) in Prague with a small group of classmates. (Note, this incident occurred before live AI translation services were widely available.)",
+                        "In your first week, the instructors suggest that you buy a monthly rail pass to get around the city more cheaply and more easily.",
+                        "The only instructions you received were to bring the train brochure, the amount that the pass costs, and your passport. You were told that you can do it without speaking Czech: just point, and they will understand."
                     ],
                     image: "images/comic/prague-panel-1.png",
                     imageAlt: "Student arriving near a tram stop in Prague"
@@ -87,6 +87,7 @@ export const pragueModule = {
                     ],
                     prompt: "What do you notice in the first four panels?",
                     storageKey: "pragueInitialDescription",
+                    required: true,
                     reflectionTitle: "First Impressions",
                     showPurposeDisclosure: false,
                     rationale: "This reflection asks learners to slow down and describe the situation before interpreting the interaction.",
@@ -109,7 +110,7 @@ export const pragueModule = {
                             value: "wait-and-observe"
                         },
                         {
-                            label: "Assume the woman is being rude and or angry",
+                            label: "Assume the woman is being rude and/or angry",
                             value: "assume-rude"
                         },
                         {
@@ -153,9 +154,9 @@ export const pragueModule = {
                     slideType: "reveal",
                     title: "The Whole Situation",
                     body: [
-                        "The woman wasn't angry with you she was actually trying to help you but neither of you understood the same language.",
-                        "Like many people do when speaking with someone who doesn't undersand your language she didn't realize that raising her voice wouldn't help you understand.",
-                        "Your first interpretation made sense from your perspective, but emotion could have been clowding your judgement hindering your understanding."
+                        "The woman wasn't angry with you. She was actually trying to help you, but neither of you understood the same language.",
+                        "Like many people do when speaking with someone who doesn't understand your language, she didn't realize that raising her voice wouldn't help you understand.",
+                        "Your first interpretation made sense from your perspective, but emotion could have been clouding your judgment, hindering your understanding."
                     ],
                     image: "images/comic/prague-panel-8.png",
                     imageAlt: "The group continuing together after the misunderstanding is clarified"
@@ -169,6 +170,7 @@ export const pragueModule = {
                     ],
                     prompt: "Describe, Analyze, Evaluate, and Apply: What happened? What might explain what happened? How did the person in the situation react, and how might their emotions have affected their interpretation of the experience? What could they have done to better understand the situation? How might you apply what you learned from this incident if you encounter a similar situation?",
                     storageKey: "pragueDaeaReflection",
+                    required: true,
                     reflectionTitle: "Reconsidering the Situation",
                     rationale: `The Prague incident shows how emotional reactions can influence judgment when important information is missing. Looking back at the experience through DAEA makes it possible to separate what actually happened from the interpretations and emotions that developed in the moment.
 

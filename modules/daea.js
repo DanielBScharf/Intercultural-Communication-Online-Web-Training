@@ -40,7 +40,7 @@ export const daeaExamples = {
             "The woman may be crying.",
             "The smoke and orange light may be coming from a fire.",
             "Late fall or early spring.",
-            "Night time or evening.",
+            "Nighttime or evening.",
             "The people may be near a waterfront or public gathering."
         ]
     },
@@ -92,6 +92,7 @@ export const daeaModule = {
             ],
             prompt: "What does reflection mean to you?",
             storageKey: "reflectionDefinition",
+            required: true,
             showPurposeDisclosure: false,
             rationale: "This reflection captures learners' initial understanding of reflection before the DAEA framework is introduced.",
             learningObjectives: ["LO4"],
@@ -195,6 +196,7 @@ export const daeaModule = {
             ],
             prompt: "Describe what you see. Full sentences are not required.",
             storageKey: "daeaDescribeResponse",
+            required: true,
             rationale: "Before interpreting a situation, take time to identify what you can actually observe. Try to separate what you clearly see or hear from assumptions about what those observations mean. Your interpretations and judgments can come later. This is especially important in situations that make you anxious, uncomfortable, or emotional, because those reactions can make assumptions feel like facts.",
             learningObjectives: ["LO4"],
             competencies: ["IC4"],
@@ -232,6 +234,7 @@ export const daeaModule = {
             ],
             prompt: "Analyze what you see. What are some possible interpretations?",
             storageKey: "daeaAnalyzeResponse",
+            required: true,
             rationale: "Now you can begin interpreting what you observed. What might be happening? Who might the people be? What are some possible explanations for their behavior? Try to consider more than one interpretation when the available information allows it. Your goal is not necessarily to find the correct explanation yet, but to recognize what the available evidence could mean.",
             learningObjectives: ["LO3", "LO4"],
             competencies: ["IC3", "IC4"],
@@ -269,6 +272,7 @@ export const daeaModule = {
             ],
             prompt: "Evaluate your reaction to the image.",
             storageKey: "daeaEvaluateResponse",
+            required: true,
             rationale: "Now pay attention to your emotional reactions and judgments. How does the situation make you feel? What seems good, bad, threatening, strange, appropriate, or inappropriate to you? Separating these reactions from your observations and interpretations can help you recognize when emotion or prior expectations are influencing how you understand a situation.",
             learningObjectives: ["LO4"],
             competencies: ["IC4"],
@@ -298,7 +302,7 @@ export const daeaModule = {
             type: "accordion",
             title: "Compare Your Reactions",
             moduleLabel: "Critical Reflection / DAEA",
-            intro: "Compare your responses with the example responses. Your answers may be similar, different, or the same—and that's expected. Different people notice, analyze, and evaluate the same situation in different ways based on their experiences, perspectives, and cultural backgrounds. Like we said in the culture lesson, culture is the lens through which we see the world, your reactions may be different from mine. The goal is not to find the 'correct' answer, but to become more aware of how we interpret what we see.",
+            intro: "Compare your responses with the example responses. Your answers may be similar, different, or the same—and that's expected. Different people notice, analyze, and evaluate the same situation in different ways based on their experiences, perspectives, and cultural backgrounds. Like we said in the culture lesson, culture is the lens through which we see the world. Your reactions may be different from mine. The goal is not to find the 'correct' answer, but to become more aware of how we interpret what we see.",
             items: [
                 {
                     title: daeaExamples.describe.title,
@@ -365,6 +369,7 @@ export const daeaModule = {
             ],
             prompt: "What can you learn from your first reaction to the photo? What was different after seeing the larger photo? What can you do about that?",
             storageKey: "daeaApplyResponse",
+            required: true,
             rationale: `When you first analyzed the photo, you had only limited information about what was happening. You may have formed assumptions that changed when you saw the larger image. By separating your observations, interpretations, and emotional evaluations, you can begin to identify what information is still missing and which parts of your understanding are assumptions rather than facts.
 
 This is also practice in tolerance of ambiguity. You did not initially know what was happening, but you could still examine the situation without immediately committing to one explanation. When more information became available, you could update your interpretation. In an intercultural experience, the full context may also be very different from your first assumptions.`,

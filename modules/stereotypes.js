@@ -60,6 +60,7 @@ export const stereotypesModule = {
             ],
             prompt: "What are some stereotypes of your culture? What are some common stereotypes of other cultures? Are they true?",
             storageKey: "stereotypesReflection",
+            required: true,
             rationale: `When you think about stereotypes of your own culture, you may quickly recognize examples that do not accurately describe you or people you know. Stereotypes rely on incomplete and generalized information. Even when a stereotype appears to describe some members of a group, it cannot tell you what a particular individual will think, value, or do.
 
 The important question is what you do with that knowledge. Do you hold onto the same incomplete picture, or update it as you receive new information? Also consider how stereotypes influence behavior. If you know that a generalization may not accurately describe the person in front of you, should you act as though it does?`,
@@ -166,6 +167,7 @@ The important question is what you do with that knowledge. Do you hold onto the 
             ],
             prompt: "Imagine you realize that one of your expectations about another culture is based on a stereotype or incomplete information. What could you do to check that assumption and develop a more accurate understanding?",
             storageKey: "stereotypesAssumptionCheckReflection",
+            required: true,
             placeholder: "Write your response here..."
         },
 

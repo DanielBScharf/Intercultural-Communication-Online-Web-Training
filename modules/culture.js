@@ -55,8 +55,9 @@ export const cultureModule = {
             type: "reflection",
             title: "What is Culture?",
             moduleLabel: "Understanding Culture",
-            prompt: "When you start to think about it defining culture can be complecated. To get you to start thinking about culture write your definition of culture below.",
+            prompt: "When you start to think about it, defining culture can be complicated. To get you to start thinking about culture, write your definition of culture below.",
             storageKey: "cultureDefinition",
+            required: true,
             rationale: "Here you get a chance to define culture yourself, before the module begins. Later you will be given several chances to update your definition with new ideas from this series.",
             learningObjectives: ["LO1"],
             competencies: ["IC1"],
@@ -88,7 +89,7 @@ export const cultureModule = {
             image: "images/culture/culture-is-shared.png",
             imageAlt: "People sharing cultural knowledge and practices",
             body: [
-                "Culture is shared among groups of people, but it is not always the same for everyone in a society. There can be sub-cultures, micro-cultures, and area cultures. Certain interests and groups can have their own culture. Businesses can have their own cultue, while individual offices in a larger corporation can have their own culture.",
+                "Culture is shared among groups of people, but it is not always the same for everyone in a society. There can be sub-cultures, micro-cultures, and area cultures. Certain interests and groups can have their own culture. Businesses can have their own culture, while individual offices in a larger corporation can have their own culture.",
                 "Think about the following questions:"
             ],
             prompts: [
@@ -109,7 +110,7 @@ export const cultureModule = {
             body: [
                 "Culture is often described like an iceberg.",
                 "You can easily see what is above the surface, but there is a lot more hidden below that is harder to see.",
-                "In essence, the 'what' of your culture is above the water is what you see; what is below the water is the 'why' you do or believe it."
+                "In essence, the 'what' of your culture, what is visible above the water, is what you can easily see; what is below the water is the 'why' you do or believe it."
             ]
         },
 
@@ -148,6 +149,7 @@ export const cultureModule = {
             imageAlt: "Culture iceberg graphic",
             prompt: "What are some visible and hidden aspects of your culture?",
             storageKey: "cultureIcebergReflection",
+            required: true,
             rationale: `It can be difficult, but important, to identify both the visible and hidden aspects of your own culture. We do not always examine our own cultural assumptions closely, especially the hidden ones. At the same time, cultural practices that differ from our own can quickly seem surprising, confusing, or unusual. Examining the hidden aspects of your own culture can help you recognize that many of your own behaviors and expectations also have cultural explanations.
 
 If this is difficult, start with the visible “what” of your culture. Then ask “why?” Looking underneath visible practices can help you identify some of the values, beliefs, assumptions, and expectations that influence them.`,
@@ -161,7 +163,7 @@ If this is difficult, start with the visible “what” of your culture. Then as
             type: "sortingActivity",
             title: "Iceberg Sorting Activity",
             moduleLabel: "Understanding Culture",
-            instructions: "Classify each item as visible culture or hidden culture.",
+            instructions: "Classify each item as visible culture or less visible culture.",
             categories: [
                 {
                     key: "visible",
@@ -170,21 +172,91 @@ If this is difficult, start with the visible “what” of your culture. Then as
                 },
                 {
                     key: "hidden",
-                    title: "Hidden Culture",
+                    title: "Less Visible Culture",
                     description: "Values, expectations, assumptions, or beliefs that may not be obvious."
                 }
             ],
             items: [
-                { text: "Food", answer: "visible" },
-                { text: "Flags", answer: "visible" },
-                { text: "Festivals", answer: "visible" },
-                { text: "Language", answer: "visible" },
-                { text: "Family Roles", answer: "hidden" },
-                { text: "Relationship with Time", answer: "hidden" },
-                { text: "Ideas About Politeness", answer: "hidden" },
-                { text: "Attitudes Toward Authority", answer: "hidden" },
-                { text: "Communication Style", answer: "hidden" },
-                { text: "Friendship Expectations", answer: "hidden" }
+                {
+                    text: "Greetings",
+                    answer: "visible",
+                    feedback: "Greetings can often be directly observed, such as bowing, shaking hands, hugging, or using particular words. The expectations behind a greeting, such as appropriate physical distance or how much respect it communicates, may be less visible."
+                },
+                {
+                    text: "Public celebrations",
+                    answer: "visible",
+                    feedback: "Festivals, parades, ceremonies, and other public celebrations are visible expressions of culture. The beliefs, historical meanings, or values associated with the celebration may require deeper cultural knowledge to understand."
+                },
+                {
+                    text: "Popular sports",
+                    answer: "visible",
+                    feedback: "The sports people play and watch are easy to observe. Their cultural importance may be less obvious, including how they relate to community identity, national identity, social relationships, or competition."
+                },
+                {
+                    text: "Dining practices",
+                    answer: "visible",
+                    feedback: "You can observe practices such as how food is served, what utensils are used, or whether dishes are shared. The expectations behind those practices, including hospitality, status, or appropriate behavior toward a host, may be less visible."
+                },
+                {
+                    text: "Religious buildings",
+                    answer: "visible",
+                    feedback: "Religious buildings, symbols, and ceremonies can be visible parts of culture. The beliefs, values, and meanings associated with them may not be apparent to someone unfamiliar with the culture."
+                },
+                {
+                    text: "Forms of address",
+                    answer: "visible",
+                    feedback: "You can hear whether people use first names, family names, titles, honorifics, or other forms of address. What those choices communicate about respect, familiarity, status, or relationships may be less obvious."
+                },
+                {
+                    text: "Personal appearance",
+                    answer: "visible",
+                    feedback: "Clothing, hairstyles, jewelry, and other aspects of appearance can be observed. Their meaning may be connected to identity, profession, religion, social expectations, or personal choice and may not be obvious from appearance alone."
+                },
+                {
+                    text: "Common gestures",
+                    answer: "visible",
+                    feedback: "Gestures and body language can be directly observed, but their meanings can vary across cultures. A gesture that seems friendly, respectful, or ordinary in one context may communicate something different in another."
+                },
+                {
+                    text: "Attitudes toward authority",
+                    answer: "hidden",
+                    feedback: "Cultures can differ in how people are expected to interact with teachers, supervisors, elders, officials, and other authority figures. Questioning a person in authority may be encouraged in one context but considered disrespectful or inappropriate in another."
+                },
+                {
+                    text: "Expectations about privacy",
+                    answer: "hidden",
+                    feedback: "Ideas about what information is private can vary. Questions about age, salary, family, relationships, or personal circumstances may feel intrusive in one cultural context while being ordinary conversation in another."
+                },
+                {
+                    text: "Ideas about fairness",
+                    answer: "hidden",
+                    feedback: "People may agree that fairness is important while disagreeing about what fairness means. One person may emphasize treating everyone the same, while another may believe circumstances, responsibilities, relationships, or needs should affect how people are treated."
+                },
+                {
+                    text: "Comfort with uncertainty",
+                    answer: "hidden",
+                    feedback: "People and cultural environments can differ in how comfortable they are when rules, expectations, or outcomes are unclear. Some contexts may emphasize detailed planning and established procedures, while others may allow greater flexibility when circumstances change."
+                },
+                {
+                    text: "Expectations about hospitality",
+                    answer: "hidden",
+                    feedback: "Cultures can differ in what hosts and guests are expected to do. Offering food repeatedly, refusing an initial offer, bringing a gift, or insisting that a guest accept something may communicate politeness in one context but confusion in another."
+                },
+                {
+                    text: "Approaches to conflict",
+                    answer: "hidden",
+                    feedback: "Disagreement may be expressed openly and directly in some contexts and more indirectly in others. People may also differ in whether maintaining harmony, expressing an individual position, involving another person, or reaching an immediate resolution is emphasized."
+                },
+                {
+                    text: "Beliefs about personal responsibility",
+                    answer: "hidden",
+                    feedback: "People may differ in how they understand responsibilities to themselves, their families, their workplaces, or their communities. Decisions that appear highly individual in one context may be understood as affecting a much larger group in another."
+                },
+                {
+                    text: "Expectations about friendship",
+                    answer: "hidden",
+                    feedback: "Ideas about friendship can include different expectations about time, loyalty, emotional closeness, favors, hospitality, and frequency of communication. Two people may both consider themselves friends while having quite different expectations of what that relationship involves."
+                }
             ]
         },
 
@@ -195,6 +267,7 @@ If this is difficult, start with the visible “what” of your culture. Then as
             moduleLabel: "Understanding Culture",
             prompt: "How could a hidden aspect of culture lead to a misunderstanding between people from different cultural backgrounds? Think of an example, or explain how differences in values, expectations, or assumptions could affect the way people interpret the same behavior.",
             storageKey: "cultureHiddenMisunderstandingReflection",
+            required: true,
             rationale: "Hidden aspects of culture can influence how people communicate, make decisions, show respect, respond to disagreement, and interpret other people's behavior. When those influences are not visible, it can be easy to explain unfamiliar behavior using your own expectations. Recognizing that there may be something beneath the surface can help you pause, seek more information, and consider other explanations before reaching a conclusion.",
             learningObjectives: ["LO1", "LO3"],
             competencies: ["IC1", "IC2", "IC3"],
@@ -237,10 +310,10 @@ If this is difficult, start with the visible “what” of your culture. Then as
             title: "Culture is a Lens",
             moduleLabel: "Understanding Culture",
             image: "images/culture/cultural-lens.png",
-            imageAlt: "An image of a street and glasses lens in the middle of the image. What is outside of the lens looks sad, dark, and angry. There is a man angrily shouting ouside of the lens, inside the lens there's a woman laughing and smiling. It is the same scene but seen differently through the lens.",
+            imageAlt: "An image of a street and a glasses lens in the middle of the image. What is outside of the lens looks sad, dark, and angry. There is a man angrily shouting outside of the lens. Inside the lens there's a woman laughing and smiling. It is the same scene but seen differently through the lens.",
             body: [
                 "Culture is one of the lenses through which we see the world.",
-                "It can influence what we notice, what we value, what feels normal, and what feels unfamiliar. While it cannot dicte our actions or beliefs it can color or influence them.",
+                "It can influence what we notice, what we value, what feels normal, and what feels unfamiliar. While it cannot dictate our actions or beliefs, it can color or influence them.",
                 "Two people can experience the same event and interpret it very differently."
             ],
             note: "That does not always mean one person is right and the other is wrong. They may simply be looking through different cultural lenses."
@@ -294,6 +367,7 @@ If this is difficult, start with the visible “what” of your culture. Then as
             ],
             prompt: "What should you do when you encounter a cultural perspective you do not understand?",
             storageKey: "culturePerspectiveReflection",
+            required: true,
             rationale: `There may not be one simple answer. Aspects of your culture may seem confusing or strange to someone from another culture, just as aspects of another culture may initially seem confusing or strange to you. Your perspective makes sense within the cultural experiences that helped shape it, but someone else's perspective may make sense within theirs.
 
 When you encounter a very different cultural perspective, take a moment before judging it. Consider how some of your own cultural practices might appear to someone unfamiliar with them. You do not have to agree with every perspective, but trying to understand the context behind it can help you respond more thoughtfully.`,
@@ -323,6 +397,7 @@ When you encounter a very different cultural perspective, take a moment before j
                     label: "Reflection",
                     prompt: "How has your understanding of culture changed after completing this module? Was there anything about culture that you had not previously considered? Explain how your thinking has changed.",
                     storageKey: "cultureReflectionGrowth",
+                    required: true,
                     reflectionTitle: "How My Understanding Changed",
                     rationale: cultureDefinitionReflectionRationale,
                     learningObjectives: ["LO1", "LO4"],
@@ -331,8 +406,9 @@ When you encounter a very different cultural perspective, take a moment before j
                 },
                 {
                     label: "Your Current Definition of Culture",
-                    prompt: "Using what you have learned in this module, would you like to update your definition of culture?.",
+                    prompt: "Using what you have learned in this module, would you like to update your definition of culture?",
                     storageKey: "currentCultureDefinition",
+                    required: false,
                     reflectionTitle: "My Revised Definition",
                     rationale: cultureDefinitionReflectionRationale,
                     learningObjectives: ["LO1", "LO4"],

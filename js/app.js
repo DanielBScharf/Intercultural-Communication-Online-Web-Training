@@ -5,6 +5,8 @@
 
 import { courseData } from "./courseData.js";
 import { renderLesson } from "./renderer.js";
+import { getMissingRequiredResponses, validateRequiredFields, saveResponseDrafts } from "./reflectionValidation.js";
+import { getReflectionMetadata } from "./metaData/reflectionsMetadata.js";
 import {
     saveItem,
     loadItem,
@@ -24,6 +26,8 @@ const REFLECTION_SUMMARY_INTRODUCED_KEY = "reflectionSummaryIntroduced";
 
 const appState = {
     currentLessonId: loadCurrentLesson(),
+    activeModuleKey: loadItem("activeModuleKey", null),
+    startedModuleKeys: loadItem("startedModuleKeys", []),
     completedModules: loadCompletedModules(),
     reflectionSummaryIntroduced: loadItem(REFLECTION_SUMMARY_INTRODUCED_KEY, false)
 };
@@ -81,6 +85,8 @@ function initApp() {
 // -------------------------------
 
 function renderHome() {
+    const currentModule = getCurrentModule();
+    if (!appState.activeModuleKey && currentModule) setActiveModule(currentModule);
     appState.currentLessonId = null;
     saveCurrentLesson(null);
 
@@ -530,7 +536,7 @@ function updateSidebar() {
             moduleButton.classList.add("active");
         }
 
-        if (appState.completedModules[module.key]) {
+        if (isModuleComplete(module)) {
             moduleButton.classList.add("completed");
         }
     });
@@ -587,7 +593,7 @@ function updateProgressText(currentLesson, currentModule, isReflectionSummaryCur
     }
 
     const completedCount = courseData.modules.filter(module =>
-        appState.completedModules[module.key]
+        isModuleComplete(module)
     ).length;
 
     moduleCounter.textContent =
@@ -609,7 +615,7 @@ function goToModule(moduleKey) {
     goToLesson(module.lessons[0].id);
 }
 
-function goToLesson(lessonId) {
+function goToLesson(lessonId, initialReflectionStorageKey = null) {
     if (lessonId === REFLECTION_SUMMARY_ID) {
         goToReflectionSummary();
         return;
@@ -622,18 +628,45 @@ function goToLesson(lessonId) {
         return;
     }
 
+    saveResponseDrafts();
+    const targetModule = courseData.modules[lesson.moduleIndex];
+    const currentModule = getCurrentModule();
+    const activeModule = courseData.modules.find(module => module.key === appState.activeModuleKey);
+    const movingBackward = currentModule && courseData.modules.indexOf(targetModule) < courseData.modules.indexOf(currentModule);
+    const candidates = courseData.modules.filter(module =>
+        appState.startedModuleKeys.includes(module.key) || module === currentModule || module === activeModule);
+    const blockingModule = targetModule.key === currentModule?.key || movingBackward ? null : candidates.find(module =>
+        module.key !== targetModule.key &&
+        courseData.modules.indexOf(targetModule) > courseData.modules.indexOf(module) &&
+        getMissingRequiredResponses(module).length);
+    if (blockingModule) {
+        setActiveModule(blockingModule);
+        showIncompleteReflections(blockingModule);
+        return;
+    }
+    if (!activeModule || !getMissingRequiredResponses(activeModule).length) setActiveModule(targetModule);
+    rememberStartedModule(targetModule);
+
     appState.currentLessonId = lessonId;
     saveCurrentLesson(lessonId);
 
     const context = buildLessonContext(lesson);
+    context.initialReflectionStorageKey = initialReflectionStorageKey;
 
     renderLesson(lesson, context);
+    if (lesson.type === "moduleComplete" && getMissingRequiredResponses(targetModule).length) {
+        showIncompleteReflections(targetModule, false);
+    }
     updateSidebar();
 
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
+    if (initialReflectionStorageKey) {
+        validateRequiredFields();
+        document.getElementById(initialReflectionStorageKey)?.focus();
+    }
 }
 
 function goToReflectionSummary() {
@@ -679,7 +712,8 @@ function buildLessonContext(lesson) {
         modulePosition,
         goToLesson,
         goToMenu: renderHome,
-        completeModule
+        completeModule,
+        onResponsesChanged
     };
 }
 
@@ -705,6 +739,13 @@ function getModulePosition(lesson, module) {
 }
 
 function completeModule(moduleKey) {
+    const module = courseData.modules.find(item => item.key === moduleKey);
+    if (!module) return false;
+    saveResponseDrafts();
+    if (getMissingRequiredResponses(module).length) {
+        showIncompleteReflections(module);
+        return false;
+    }
     const wasWorkshopComplete = isWorkshopComplete();
 
     appState.completedModules[moduleKey] = true;
@@ -721,6 +762,7 @@ function completeModule(moduleKey) {
     if (isNowWorkshopComplete && isFinalInstructionalModule(moduleKey)) {
         goToReflectionSummary();
     }
+    return true;
 }
 
 // -------------------------------
@@ -756,7 +798,69 @@ function isReflectionSummaryAvailable() {
 }
 
 function isWorkshopComplete() {
-    return courseData.modules.every(module => appState.completedModules[module.key]);
+    return courseData.modules.every(isModuleComplete);
+}
+
+// Retain saved completion flags, but only count modules whose current responses satisfy requirements.
+function isModuleComplete(module) {
+    return Boolean(module && appState.completedModules[module.key]) &&
+        getMissingRequiredResponses(module).length === 0;
+}
+
+function onResponsesChanged() {
+    if (isWorkshopComplete()) introduceReflectionSummary({ animate: true });
+    updateSidebar();
+    const panel = document.getElementById("incompleteReflections");
+    if (panel) {
+        const module = courseData.modules.find(module => module.key === panel.dataset.moduleKey);
+        showIncompleteReflections(module, false);
+    }
+}
+
+function getCurrentModule() {
+    const lesson = lessonIndex[appState.currentLessonId];
+    return lesson ? courseData.modules[lesson.moduleIndex] : null;
+}
+
+function setActiveModule(module) {
+    appState.activeModuleKey = module.key;
+    saveItem("activeModuleKey", module.key);
+    rememberStartedModule(module);
+}
+
+function rememberStartedModule(module) {
+    if (appState.startedModuleKeys.includes(module.key)) return;
+    appState.startedModuleKeys.push(module.key);
+    saveItem("startedModuleKeys", appState.startedModuleKeys);
+}
+
+function showIncompleteReflections(module, moveFocus = true) {
+    const missing = getMissingRequiredResponses(module);
+    let panel = document.getElementById("incompleteReflections");
+    if (!missing.length) {
+        panel?.remove();
+        return;
+    }
+    if (!panel) {
+        panel = document.createElement("section");
+        panel.id = "incompleteReflections";
+        panel.className = "alert alert-warning mt-4 text-start";
+        panel.setAttribute("aria-labelledby", "incompleteReflectionsHeading");
+        const host = document.querySelector("#app .lesson-card, #app .completion-card, #app .hero-section .container") || document.getElementById("app");
+        host.appendChild(panel);
+    }
+    panel.dataset.moduleKey = module.key;
+    panel.innerHTML = `<h3 id="incompleteReflectionsHeading" class="h5" tabindex="-1">Almost finished. Complete the reflections you skipped before finishing this module.</h3><div class="d-grid gap-2" data-incomplete-links></div>`;
+    const links = panel.querySelector("[data-incomplete-links]");
+    missing.forEach(entry => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "btn btn-outline-secondary secondary-navigation-button text-start";
+        button.textContent = entry.reflectionTitle || entry.label || getReflectionMetadata(entry.storageKey)?.title || entry.title || entry.prompt;
+        button.addEventListener("click", () => goToLesson(entry.lessonId, entry.storageKey));
+        links.appendChild(button);
+    });
+    if (moveFocus) panel.querySelector("h3").focus();
 }
 
 function isFinalInstructionalModule(moduleKey) {
@@ -765,7 +869,7 @@ function isFinalInstructionalModule(moduleKey) {
 }
 
 function getModuleButtonText(moduleKey) {
-    if (appState.completedModules[moduleKey]) {
+    if (isModuleComplete(courseData.modules.find(module => module.key === moduleKey))) {
         return "Review Module";
     }
 

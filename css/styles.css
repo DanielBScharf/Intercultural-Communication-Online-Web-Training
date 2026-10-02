@@ -530,6 +530,15 @@ h6 {
 
 /* Navigation */
 
+.response-validation {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+textarea[aria-invalid="true"] {
+    border-color: var(--danger);
+}
+
 .lesson-navigation {
     display: flex;
     justify-content: space-between;
@@ -807,6 +816,18 @@ h6 {
         flex-direction: column;
     }
 
+    .completion-navigation,
+    .story-navigation[data-responsive-navigation] {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    [data-responsive-navigation] .btn {
+        min-height: 44px;
+        margin-right: 0 !important;
+    }
+
     .lesson-navigation .btn {
         width: 100%;
     }
@@ -831,6 +852,50 @@ h6 {
     font-weight: 600;
     color: var(--primary-dark);
 }
+
+.sorted-item-review {
+    min-width: 0;
+}
+
+.sorted-review-button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    overflow-wrap: anywhere;
+    text-decoration: underline dotted;
+    text-underline-offset: 0.2em;
+}
+
+.sorted-review-button:hover,
+.sorted-review-button[aria-expanded="true"] {
+    border-color: var(--primary);
+}
+
+.sorted-review-button:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+}
+
+.sorted-review-description {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 0.75rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--primary-border);
+    border-left: 3px solid var(--primary);
+    border-radius: 0.75rem;
+    background: var(--surface-info);
+    color: var(--text-dark);
+    overflow-wrap: anywhere;
+}
+
+.sorted-review-description[hidden] {
+    display: none;
+}
+
 .active-sort-item {
     background: var(--primary-light);
     border-color: var(--primary);

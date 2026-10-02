@@ -123,6 +123,7 @@ export const ambiguityModule = {
             ],
             prompt: "In one of those situations, were you comfortable? How did you feel? Was it necessarily a bad experience?",
             storageKey: "ambiguityUncomfortableReflection",
+            required: true,
             rationale: `This section asks you to think and act outside of your comfort zone. Tolerance of ambiguity is the ability to adapt safely to situations where you do not have all of the information without allowing your immediate emotional reaction to determine your judgment. Being outside of your comfort zone is, by definition, not always comfortable. However, discomfort is not necessarily the same as danger.
 
 This can be one of the biggest challenges, and one of the most important skills, when interacting across cultures. You will not always understand everything that is happening. Being able to remain open, gather more information, and adapt to an unfamiliar environment can help you make the most of an intercultural experience.`,
@@ -176,6 +177,7 @@ This can be one of the biggest challenges, and one of the most important skills,
             ],
             prompt: "Think of a situation in your daily life where you may not have all the information or know what to expect. How could you use tolerance of ambiguity to respond more thoughtfully in that situation?",
             storageKey: "ambiguityDailyLifeReflection",
+            required: true,
             placeholder: "Write your response here..."
         },
 

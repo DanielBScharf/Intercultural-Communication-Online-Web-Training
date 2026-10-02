@@ -37,6 +37,12 @@ import {
 
 import { learningOutcomes } from "./metaData/learningOutcomes.js";
 import { renderReflectionPurposeDisclosure } from "./renderers/reflection.js";
+import {
+    renderResponseValidation, initializeResponseValidation, validateRequiredFields,
+    validateResponseField, clearResponseValidation, isRequiredReflection,
+    getMissingRequiredResponses, getReflectionEntries, saveResponseDrafts
+} from "./reflectionValidation.js";
+import { updateNavigationOrder } from "./responsiveNavigation.js";
 
 export function renderLesson(lesson, context) {
     const app = document.getElementById("app");
@@ -60,6 +66,7 @@ export function renderLesson(lesson, context) {
     initializeImageReveal(lesson);
     initializeStoryActivity(lesson, context);
     initializeGuidedActivity(lesson, context);
+    updateNavigationOrder();
 }
 
 const lessonRenderers = {
@@ -140,7 +147,7 @@ function renderLessonNavigation(context) {
     const showNextButton = context.currentLesson?.type !== "reflectionSummary";
 
     return `
-        <div class="lesson-navigation">
+        <div class="lesson-navigation" data-responsive-navigation>
             <button class="btn btn-outline-secondary secondary-navigation-button"
                 data-action="previous"
                 ${!context.previousLesson ? "disabled" : ""}>
@@ -150,6 +157,11 @@ function renderLessonNavigation(context) {
             <button class="btn btn-outline-secondary secondary-navigation-button" data-action="menu">
                 Return to Menu
             </button>
+
+            ${getReflectionEntries(context.currentLesson || {}).some(entry => entry.required) ? `
+                <button class="btn btn-outline-secondary secondary-navigation-button" data-action="skip"
+                    ${context.currentLesson?.type === "guidedActivity" ? "hidden" : ""}>Skip for Now</button>
+            ` : ""}
 
             ${showNextButton ? `
                 <button class="btn btn-primary"
@@ -246,22 +258,23 @@ function renderModuleIntro(lesson, context) {
 }
 
 function renderModuleComplete(lesson, context) {
+    const hasUnfinishedReflections = getMissingRequiredResponses(context.currentModule).length > 0;
     return `
         <section class="course-screen">
             <div class="container py-5">
                 <div class="completion-card text-center">
 
-                    <div class="completion-icon mb-3">
+                    <div class="completion-icon mb-3" ${hasUnfinishedReflections ? "hidden" : ""}>
                         <i class="bi bi-check-circle-fill"></i>
                     </div>
 
                     <p class="text-uppercase fw-bold text-success">
-                        ${lesson.moduleLabel}
+                        ${hasUnfinishedReflections ? context.currentModule.title : lesson.moduleLabel}
                     </p>
 
-                    <h2>${lesson.title}</h2>
+                    <h2>${hasUnfinishedReflections ? "Almost finished" : lesson.title}</h2>
 
-                    <p class="lead">
+                    <p class="lead" ${hasUnfinishedReflections ? "hidden" : ""}>
                         ${lesson.completionMessage || `You completed ${lesson.completedModuleTitle}.`}
                     </p>
 
@@ -272,7 +285,7 @@ function renderModuleComplete(lesson, context) {
                         </ul>
                     </div>
 
-                    <div class="mt-4">
+                    <div class="mt-4 completion-navigation" data-responsive-navigation>
                         <button class="btn btn-outline-secondary secondary-navigation-button me-2"
                             data-action="previous"
                             ${!context.previousLesson ? "disabled" : ""}>
@@ -397,7 +410,8 @@ function getReflectionPrompts(lesson) {
         {
             prompt: lesson.prompt,
             storageKey: lesson.storageKey,
-            placeholder: lesson.placeholder
+            placeholder: lesson.placeholder,
+            required: lesson.required
         }
     ];
 }
@@ -433,10 +447,13 @@ function renderReflectionBox(prompt, lesson, context) {
                 id="${prompt.storageKey}"
                 class="form-control reflection-box"
                 rows="6"
-                ${prompt.label ? `aria-describedby="${promptID}"` : ""}
+                aria-describedby="${prompt.label ? `${promptID} ` : ""}${prompt.storageKey}Validation"
+                data-required-response="${prompt.required === true}"
+                aria-required="${prompt.required === true}"
                 data-storage-key="${prompt.storageKey}"
                 placeholder="${prompt.placeholder || "Write your response here..."}">${savedValue}</textarea>
 
+            ${renderResponseValidation(prompt.storageKey)}
             <div class="save-status mt-2" id="${prompt.storageKey}Status">
                 Your response will be saved in this browser.
             </div>
@@ -733,7 +750,11 @@ function renderReflectionSummaryDisclosure(reflection) {
                         class="form-control reflection-summary-edit-field"
                         rows="6"
                         data-reflection-edit-field="${reflection.storageKey}"
-                        aria-describedby="${promptID}"></textarea>
+                        aria-describedby="${promptID} ${editorID}-fieldValidation"
+                        data-required-response="${reflection.required === true}"
+                        aria-required="${reflection.required === true}"></textarea>
+
+                    ${renderResponseValidation(`${editorID}-field`)}
 
                     <div class="reflection-summary-edit-actions">
                         <button
@@ -842,6 +863,7 @@ function collectReflectionSummaryItems(courseData) {
                 reflections.push({
                     ...reflection,
                     ...metadata,
+                    required: isRequiredReflection(courseData, reflection.storageKey),
                     storageKey: reflection.storageKey,
                     lessonId: metadata.lessonId || lesson.id,
                     moduleKey: module.key,
@@ -949,12 +971,23 @@ function collectPracticedCompetencies(reflections) {
 // ---------- Events ----------
 
 function attachSharedLessonEvents(lesson, context) {
+    initializeResponseValidation();
     document.querySelectorAll("[data-action='next']").forEach(button => {
         button.addEventListener("click", () => {
+            if (lesson.type === "guidedActivity") {
+                context.advanceGuidedActivity?.(false);
+                return;
+            }
+            if (!validateRequiredFields()) return;
             if (lesson.type === "moduleComplete" && lesson.moduleKey) {
                 if (context.completeModule) {
-                    context.completeModule(lesson.moduleKey);
+                    if (!context.completeModule(lesson.moduleKey)) return;
                 } else {
+                    const missing = getMissingRequiredResponses(context.currentModule)[0];
+                    if (missing) {
+                        context.goToLesson(missing.lessonId, missing.storageKey);
+                        return;
+                    }
                     markModuleComplete(lesson.moduleKey);
                 }
             }
@@ -962,6 +995,14 @@ function attachSharedLessonEvents(lesson, context) {
             if (context.nextLesson) {
                 context.goToLesson(context.nextLesson.id);
             }
+        });
+    });
+
+    document.querySelectorAll("[data-action='skip']").forEach(button => {
+        button.addEventListener("click", () => {
+            saveResponseDrafts();
+            if (lesson.type === "guidedActivity") context.advanceGuidedActivity?.(true);
+            else if (context.nextLesson) context.goToLesson(context.nextLesson.id);
         });
     });
 
@@ -996,6 +1037,7 @@ function attachSharedLessonEvents(lesson, context) {
             }
 
             updateSavedResponseDisplays(storageKey);
+            context.onResponsesChanged?.();
         });
     });
 
@@ -1069,6 +1111,7 @@ function openReflectionSummaryEditor(storageKey) {
     if (!editor || !textarea) return;
 
     textarea.value = loadResponse(storageKey);
+    clearResponseValidation(textarea);
     editor.hidden = false;
 
     if (editButton) {
@@ -1083,6 +1126,10 @@ function saveReflectionSummaryEdit(storageKey) {
 
     if (!textarea) return;
 
+    if (textarea.dataset.requiredResponse === "true" && !validateResponseField(textarea, "Please enter a response before continuing.")) {
+        textarea.focus();
+        return;
+    }
     saveResponse(storageKey, textarea.value);
     updateReflectionSummaryResponseDisplays(storageKey);
     updateReflectionSummarySavedCount();
@@ -1096,6 +1143,7 @@ function closeReflectionSummaryEditor(storageKey) {
 
     if (textarea) {
         textarea.value = loadResponse(storageKey);
+        clearResponseValidation(textarea);
     }
 
     if (editor) {
