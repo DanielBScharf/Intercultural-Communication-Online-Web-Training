@@ -160,14 +160,14 @@ export const reflections = {
   stereotypesReflection: {
     reflectionId: "stereotypesReflection",
     lessonId: "stereotypes-reflection",
-    reflectionTitle: "Stereotypes of Own and Other Cultures",
+    reflectionTitle: "A Stereotype About Your Own Group",
     competencies: ["criticalReflection", "perspectiveTaking"],
     designPrinciples: ["recognizeIncompletePicture"],
     learningOutcomes: ["culturalAwareness"],
     whatYouPracticed:
-      "You examined stereotypes about both your own and other cultures and considered where broad cultural generalizations may provide incomplete or inaccurate information.",
+      "You examined a stereotype about a group you belong to and considered how well it describes you as an individual.",
     howThisBuildsYourSkills:
-      "Recognizing the limitations of stereotypes can help you notice when assumptions are influencing your interpretation. Examining stereotypes about your own culture can also demonstrate why individuals do not always match the expectations associated with their cultural groups.",
+      "Recognizing the limitations of stereotypes can help you notice when assumptions are influencing your interpretation. Examining a stereotype about your own group can also demonstrate why individuals do not always match the expectations associated with their cultural groups.",
   },
 
   stereotypesAssumptionCheckReflection: {

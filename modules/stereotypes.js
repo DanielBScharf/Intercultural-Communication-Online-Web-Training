@@ -27,10 +27,11 @@ export const stereotypesModule = {
             title: "Stereotypes",
             moduleLabel: "Module 2",
             body: [
-                "In this module, you will explore stereotypes, why people use them, how they can sometimes fill gaps in knowledge, and why they can also be dangerous."
+                "In this module, you will explore stereotypes, why people use them, how they can sometimes fill gaps in knowledge, and why they can also cause harm.",
+                "The picture on this page is built entirely from stereotypes about Americans. How many can you spot? How well does it describe real people?"
             ],
             image: "images/stereotype/american_stereotypes.png",
-            imageAlt: "Illustration of common stereotypes about American culture",
+            imageAlt: "A man in a cowboy hat and football jersey holds a giant burger and a large soda in front of an oversized pickup truck, surrounded by American flags. The image is built from stereotypes about Americans.",
             buttonText: "Begin Module 2"
         },
 
@@ -44,7 +45,8 @@ export const stereotypesModule = {
             body: [
                 "Stereotypes are simplified ideas about groups of people.",
                 "People often use stereotypes because they do not know everything about every culture. In that sense, stereotypes can feel useful because they help fill a gap in knowledge.",
-                "However, stereotypes are also dangerous because they are often incomplete, exaggerated, or wrong.",
+                "However, stereotypes are often incomplete, exaggerated, or wrong, and they can cause real harm. They lead us to treat a person as a category instead of an individual, and to notice only what confirms what we already expect.",
+                "This is true of positive stereotypes too. Expecting someone to be hardworking, polite, or good at math because of their background still replaces the person with an assumption.",
                 "Even if something is common in one culture, individuals from that culture may not follow it."
             ],
             note: "Stereotypes should never be treated as final knowledge. They must be updated when you get more information."
@@ -56,9 +58,9 @@ export const stereotypesModule = {
             title: "Recognizing Stereotypes",
             moduleLabel: "Stereotypes",
             body: [
-                "Think about stereotypes you have heard before. These may be stereotypes about your own culture or stereotypes about other cultures."
+                "Think about a stereotype you have heard about a group you belong to. It could be about your nationality, region, generation, profession, or another group."
             ],
-            prompt: "What are some stereotypes of your culture? What are some common stereotypes of other cultures? Are they true?",
+            prompt: "What is a stereotype about a group you belong to? How well does it describe you?",
             storageKey: "stereotypesReflection",
             required: true,
             rationale: `When you think about stereotypes of your own culture, you may quickly recognize examples that do not accurately describe you or people you know. Stereotypes rely on incomplete and generalized information. Even when a stereotype appears to describe some members of a group, it cannot tell you what a particular individual will think, value, or do.
@@ -79,7 +81,8 @@ The important question is what you do with that knowledge. Do you hold onto the 
             body: [
                 "Stereotypes are usually broad statements applied to a whole group of people.",
                 "They often sound like: “All ____ are ____.”",
-                "They usually include a conclusion but little or no actual evidence."
+                "They usually include a conclusion but little or no actual evidence.",
+                "Try the questions below on this statement: “People from that country are always late.”"
             ],
             prompts: [
                 "Is this statement based on evidence?",
@@ -105,7 +108,7 @@ The important question is what you do with that knowledge. Do you hold onto the 
                 "Recognize it as a stereotype",
                 "Think about the evidence",
                 "Find more information",
-                "Politely ask someone from that culture",
+                "Ask people about their own experience, not to speak for their whole culture",
                 "Update your understanding"
             ],
             note: "With practice, stereotypes become easier to recognize and address."
@@ -168,6 +171,9 @@ The important question is what you do with that knowledge. Do you hold onto the 
             prompt: "Imagine you realize that one of your expectations about another culture is based on a stereotype or incomplete information. What could you do to check that assumption and develop a more accurate understanding?",
             storageKey: "stereotypesAssumptionCheckReflection",
             required: true,
+            rationale: "Recognizing a stereotype is only the first step. What matters next is what you do about it. Planning how you would check an assumption makes it more likely that you will pause and look for more information when it happens in a real situation.",
+            learningObjectives: ["LO2"],
+            competencies: ["IC2", "IC3"],
             placeholder: "Write your response here..."
         },
 
@@ -179,7 +185,7 @@ The important question is what you do with that knowledge. Do you hold onto the 
             moduleKey: "stereotypes",
             completedModuleTitle: "Module 2: Stereotypes",
             summary: [
-                "Stereotypes can fill gaps in knowledge, but they are incomplete.",
+                "Stereotypes can fill gaps in knowledge, but they are incomplete and can cause harm, even when they sound positive.",
                 "Stereotypes often make broad claims without enough evidence.",
                 "Individuals may not match cultural generalizations.",
                 "A better response is to recognize, question, investigate, and update your understanding."
