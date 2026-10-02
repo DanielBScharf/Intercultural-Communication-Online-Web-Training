@@ -160,6 +160,7 @@ If this is difficult, start with the visible “what” of your culture. Then as
 
         {
             id: "culture-iceberg-sort",
+            interaction: "currentItem",
             type: "sortingActivity",
             title: "Iceberg Sorting Activity",
             moduleLabel: "Understanding Culture",
@@ -183,24 +184,9 @@ If this is difficult, start with the visible “what” of your culture. Then as
                     feedback: "Greetings can often be directly observed, such as bowing, shaking hands, hugging, or using particular words. The expectations behind a greeting, such as appropriate physical distance or how much respect it communicates, may be less visible."
                 },
                 {
-                    text: "Public celebrations",
-                    answer: "visible",
-                    feedback: "Festivals, parades, ceremonies, and other public celebrations are visible expressions of culture. The beliefs, historical meanings, or values associated with the celebration may require deeper cultural knowledge to understand."
-                },
-                {
-                    text: "Popular sports",
-                    answer: "visible",
-                    feedback: "The sports people play and watch are easy to observe. Their cultural importance may be less obvious, including how they relate to community identity, national identity, social relationships, or competition."
-                },
-                {
                     text: "Dining practices",
                     answer: "visible",
                     feedback: "You can observe practices such as how food is served, what utensils are used, or whether dishes are shared. The expectations behind those practices, including hospitality, status, or appropriate behavior toward a host, may be less visible."
-                },
-                {
-                    text: "Religious buildings",
-                    answer: "visible",
-                    feedback: "Religious buildings, symbols, and ceremonies can be visible parts of culture. The beliefs, values, and meanings associated with them may not be apparent to someone unfamiliar with the culture."
                 },
                 {
                     text: "Forms of address",
@@ -233,11 +219,6 @@ If this is difficult, start with the visible “what” of your culture. Then as
                     feedback: "People may agree that fairness is important while disagreeing about what fairness means. One person may emphasize treating everyone the same, while another may believe circumstances, responsibilities, relationships, or needs should affect how people are treated."
                 },
                 {
-                    text: "Comfort with uncertainty",
-                    answer: "hidden",
-                    feedback: "People and cultural environments can differ in how comfortable they are when rules, expectations, or outcomes are unclear. Some contexts may emphasize detailed planning and established procedures, while others may allow greater flexibility when circumstances change."
-                },
-                {
                     text: "Expectations about hospitality",
                     answer: "hidden",
                     feedback: "Cultures can differ in what hosts and guests are expected to do. Offering food repeatedly, refusing an initial offer, bringing a gift, or insisting that a guest accept something may communicate politeness in one context but confusion in another."
@@ -247,16 +228,6 @@ If this is difficult, start with the visible “what” of your culture. Then as
                     answer: "hidden",
                     feedback: "Disagreement may be expressed openly and directly in some contexts and more indirectly in others. People may also differ in whether maintaining harmony, expressing an individual position, involving another person, or reaching an immediate resolution is emphasized."
                 },
-                {
-                    text: "Beliefs about personal responsibility",
-                    answer: "hidden",
-                    feedback: "People may differ in how they understand responsibilities to themselves, their families, their workplaces, or their communities. Decisions that appear highly individual in one context may be understood as affecting a much larger group in another."
-                },
-                {
-                    text: "Expectations about friendship",
-                    answer: "hidden",
-                    feedback: "Ideas about friendship can include different expectations about time, loyalty, emotional closeness, favors, hospitality, and frequency of communication. Two people may both consider themselves friends while having quite different expectations of what that relationship involves."
-                }
             ]
         },
 
