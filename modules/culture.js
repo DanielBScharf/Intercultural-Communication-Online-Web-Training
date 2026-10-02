@@ -109,15 +109,15 @@ export const cultureModule = {
             imageAlt: "Culture iceberg graphic",
             body: [
                 "Culture is often described like an iceberg.",
-                "You can easily see what is above the surface, but there is a lot more hidden below that is harder to see.",
-                "In essence, the 'what' of your culture, what is visible above the water, is what you can easily see; what is below the water is the 'why' you do or believe it."
+                "You can easily see what is above the surface, but there is a lot more below the surface that is harder to see.",
+                "What is above the water is the 'what' of a culture: the things you can easily see. What is below the water is the 'why' behind them."
             ]
         },
 
         {
             id: "culture-iceberg-details",
             type: "twoColumn",
-            title: "Visible and less visible Culture",
+            title: "Visible and Less Visible Culture",
             moduleLabel: "Understanding Culture",
             leftTitle: "Visible Culture",
             leftItems: [
@@ -137,7 +137,7 @@ export const cultureModule = {
                 "Communication styles",
                 "Ideas about politeness"
             ],
-            note: "Most intercultural misunderstandings happen because of hidden culture, not visible culture."
+            note: "Most intercultural misunderstandings happen because of less visible culture, not visible culture."
         },
 
         {
@@ -147,10 +147,10 @@ export const cultureModule = {
             moduleLabel: "Understanding Culture",
             image: "images/culture/cultural-iceberg.png",
             imageAlt: "Culture iceberg graphic",
-            prompt: "What are some visible and hidden aspects of your culture?",
+            prompt: "What are some visible and less visible aspects of your culture?",
             storageKey: "cultureIcebergReflection",
             required: true,
-            rationale: `It can be difficult, but important, to identify both the visible and hidden aspects of your own culture. We do not always examine our own cultural assumptions closely, especially the hidden ones. At the same time, cultural practices that differ from our own can quickly seem surprising, confusing, or unusual. Examining the hidden aspects of your own culture can help you recognize that many of your own behaviors and expectations also have cultural explanations.
+            rationale: `It can be difficult, but important, to identify both the visible and less visible aspects of your own culture. We do not always examine our own cultural assumptions closely, especially the less visible ones. At the same time, cultural practices that differ from our own can quickly seem surprising, confusing, or unusual. Examining the less visible aspects of your own culture can help you recognize that many of your own behaviors and expectations also have cultural explanations.
 
 If this is difficult, start with the visible “what” of your culture. Then ask “why?” Looking underneath visible practices can help you identify some of the values, beliefs, assumptions, and expectations that influence them.`,
             learningObjectives: ["LO1"],
@@ -234,12 +234,12 @@ If this is difficult, start with the visible “what” of your culture. Then as
         {
             id: "culture-hidden-misunderstanding-reflection",
             type: "reflection",
-            title: "Hidden Culture and Misunderstandings",
+            title: "Less Visible Culture and Misunderstandings",
             moduleLabel: "Understanding Culture",
-            prompt: "How could a hidden aspect of culture lead to a misunderstanding between people from different cultural backgrounds? Think of an example, or explain how differences in values, expectations, or assumptions could affect the way people interpret the same behavior.",
+            prompt: "How could a less visible aspect of culture lead to a misunderstanding between people from different cultural backgrounds? Think of an example, or explain how differences in values, expectations, or assumptions could affect the way people interpret the same behavior.",
             storageKey: "cultureHiddenMisunderstandingReflection",
             required: true,
-            rationale: "Hidden aspects of culture can influence how people communicate, make decisions, show respect, respond to disagreement, and interpret other people's behavior. When those influences are not visible, it can be easy to explain unfamiliar behavior using your own expectations. Recognizing that there may be something beneath the surface can help you pause, seek more information, and consider other explanations before reaching a conclusion.",
+            rationale: "Less visible aspects of culture can influence how people communicate, make decisions, show respect, respond to disagreement, and interpret other people's behavior. When those influences are not visible, it can be easy to explain unfamiliar behavior using your own expectations. Recognizing that there may be something beneath the surface can help you pause, seek more information, and consider other explanations before reaching a conclusion.",
             learningObjectives: ["LO1", "LO3"],
             competencies: ["IC1", "IC2", "IC3"],
             placeholder: "Write your thoughts here..."
@@ -248,7 +248,7 @@ If this is difficult, start with the visible “what” of your culture. Then as
         {
             id: "culture-hidden-matters",
             type: "hiddenCulture",
-            title: "Why Hidden Culture Matters",
+            title: "Why Less Visible Culture Matters",
             moduleLabel: "Understanding Culture",
             body: [
                 "Many intercultural misunderstandings begin with behaviors we can see but cultural influences we cannot.",
@@ -272,7 +272,7 @@ If this is difficult, start with the visible “what” of your culture. Then as
             ],
             qualification: "This does not mean that every Japanese or Korean person communicates indirectly, or that every American communicates directly. Culture can influence behavior, but it does not determine how every individual will act. The goal is not to replace one assumption with another. It is to recognize that there may be explanations you have not yet considered.",
             takeawayTitle: "Look beneath the surface.",
-            takeaway: "When a behavior seems confusing, frustrating, or inappropriate, ask what hidden values or expectations might help explain it before deciding what it means."
+            takeaway: "When a behavior seems confusing, frustrating, or inappropriate, ask what less visible values or expectations might help explain it before deciding what it means."
         },
 
         {
@@ -300,7 +300,7 @@ If this is difficult, start with the visible “what” of your culture. Then as
                 {
                     title: "German Beer Culture",
                     image: "images/culture/german_beer.png",
-                    imageAlt: "German beer culture image",
+                    imageAlt: "A busy outdoor beer garden in the late afternoon. Groups of adults sit at long wooden tables under trees, talking over glasses of beer.",
                     body: [
                         "When the author of this training moved to Germany, it was strange to them that colleagues and adult students might drink beer during lunch or bring beer to class for a birthday.",
                         "From one cultural perspective, this might feel unusual. From another, it may be normal social behavior."
@@ -309,7 +309,7 @@ If this is difficult, start with the visible “what” of your culture. Then as
                 {
                     title: "Japanese Bathhouse",
                     image: "images/culture/japanese_bath.png",
-                    imageAlt: "Japanese bathhouse image",
+                    imageAlt: "A group of men relaxing and chatting in a steaming outdoor hot spring pool surrounded by rocks, with wooden washing stations and buckets at the side.",
                     body: [
                         "In Japan, it can be common to use shared bathing spaces, especially in certain hotels, inns, or public baths.",
                         "To someone from a culture where private showers are expected, this may feel uncomfortable at first. To others, it may feel relaxing, ordinary, and communal."
@@ -318,7 +318,7 @@ If this is difficult, start with the visible “what” of your culture. Then as
                 {
                     title: "Natto",
                     image: "images/culture/natto.jpg",
-                    imageAlt: "Natto image",
+                    imageAlt: "Chopsticks lifting natto, sticky fermented soybeans, from a small white bowl. Long stringy threads stretch between the beans.",
                     body: [
                         "Natto is a common Japanese breakfast food made from fermented soybeans.",
                         "Many Japanese people enjoy it, while many Americans may react strongly to its texture, smell, or appearance. Both reactions are shaped by cultural expectations about food."
@@ -353,7 +353,7 @@ When you encounter a very different cultural perspective, take a moment before j
             title: "Revisiting Your Definition of Culture",
             moduleLabel: "Understanding Culture",
             body: [
-                "At the beginning of this module, you wrote your own definition of culture. Throughout this module, you explored visible and invisible aspects of culture, examined culture as the lens through which we interpret the world, and considered how people may view the same situation differently. Before moving on, take a few minutes to reflect on how your understanding has changed."
+                "At the beginning of this module, you wrote your own definition of culture. Throughout this module, you explored visible and less visible aspects of culture, examined culture as the lens through which we interpret the world, and considered how people may view the same situation differently. Before moving on, take a few minutes to reflect on how your understanding has changed."
             ],
             reviewResponse: {
                 title: "Your Original Definition",
@@ -412,7 +412,7 @@ When you encounter a very different cultural perspective, take a moment before j
             moduleKey: "culture",
             completedModuleTitle: "Understanding Culture",
             summary: [
-                "Culture includes visible and hidden elements.",
+                "Culture includes visible and less visible elements.",
                 "Culture changes across generations, contexts, and groups.",
                 "Culture shapes how people interpret the world.",
                 "Different perspectives can exist at the same time."

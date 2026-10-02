@@ -39,7 +39,7 @@ By the end of the course, learners will be able to:
 * Progress tracking
 * Interactive reflection prompts
 * Accordion-based content sections
-* Sorting activity for visible and hidden culture
+* Sorting activity for visible and less visible culture
 * Scenario-based learning using a Prague comic case study
 * Critical incident practice activities
 

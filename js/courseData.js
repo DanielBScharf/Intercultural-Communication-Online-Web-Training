@@ -15,11 +15,11 @@ import { finalReflectionModule } from "../modules/finalReflection.js";
 // We will replace these one at a time as we build them.
 
 const learningObjectives = {
-    LO1: "Explain what culture is and how it influences perception.",
-    LO2: "Identify stereotypes and assumptions.",
-    LO3: "Demonstrate and build tolerance of ambiguity.",
-    LO4: "Use DAEA to critically reflect on experiences.",
-    LO5: "Create a plan of action based on a critical reflection."
+    LO1: "Distinguish visible from less visible elements of culture and explain how a less visible element can cause a misunderstanding.",
+    LO2: "Given a statement, identify whether it's a stereotype and rewrite it as a tentative, individual-level observation.",
+    LO3: "Given an unclear situation, generate at least two plausible explanations, identify what you would need to find out, and choose a response that doesn't depend on a single interpretation.",
+    LO4: "In a written account of an intercultural incident, distinguish what happened from your interpretation of it and from your emotional reaction to it.",
+    LO5: "Based on your reflection, write a specific next step for a future intercultural situation."
 };
 
 const competencies = {

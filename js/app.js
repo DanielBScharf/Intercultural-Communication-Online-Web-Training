@@ -187,7 +187,7 @@ function renderHome() {
 
                     <a
                         class="project-documentation-link"
-                        href="https://github.com/DanielBScharf/Intercultural-Communication-Online-Web-Training/blob/feature/guided-activity/docs/DESIGN_DECISIONS.md">
+                        href="https://github.com/DanielBScharf/Intercultural-Communication-Online-Web-Training/blob/main/docs/DESIGN_DECISIONS.md">
                         View Project Documentation <span aria-hidden="true">→</span>
                     </a>
                 </div>
@@ -216,11 +216,13 @@ function renderHome() {
 
                         <div class="accordion-body">
 
-                            <ul>
+                            <p>By the end of this workshop, you will be able to:</p>
+
+                            <ol>
                                 ${courseData.objectives.map(objective => `
                                     <li>${objective}</li>
                                 `).join("")}
-                            </ul>
+                            </ol>
 
                         </div>
 

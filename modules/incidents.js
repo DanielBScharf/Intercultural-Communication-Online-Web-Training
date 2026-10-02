@@ -47,7 +47,7 @@ export const incidentsModule = {
             body: [
                 "A critical incident is a moment when something feels confusing, uncomfortable, surprising, or difficult because expectations are not shared.",
                 "The incident is not always dramatic. It may be a short conversation, a social expectation, a silence, a refusal, or a decision-making process that feels unfamiliar.",
-                "Critical incidents are useful for learning because they reveal hidden cultural expectations. They also remind us that a first interpretation may be incomplete.",
+                "Critical incidents are useful for learning because they reveal less visible cultural expectations. They also remind us that a first interpretation may be incomplete.",
                 "In each scenario, describe what happened, analyze possible explanations, evaluate your reaction, and apply what you learned to future action."
             ],
             note: "As you work, try to avoid stereotypes. Treat each scenario as a chance to explore ambiguity before making a judgment."
@@ -262,7 +262,7 @@ export const incidentsModule = {
                     slideType: "summary",
                     title: "Takeaways",
                     body: [
-                        "This incident shows hidden cultural differences in the definition of family and community.",
+                        "This incident shows less visible cultural differences in the definition of family and community.",
                         "A \"family wedding\" may be a huge celebration with the entire community present."
                     ],
                     points: [

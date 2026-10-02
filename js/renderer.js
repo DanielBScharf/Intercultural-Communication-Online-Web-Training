@@ -341,7 +341,7 @@ function renderHiddenCulture(lesson, context) {
             ${renderParagraphs(lesson.example)}
         </section>
 
-        <section class="mt-4" aria-label="Observable behavior and possible hidden cultural influences">
+        <section class="mt-4" aria-label="Observable behavior and possible less visible cultural influences">
             <div class="info-column info-column-visible">
                 <h3 class="h5">${lesson.visibleTitle}</h3>
                 <p class="mb-0">“${lesson.observation}”</p>

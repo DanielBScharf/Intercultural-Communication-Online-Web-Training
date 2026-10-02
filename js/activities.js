@@ -184,7 +184,7 @@ export function initializeSortingActivity(lesson) {
                             <strong>Excellent!</strong>
                             ${sortedCount} / ${lesson.items.length} correct.
                             <br>
-                            You successfully identified examples of visible and hidden culture.
+                            You successfully identified examples of visible and less visible culture.
                         </div>
                     `;
                 }

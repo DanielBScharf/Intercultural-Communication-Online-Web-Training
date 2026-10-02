@@ -9,7 +9,7 @@ export const lessons = {
   },
   "culture-hidden-misunderstanding-reflection": {
     id: "culture-hidden-misunderstanding-reflection",
-    title: "Hidden Culture and Misunderstandings",
+    title: "Less Visible Culture and Misunderstandings",
   },
   "culture-perspective": {
     id: "culture-perspective",
@@ -94,7 +94,7 @@ export const reflections = {
   cultureIcebergReflection: {
     reflectionId: "cultureIcebergReflection",
     lessonId: "culture-iceberg-reflection",
-    reflectionTitle: "Visible and Hidden Culture",
+    reflectionTitle: "Visible and Less Visible Culture",
     competencies: [],
     designPrinciples: [],
     learningOutcomes: ["culturalAwareness"],
@@ -107,12 +107,12 @@ export const reflections = {
   cultureHiddenMisunderstandingReflection: {
     reflectionId: "cultureHiddenMisunderstandingReflection",
     lessonId: "culture-hidden-misunderstanding-reflection",
-    reflectionTitle: "Hidden Culture and Misunderstandings",
+    reflectionTitle: "Less Visible Culture and Misunderstandings",
     competencies: ["culturalAwareness", "perspectiveTaking", "criticalReflection", "curiosity", "delayingJudgment"],
     designPrinciples: ["recognizeIncompletePicture", "multipleInterpretations", "delayJudgment", "seekInformation"],
     learningOutcomes: ["culturalAwareness", "toleranceOfAmbiguity"],
     whatYouPracticed:
-      "You considered how hidden values, expectations, or assumptions could lead people from different cultural backgrounds to interpret the same behavior differently.",
+      "You considered how less visible values, expectations, or assumptions could lead people from different cultural backgrounds to interpret the same behavior differently.",
     howThisBuildsYourSkills:
       "Looking beneath observable behavior helps you recognize when your first interpretation may be incomplete. Considering other explanations can encourage curiosity, help you delay judgment, and identify where more information would help you understand a situation.",
   },
