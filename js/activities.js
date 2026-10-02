@@ -18,7 +18,9 @@
 
 import {
     saveResponse,
-    loadResponse
+    loadResponse,
+    saveItem,
+    loadItem
 } from "./storage.js";
 
 import { renderReflectionPurposeDisclosure } from "./renderers/reflection.js";
@@ -26,10 +28,10 @@ import { renderResponseValidation, initializeResponseValidation, validateRequire
 import { updateNavigationOrder } from "./responsiveNavigation.js";
 
 export function renderSortingActivityContent(lesson) {
+    if (lesson.interaction === "sourcePool") return renderSourcePoolSorting(lesson);
     const shuffledItems = shuffleItems(lesson.items);
 
     lesson.currentItemOrder = shuffledItems;
-    if (lesson.interaction === "currentItem") return renderCurrentItemSorting(lesson, shuffledItems);
 
     return `
         <p class="lead">${lesson.instructions}</p>
@@ -93,8 +95,8 @@ export function renderSortingActivityContent(lesson) {
 
 export function initializeSortingActivity(lesson) {
     if (lesson.type !== "sortingActivity") return;
-    if (lesson.interaction === "currentItem") {
-        initializeCurrentItemSorting(lesson);
+    if (lesson.interaction === "sourcePool") {
+        initializeSourcePoolSorting(lesson);
         return;
     }
 
@@ -204,26 +206,49 @@ export function initializeSortingActivity(lesson) {
     });
 }
 
-function renderCurrentItemSorting(lesson, items) {
+function getSourcePoolState(lesson) {
+    const saved = loadItem(`sorting_${lesson.id}`, {}) || {};
+    const byText = new Map(lesson.items.map(item => [item.text, item]));
+    const names = [...new Set(Array.isArray(saved.order) ? saved.order : [])].filter(name => byText.has(name));
+    const items = [...names.map(name => byText.get(name)), ...shuffleItems(lesson.items.filter(item => !names.includes(item.text)))];
+    const sorted = new Set((Array.isArray(saved.sorted) ? saved.sorted : []).filter(name => byText.has(name)));
+    return { items, sorted };
+}
+
+function renderSourcePoolSorting(lesson) {
+    const state = getSourcePoolState(lesson);
+    lesson.currentItemOrder = state.items;
+    lesson.sortedItemTexts = state.sorted;
     return `
         <p class="lead">${lesson.instructions}</p>
-        <section class="sorting-focal" aria-labelledby="sortingFocalTitle">
+        <section class="sorting-focal" aria-labelledby="sortingPoolTitle">
             <div class="sorting-focal-header">
-                <h3 id="sortingFocalTitle" class="h5 mb-0">Sort the Cultural Element</h3>
-                <span id="sortingCounter" class="sorting-counter">1 of ${items.length}</span>
+                <h3 id="sortingPoolTitle" class="h5 mb-0">Items to Sort</h3>
+                <span id="sortingCounter" class="sorting-counter">${state.sorted.size} of ${state.items.length} sorted</span>
             </div>
-            <h4 id="sortingCurrentItem" class="sorting-current-item" tabindex="-1" aria-describedby="sortingCounter">${items[0].text}</h4>
-            <div role="group" aria-labelledby="sortingQuestion">
-                <p id="sortingQuestion" class="fw-semibold">Where does this belong?</p>
-                <div class="sorting-category-choices">
-                    ${lesson.categories.map(category => `
-                        <button type="button" class="btn btn-outline-primary" data-current-sort-choice="${category.key}"
-                            aria-describedby="sortingCurrentItem sortingFeedback">${category.title}</button>
-                    `).join("")}
+            <div id="sortingItems" class="sorting-source-grid mt-3">
+                ${state.items.map((item, index) => state.sorted.has(item.text) ? "" : `
+                    <button type="button" class="btn btn-outline-primary sorting-source-item" data-pool-sort-index="${index}"
+                        aria-pressed="false" aria-controls="sortingSelection">
+                        <span>${item.text}</span><span class="sorting-source-marker" aria-hidden="true" hidden>Selected</span>
+                    </button>
+                `).join("")}
+            </div>
+            <p id="sortingCompletion" class="fw-semibold mt-3 mb-0" ${state.sorted.size === state.items.length ? "" : "hidden"}>All items sorted.</p>
+            <section id="sortingSelection" class="mt-4" aria-labelledby="sortingSelectedItem" hidden>
+                <p id="sortingSelectionLabel" class="small fw-semibold mb-1">Selected</p>
+                <h4 id="sortingSelectedItem" class="sorting-current-item" tabindex="-1"></h4>
+                <div id="sortingChoiceGroup" role="group" aria-labelledby="sortingQuestion">
+                    <p id="sortingQuestion" class="fw-semibold">Where does this belong?</p>
+                    <div class="sorting-category-choices">
+                        ${lesson.categories.map(category => `
+                            <button type="button" class="btn btn-outline-primary" data-pool-sort-choice="${category.key}"
+                                aria-describedby="sortingSelectedItem sortingFeedback">${category.title}</button>
+                        `).join("")}
+                    </div>
                 </div>
-            </div>
-            <div id="sortingFeedback" class="mt-3" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
-            <button type="button" id="sortingNextItem" class="btn btn-primary mt-3" hidden>Next Item</button>
+                <div id="sortingFeedback" class="mt-3" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
+            </section>
         </section>
         <section class="sorting-reference mt-4" aria-labelledby="sortingReferenceTitle">
             <h3 id="sortingReferenceTitle" class="h5">Your Sorted Items</h3>
@@ -242,26 +267,51 @@ function renderCurrentItemSorting(lesson, items) {
     `;
 }
 
-function initializeCurrentItemSorting(lesson) {
+function initializeSourcePoolSorting(lesson) {
     const items = lesson.currentItemOrder || lesson.items;
-    let index = 0;
-    let answered = false;
-    const currentItem = document.getElementById("sortingCurrentItem");
+    const sorted = lesson.sortedItemTexts || getSourcePoolState(lesson).sorted;
+    let selected = null;
+    const selection = document.getElementById("sortingSelection");
+    const selectedLabel = document.getElementById("sortingSelectionLabel");
+    const selectedItem = document.getElementById("sortingSelectedItem");
+    const choiceGroup = document.getElementById("sortingChoiceGroup");
     const counter = document.getElementById("sortingCounter");
     const feedback = document.getElementById("sortingFeedback");
-    const nextButton = document.getElementById("sortingNextItem");
-    const choices = [...document.querySelectorAll("[data-current-sort-choice]")];
+    const completion = document.getElementById("sortingCompletion");
+    const sourceButtons = [...document.querySelectorAll("[data-pool-sort-index]")];
 
-    function addToReferenceList() {
-        const item = items[index];
-        document.querySelector(`[data-category-items="${item.answer}"]`)
-            .appendChild(createSortedItemReview(item, index));
-    }
+    const saveState = () => saveItem(`sorting_${lesson.id}`, {
+        order: items.map(item => item.text), sorted: [...sorted]
+    });
+    const addToDestination = (item, index) => document.querySelector(`[data-category-items="${item.answer}"]`)
+        .appendChild(createSortedItemReview(item, index));
+    sorted.forEach(text => {
+        const index = items.findIndex(item => item.text === text);
+        addToDestination(items[index], index);
+    });
+    saveState();
 
-    choices.forEach(button => button.addEventListener("click", () => {
-        if (answered) return;
-        const item = items[index];
-        const correct = button.dataset.currentSortChoice === item.answer;
+    sourceButtons.forEach(button => button.addEventListener("click", () => {
+        const index = Number(button.dataset.poolSortIndex);
+        if (sorted.has(items[index].text)) return;
+        selected = { item: items[index], index, button };
+        sourceButtons.forEach(source => {
+            const isSelected = source === button;
+            source.setAttribute("aria-pressed", String(isSelected));
+            source.querySelector(".sorting-source-marker").hidden = !isSelected;
+        });
+        selectedLabel.textContent = "Selected";
+        selectedItem.textContent = selected.item.text;
+        selection.hidden = false;
+        choiceGroup.hidden = false;
+        feedback.innerHTML = "";
+        selectedItem.focus();
+    }));
+
+    document.querySelectorAll("[data-pool-sort-choice]").forEach(button => button.addEventListener("click", () => {
+        if (!selected) return;
+        const { item, index, button: sourceButton } = selected;
+        const correct = button.dataset.poolSortChoice === item.answer;
         feedback.innerHTML = "";
         const message = document.createElement("div");
         message.className = `alert ${correct ? "alert-success" : "alert-warning"} mb-0`;
@@ -270,8 +320,6 @@ function initializeCurrentItemSorting(lesson) {
                 ? "Look again. Is this something you can directly observe, or is it an underlying value, expectation, or assumption that may influence what you can see?"
                 : "Look again. Can you directly observe this behavior, practice, or expression of culture, even if its meaning may be influenced by something less visible?";
         } else {
-            answered = true;
-            choices.forEach(choice => { choice.disabled = true; });
             const acknowledgement = document.createElement("strong");
             acknowledgement.textContent = "That's it.";
             const explanation = document.createElement("p");
@@ -281,31 +329,24 @@ function initializeCurrentItemSorting(lesson) {
         }
         feedback.appendChild(message);
         if (!correct) return;
-        if (index < items.length - 1) {
-            nextButton.hidden = false;
-            nextButton.focus();
-        } else {
-            addToReferenceList();
-            const completion = document.createElement("p");
-            completion.className = "fw-semibold mt-3 mb-0";
-            completion.textContent = `Excellent! ${items.length} / ${items.length} correct. You successfully identified examples of visible and less visible culture.`;
-            feedback.appendChild(completion);
-            feedback.focus();
+        sorted.add(item.text);
+        addToDestination(item, index);
+        sourceButton.setAttribute("aria-pressed", "false");
+        sourceButton.remove();
+        selected = null;
+        selectedLabel.textContent = "Sorted";
+        choiceGroup.hidden = true;
+        counter.textContent = `${sorted.size} of ${items.length} sorted`;
+        completion.hidden = sorted.size !== items.length;
+        if (!completion.hidden) {
+            const finished = document.createElement("p");
+            finished.className = "fw-semibold mt-3 mb-0";
+            finished.textContent = "All items sorted.";
+            feedback.appendChild(finished);
         }
+        saveState();
+        feedback.focus();
     }));
-
-    nextButton.addEventListener("click", () => {
-        if (!answered || index >= items.length - 1) return;
-        addToReferenceList();
-        index++;
-        answered = false;
-        currentItem.textContent = items[index].text;
-        counter.textContent = `${index + 1} of ${items.length}`;
-        feedback.innerHTML = "";
-        nextButton.hidden = true;
-        choices.forEach(button => { button.disabled = false; });
-        currentItem.focus();
-    });
 }
 
 function createSortedItemReview(item, index) {

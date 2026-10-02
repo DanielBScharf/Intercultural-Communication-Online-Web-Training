@@ -160,7 +160,7 @@ If this is difficult, start with the visible “what” of your culture. Then as
 
         {
             id: "culture-iceberg-sort",
-            interaction: "currentItem",
+            interaction: "sourcePool",
             type: "sortingActivity",
             title: "Iceberg Sorting Activity",
             moduleLabel: "Understanding Culture",
