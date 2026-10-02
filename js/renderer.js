@@ -66,6 +66,7 @@ const lessonRenderers = {
     moduleIntro: renderModuleIntro,
     moduleComplete: renderModuleComplete,
     contentImage: renderContentImage,
+    hiddenCulture: renderHiddenCulture,
     reflection: renderReflection,
     reflectionImage: renderReflection,
     reflectionSummary: renderReflectionSummary,
@@ -313,6 +314,38 @@ function renderContentImage(lesson, context) {
                 ${renderImage(lesson.image, lesson.imageAlt, lesson.title)}
             </div>
         </div>
+    `;
+
+    return renderPageShell(lesson, content, context);
+}
+
+function renderHiddenCulture(lesson, context) {
+    const content = `
+        ${renderParagraphs(lesson.body)}
+
+        <section class="info-column mt-4" aria-labelledby="hidden-culture-example">
+            <h3 id="hidden-culture-example" class="h5">${lesson.exampleTitle}</h3>
+            ${renderParagraphs(lesson.example)}
+        </section>
+
+        <section class="mt-4" aria-label="Observable behavior and possible hidden cultural influences">
+            <div class="info-column info-column-visible">
+                <h3 class="h5">${lesson.visibleTitle}</h3>
+                <p class="mb-0">“${lesson.observation}”</p>
+            </div>
+            <div class="text-center my-2" aria-hidden="true">↓</div>
+            <div class="info-column info-column-hidden">
+                <h3 class="h5">${lesson.hiddenTitle}</h3>
+                ${renderExampleList(lesson.influences, "mb-0")}
+            </div>
+        </section>
+
+        <p class="mt-4">${lesson.qualification}</p>
+
+        <section class="alert alert-warning mt-4" aria-labelledby="hidden-culture-takeaway">
+            <h3 id="hidden-culture-takeaway" class="h5">${lesson.takeawayTitle}</h3>
+            <p class="mb-0">${lesson.takeaway}</p>
+        </section>
     `;
 
     return renderPageShell(lesson, content, context);

@@ -189,15 +189,45 @@ If this is difficult, start with the visible “what” of your culture. Then as
         },
 
         {
+            id: "culture-hidden-matters",
+            type: "hiddenCulture",
+            title: "Why Hidden Culture Matters",
+            moduleLabel: "Understanding Culture",
+            body: [
+                "Many intercultural misunderstandings begin with behaviors we can see but cultural influences we cannot.",
+                "When we encounter an unfamiliar behavior, it is easy to interpret it using our own expectations. But values, communication norms, ideas about politeness, relationships, hierarchy, and other less-visible aspects of culture may influence why someone behaves in a particular way."
+            ],
+            exampleTitle: "Consider indirect communication",
+            example: [
+                "Someone accustomed to relatively direct communication may become confused or frustrated when a colleague avoids giving a direct negative answer. They might interpret the response as evasive, unclear, or even rude.",
+                "In some cultural contexts, including communication practices commonly associated with Japan and Korea, a direct refusal can create embarrassment, threaten another person's “face,” or disrupt harmony. An indirect response may therefore be intended as the more considerate or polite way to communicate.",
+                "Neither interpretation is visible in the behavior itself. To understand what is happening, you may need to look beneath the surface."
+            ],
+            visibleTitle: "Above the surface — What you observe",
+            observation: "They didn't give me a clear no.",
+            hiddenTitle: "Below the surface — What might influence the behavior",
+            influences: [
+                "Politeness",
+                "Face",
+                "Harmony",
+                "Communication norms",
+                "Relationship expectations"
+            ],
+            qualification: "This does not mean that every Japanese or Korean person communicates indirectly, or that every American communicates directly. Culture can influence behavior, but it does not determine how every individual will act. The goal is not to replace one assumption with another. It is to recognize that there may be hidden explanations to behaviors that you have not yet considered.",
+            takeawayTitle: "Look beneath the surface.",
+            takeaway: "When a behavior seems confusing, frustrating, or inappropriate, ask what hidden values or expectations might help explain it before deciding what it means."
+        },
+
+        {
             id: "culture-lens",
             type: "contentImage",
             title: "Culture is a Lens",
             moduleLabel: "Understanding Culture",
             image: "images/culture/cultural-lens.png",
-            imageAlt: "Two people viewing the same cultural event differently",
+            imageAlt: "An image of a street and glasses lens in the middle of the image. What is outside of the lens looks sad, dark, and angry. There is a man angrily shouting ouside of the lens, inside the lens there's a woman laughing and smiling. It is the same scene but seen differently through the lens.",
             body: [
                 "Culture is one of the lenses through which we see the world.",
-                "It can influence what we notice, what we value, what feels normal, and what feels unfamiliar.",
+                "It can influence what we notice, what we value, what feels normal, and what feels unfamiliar. While it cannot dicte our actions or beliefs it can color or influence them.",
                 "Two people can experience the same event and interpret it very differently."
             ],
             note: "That does not always mean one person is right and the other is wrong. They may simply be looking through different cultural lenses."
@@ -215,7 +245,7 @@ If this is difficult, start with the visible “what” of your culture. Then as
                     image: "images/culture/german_beer.png",
                     imageAlt: "German beer culture image",
                     body: [
-                        "When I moved to Germany, it was strange to me that colleagues and adult students might drink beer during lunch or bring beer to class for a birthday.",
+                        "When the author of this training moved to Germany, it was strange to them that colleagues and adult students might drink beer during lunch or bring beer to class for a birthday.",
                         "From one cultural perspective, this might feel unusual. From another, it may be normal social behavior."
                     ]
                 },
