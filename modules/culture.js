@@ -117,7 +117,7 @@ export const cultureModule = {
         {
             id: "culture-iceberg-details",
             type: "twoColumn",
-            title: "Visible and Hidden Culture",
+            title: "Visible and less visible Culture",
             moduleLabel: "Understanding Culture",
             leftTitle: "Visible Culture",
             leftItems: [
@@ -128,7 +128,7 @@ export const cultureModule = {
                 "Clothing",
                 "Music"
             ],
-            rightTitle: "Hidden Culture",
+            rightTitle: "Less Visible Culture",
             rightItems: [
                 "Religious beliefs",
                 "Family roles",
