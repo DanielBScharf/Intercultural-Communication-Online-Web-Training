@@ -182,7 +182,7 @@ export const reflections = {
     ],
     learningOutcomes: ["culturalAwareness", "toleranceOfAmbiguity"],
     whatYouPracticed:
-      "You considered ways to investigate an assumption rather than accepting it as accurate simply because it matches something you have previously heard or expected.",
+      "You looked back at a time you drew a quick conclusion about someone and restated it as an observation about one person in one situation.",
     howThisBuildsYourSkills:
       "When your understanding is incomplete, you can seek additional information through observation, questions, research, cultural informants, and continued experience. Comparing new evidence with your original assumption allows you to refine your understanding rather than relying on stereotypes to fill gaps in your knowledge.",
   },

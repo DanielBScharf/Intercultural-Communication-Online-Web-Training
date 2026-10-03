@@ -32,6 +32,7 @@ intercultural-workshop/
 │   ├── courseData.js
 │   ├── renderer.js
 │   ├── activities.js
+│   ├── branchingScenario.js
 │   └── storage.js
 ├── modules/
 │   ├── culture.js
@@ -84,6 +85,26 @@ Use `guidedActivity` for:
 - reflective case studies
 
 Do not force decisions when the learning goal is analysis or reflection.
+
+### branchingScenario
+
+`branchingScenario` is a reusable multiple-choice scenario. The learner reads a situation, makes one or more decisions, sees what each choice leads to, and then compares every path side by side.
+
+All of its logic and layout live in `js/branchingScenario.js`. The story itself lives in the module file, so a new scenario is added by writing content, not code. The data format is documented at the top of `js/branchingScenario.js`.
+
+Use `branchingScenario` when the learning goal is a choice and its consequence. Use `guidedActivity` when the goal is analysis or reflection.
+
+Behavior:
+
+- Each decision shows its options, then the outcome of the chosen option. The choice is locked until the learner restarts.
+- By default every choice leads to the next decision in the list. An option can set `next` to another decision's id, or to `"end"`, to branch.
+- The lesson's own Next and Previous buttons step through the scenario, so there is only one set of navigation.
+- The final screen lists every option with its outcome and marks the learner's choices. "Try a different path" restarts.
+- Choices are saved in the browser and restored on return.
+- A scenario is optional. Skip for Now is offered until a choice is made, and a scenario never blocks module completion.
+- Optional `audio` fields add voice-over to the scene and to outcomes. The written text is always shown and serves as the transcript.
+- A later reflection can show the learner's choices by setting `scenarioRecap` to the scenario's lesson id.
+- `validateScenario()` reports content mistakes, and `tests/branchingScenario.test.mjs` runs it on every scenario in the course.
 
 ### reflectionSummary
 

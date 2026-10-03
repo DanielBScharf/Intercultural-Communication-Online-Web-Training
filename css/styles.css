@@ -282,8 +282,7 @@ h6 {
 }
 
 .project-documentation {
-    border-top: 1px solid var(--border);
-    padding-top: 1.5rem;
+    padding-top: 0;
 }
 
 .project-documentation-link {
@@ -1101,5 +1100,294 @@ textarea[aria-invalid="true"] {
 @media (max-width: 575.98px) {
     .reflection-summary-item {
         padding: 1rem;
+    }
+}
+
+/* Branching scenario */
+
+.scenario-progress {
+    color: var(--text-muted);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 0.75rem;
+}
+
+.scenario-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    animation: fadeInUp 0.25s ease-out;
+}
+
+.scenario-scene {
+    background: var(--surface-info);
+    border: 1px solid var(--primary-border);
+    border-radius: 0.85rem;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.scenario-scene p:last-child {
+    margin-bottom: 0;
+}
+
+.scenario-scene-image {
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.scenario-audio {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.scenario-prompt {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.scenario-prompt:focus {
+    outline: none;
+}
+
+.scenario-options,
+.scenario-review-grid {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.scenario-option {
+    min-height: 44px;
+    padding: 0.85rem 1rem;
+    text-align: left;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.scenario-option:focus-visible,
+#scenarioRestart:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+}
+
+/* After a choice, the other options stay readable but step back. */
+.scenario-option:disabled {
+    opacity: 1;
+    color: var(--text-muted);
+    border-color: var(--border);
+    background: var(--surface);
+}
+
+.scenario-option[aria-pressed="true"],
+.scenario-option[aria-pressed="true"]:disabled {
+    border-width: 2px;
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+.scenario-outcome {
+    background: var(--accent-soft);
+    border-left: 5px solid var(--accent);
+    border-radius: 0.85rem;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.scenario-outcome:focus {
+    outline: none;
+}
+
+.scenario-outcome:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+}
+
+.scenario-outcome p:last-child,
+.scenario-review-option p:last-child {
+    margin-bottom: 0;
+}
+
+.scenario-outcome-label {
+    font-weight: 700;
+}
+
+.scenario-tag {
+    color: var(--accent-text);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.lesson-card .scenario-tag {
+    font-size: 0.85rem;
+}
+
+.scenario-review-decision {
+    margin-top: 1.75rem;
+}
+
+.scenario-review-prompt {
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+}
+
+.scenario-review-grid {
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.scenario-review-option {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.85rem;
+    padding: 1rem;
+}
+
+.lesson-card .scenario-review-option,
+.lesson-card .scenario-review-option p {
+    font-size: 0.98rem;
+}
+
+.scenario-review-option.is-chosen {
+    border: 2px solid var(--primary);
+    background: var(--primary-light);
+}
+
+.scenario-review-label {
+    font-weight: 700;
+}
+
+.lesson-card .scenario-review-marker,
+.lesson-card .scenario-review-recommended {
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.scenario-review-marker {
+    color: var(--primary-dark);
+    margin-bottom: 0.5rem;
+}
+
+.scenario-review-recommended {
+    color: var(--success);
+    margin-top: 0.75rem;
+}
+
+.scenario-review-recommended::before {
+    content: "\2713\00a0";
+}
+
+.scenario-debrief {
+    background: var(--primary-light);
+    border-left: 5px solid var(--primary);
+    border-radius: 0.85rem;
+    padding: 1.25rem;
+    margin-top: 1.75rem;
+}
+
+.scenario-recap {
+    background: var(--surface-info);
+    border: 1px solid var(--primary-border);
+    border-radius: 0.85rem;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.scenario-recap-title {
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.scenario-recap dt {
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+.scenario-recap dd {
+    margin-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scenario-card {
+        animation: none;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .scenario-card {
+        padding: 1rem;
+    }
+}
+
+/* Home page actions and footer */
+
+.home-resume-note {
+    color: var(--text-muted);
+}
+
+.home-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.site-footer {
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 1.5rem 0 2rem;
+    text-align: center;
+}
+
+.site-footer a {
+    color: var(--primary-dark);
+    font-weight: 600;
+    text-underline-offset: 0.2em;
+}
+
+.site-footer a:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+}
+
+/* On phones and tablets the menu button sits in its own bar at the
+   top, so it never covers lesson text while the learner scrolls. */
+
+@media (max-width: 991.98px) {
+    #app {
+        padding-top: 4rem;
+    }
+
+    #app::before {
+        content: "";
+        position: fixed;
+        inset: 0 0 auto 0;
+        height: 4rem;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        z-index: 1030;
+    }
+
+    .sidebar-toggle {
+        top: 0.625rem;
+        box-shadow: none;
+    }
+}
+
+@media print {
+    #app {
+        padding-top: 0;
+    }
+
+    #app::before,
+    .site-footer {
+        display: none;
     }
 }

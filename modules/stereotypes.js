@@ -115,49 +115,112 @@ The important question is what you do with that knowledge. Do you hold onto the 
         },
 
         {
-            id: "stereotypes-sort",
-            type: "sortingActivity",
-            title: "Stereotype or Observation?",
+            id: "stereotypes-scenario",
+            type: "branchingScenario",
+            title: "The New Colleague",
             moduleLabel: "Stereotypes",
-            instructions: "Sort each statement as either a stereotype or an observation.",
-            categories: [
+            instructions: "Read the situation, then choose what you would think and do. Pick the answer closest to your honest first reaction.",
+            learningObjectives: ["LO2"],
+            competencies: ["IC2", "IC3"],
+
+            scene: {
+                body: [
+                    "A new colleague, Ana, is joining your project team from one of your company's offices abroad.",
+                    "Before the first meeting, a coworker leans over and says, “People from there are never on time. Plan around it.”",
+                    "The meeting starts at 9:00. Ana arrives at 9:10."
+                ]
+            },
+
+            decisions: [
                 {
-                    key: "stereotype",
-                    title: "Stereotype",
-                    description: "A broad claim or assumption about a group."
+                    id: "conclusion",
+                    prompt: "What do you conclude?",
+                    options: [
+                        {
+                            id: "stereotype",
+                            label: "“He was right. They really are always late.”",
+                            tag: "Stereotype",
+                            outcome: [
+                                "One late arrival has become proof of a claim about a whole country.",
+                                "This is how stereotypes get stronger. Once you expect something, you notice what fits and overlook what doesn't. If Ana is on time for the next five meetings, will you notice?"
+                            ]
+                        },
+                        {
+                            id: "judgment",
+                            label: "“Ana is unreliable.”",
+                            tag: "Judgment about a person",
+                            outcome: [
+                                "You have not blamed a whole group, but you have still gone further than the facts.",
+                                "“Unreliable” is a conclusion about Ana's character, based on ten minutes of one morning. You do not yet know why she was late."
+                            ]
+                        },
+                        {
+                            id: "observation",
+                            label: "“Ana was ten minutes late today. I don't know why.”",
+                            tag: "Observation",
+                            recommended: true,
+                            outcome: [
+                                "This is an observation. It describes one person, on one occasion, and it stops at what you actually saw.",
+                                "It also leaves a question open, and an open question is something you can go and answer."
+                            ]
+                        }
+                    ]
                 },
                 {
-                    key: "observation",
-                    title: "Observation",
-                    description: "A specific detail based on something directly noticed."
+                    id: "action",
+                    body: [
+                        "Over the next two weeks, Ana arrives a few minutes late to the same Monday meeting twice more."
+                    ],
+                    prompt: "What do you do?",
+                    options: [
+                        {
+                            id: "workaround",
+                            label: "Tell Ana the meeting starts at 8:45, so that she arrives by 9:00.",
+                            tag: "Acting on the assumption",
+                            outcome: [
+                                "Ana arrives at 8:45 and waits alone for fifteen minutes. Later she sees the real time on the shared calendar.",
+                                "She realizes you expected her to be late, and she can guess why. She says nothing, but she is more guarded with you afterward.",
+                                "You solved a problem you had not understood, and it cost you her trust."
+                            ]
+                        },
+                        {
+                            id: "avoid",
+                            label: "Say nothing, but stop giving her tasks with tight deadlines.",
+                            tag: "Avoiding the question",
+                            outcome: [
+                                "Ana notices that the urgent, interesting work is going to other people. Nobody tells her why.",
+                                "She keeps arriving late to the Monday meeting, because the cause has not changed. You never find out what it is.",
+                                "The assumption was never tested, so it quietly became a decision about what she is trusted with."
+                            ]
+                        },
+                        {
+                            id: "ask",
+                            label: "Mention it to her privately and ask whether the meeting time works for her.",
+                            tag: "Checking the assumption",
+                            recommended: true,
+                            outcome: [
+                                "Ana looks relieved. Her team's weekly call with another office ends at 9:00, and it nearly always runs over. She had not wanted to ask for a change in her first month.",
+                                "You move the meeting to 9:15. She is on time from then on.",
+                                "One question replaced a guess with a fact."
+                            ]
+                        }
+                    ]
                 }
             ],
-            items: [
-                {
-                    text: "All people from that country are quiet.",
-                    answer: "stereotype"
-                },
-                {
-                    text: "The person I met spoke quietly during the meeting.",
-                    answer: "observation"
-                },
-                {
-                    text: "Everyone from that culture hates direct feedback.",
-                    answer: "stereotype"
-                },
-                {
-                    text: "My colleague avoided giving a direct answer in that conversation.",
-                    answer: "observation"
-                },
-                {
-                    text: "People from cities are always rude.",
-                    answer: "stereotype"
-                },
-                {
-                    text: "The people I spoke with in that city seemed busy and direct.",
-                    answer: "observation"
-                }
-            ]
+
+            debrief: {
+                title: "What the scenario shows",
+                body: [
+                    "Your coworker's comment did not describe Ana. It described what he expected, and it shaped what you were ready to see.",
+                    "An observation is not the same as having no opinion. “Ana was late today, and I don't know why” is accurate, and it points to the next step: find out."
+                ],
+                takeaways: [
+                    "A stereotype turns one event into proof about a group.",
+                    "A judgment turns one event into a claim about a person's character.",
+                    "An observation stays with what you saw and leaves room for more information.",
+                    "Acting on an untested assumption can do harm, even with good intentions."
+                ]
+            }
         },
 
         {
@@ -166,12 +229,13 @@ The important question is what you do with that knowledge. Do you hold onto the 
             title: "Checking an Assumption",
             moduleLabel: "Stereotypes",
             body: [
-                "Use what you practiced in the stereotype and observation activity to consider how you could check an assumption instead of accepting it as complete information."
+                "In the scenario, one late arrival could become a stereotype, a judgment, or an observation. Now apply the same idea to your own experience."
             ],
-            prompt: "Imagine you realize that one of your expectations about another culture is based on a stereotype or incomplete information. What could you do to check that assumption and develop a more accurate understanding?",
+            scenarioRecap: "stereotypes-scenario",
+            prompt: "Think of a time you drew a quick conclusion about someone that turned out to be incomplete. What had you assumed? How could you have described what you saw as an observation instead?",
             storageKey: "stereotypesAssumptionCheckReflection",
             required: true,
-            rationale: "Recognizing a stereotype is only the first step. What matters next is what you do about it. Planning how you would check an assumption makes it more likely that you will pause and look for more information when it happens in a real situation.",
+            rationale: "Recognizing a stereotype in a story is easier than catching one of your own conclusions. Looking back at a real example, and restating it as what you actually saw, makes it more likely that you will pause and look for more information the next time.",
             learningObjectives: ["LO2"],
             competencies: ["IC2", "IC3"],
             placeholder: "Write your response here..."
@@ -188,7 +252,7 @@ The important question is what you do with that knowledge. Do you hold onto the 
                 "Stereotypes can fill gaps in knowledge, but they are incomplete and can cause harm, even when they sound positive.",
                 "Stereotypes often make broad claims without enough evidence.",
                 "Individuals may not match cultural generalizations.",
-                "A better response is to recognize, question, investigate, and update your understanding."
+                "A better response is to describe what you actually observed, check your assumption, and update your understanding."
             ],
             nextModuleKey: "ambiguity"
         }

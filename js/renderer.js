@@ -32,6 +32,12 @@ import {
 } from "./activities.js";
 
 import {
+    renderBranchingScenarioContent,
+    initializeBranchingScenario,
+    renderScenarioRecap
+} from "./branchingScenario.js";
+
+import {
     getReflectionMetadata
 } from "./metaData/reflectionsMetadata.js";
 
@@ -66,6 +72,7 @@ export function renderLesson(lesson, context) {
     initializeImageReveal(lesson);
     initializeStoryActivity(lesson, context);
     initializeGuidedActivity(lesson, context);
+    initializeBranchingScenario(lesson, context);
     updateNavigationOrder();
 }
 
@@ -82,7 +89,8 @@ const lessonRenderers = {
     sortingActivity: renderSortingActivity,
     imageReveal: renderImageReveal,
     storyActivity: renderStoryActivity,
-    guidedActivity: renderGuidedActivity
+    guidedActivity: renderGuidedActivity,
+    branchingScenario: renderBranchingScenario
 };
 
 // ---------- Shared Layout ----------
@@ -158,7 +166,8 @@ function renderLessonNavigation(context) {
                 Return to Menu
             </button>
 
-            ${getReflectionEntries(context.currentLesson || {}).some(entry => entry.required) ? `
+            ${getReflectionEntries(context.currentLesson || {}).some(entry => entry.required)
+                || context.currentLesson?.type === "branchingScenario" ? `
                 <button class="btn btn-outline-secondary secondary-navigation-button" data-action="skip"
                     ${context.currentLesson?.type === "guidedActivity" ? "hidden" : ""}>Skip for Now</button>
             ` : ""}
@@ -369,7 +378,8 @@ function renderReflection(lesson, context) {
     const reflectionMarkup = reflectionPrompts
         .map(prompt => renderReflectionBox(prompt, lesson, context))
         .join("");
-    const reviewMarkup = renderReflectionReview(lesson, context);
+    const reviewMarkup = renderReflectionReview(lesson, context)
+        + renderLessonScenarioRecap(lesson, context);
     const comparisonMarkup = renderReflectionComparison(lesson);
 
     let content = "";
@@ -399,6 +409,17 @@ function renderReflection(lesson, context) {
     }
 
     return renderPageShell(lesson, content, context);
+}
+
+// A reflection can show the choices the learner made in an earlier scenario.
+function renderLessonScenarioRecap(lesson, context) {
+    if (!lesson.scenarioRecap) return "";
+
+    const scenarioLesson = (context.courseData?.modules || [])
+        .flatMap(module => module.lessons)
+        .find(moduleLesson => moduleLesson.id === lesson.scenarioRecap);
+
+    return renderScenarioRecap(scenarioLesson);
 }
 
 function getReflectionPrompts(lesson) {
@@ -587,6 +608,14 @@ function renderGuidedActivity(lesson, context) {
     return renderPageShell(
         lesson,
         renderGuidedActivityContent(lesson),
+        context
+    );
+}
+
+function renderBranchingScenario(lesson, context) {
+    return renderPageShell(
+        lesson,
+        renderBranchingScenarioContent(lesson),
         context
     );
 }
@@ -978,6 +1007,8 @@ function attachSharedLessonEvents(lesson, context) {
                 context.advanceGuidedActivity?.(false);
                 return;
             }
+            // A scenario moves through its own steps before the lesson moves on.
+            if (lesson.type === "branchingScenario" && context.advanceBranchingScenario?.()) return;
             if (!validateRequiredFields()) return;
             if (lesson.type === "moduleComplete" && lesson.moduleKey) {
                 if (context.completeModule) {
@@ -1008,6 +1039,7 @@ function attachSharedLessonEvents(lesson, context) {
 
     document.querySelectorAll("[data-action='previous']").forEach(button => {
         button.addEventListener("click", () => {
+            if (lesson.type === "branchingScenario" && context.retreatBranchingScenario?.()) return;
             if (context.previousLesson) {
                 context.goToLesson(context.previousLesson.id);
             }

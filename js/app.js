@@ -19,6 +19,9 @@ import {
 
 const REFLECTION_SUMMARY_ID = "reflection-summary";
 const REFLECTION_SUMMARY_INTRODUCED_KEY = "reflectionSummaryIntroduced";
+const RESUME_LESSON_KEY = "resumeLesson";
+const SESSION_ACTIVE_KEY = "interculturalWorkshop_sessionActive";
+const REPOSITORY_URL = "https://github.com/DanielBScharf/Intercultural-Communication-Online-Web-Training";
 
 // -------------------------------
 // App State
@@ -67,6 +70,18 @@ function initApp() {
         introduceReflectionSummary({ animate: true });
     }
 
+    // Progress saved before the resume point existed still counts.
+    if (lessonIndex[appState.currentLessonId] && !loadItem(RESUME_LESSON_KEY, null)) {
+        saveItem(RESUME_LESSON_KEY, appState.currentLessonId);
+    }
+
+    // A new visit opens on the home page, which offers to resume.
+    // Reloading the page in the same tab stays on the current lesson.
+    if (!isReloadInSameTab()) {
+        renderHome();
+        return;
+    }
+
     // Reflection Summary is a post-workshop page, not part of the lesson index.
     if (
         appState.currentLessonId === REFLECTION_SUMMARY_ID &&
@@ -80,6 +95,24 @@ function initApp() {
     }
 }
 
+// sessionStorage lasts only as long as the browser tab, so it tells a
+// reload apart from a new visit. If it is unavailable, keep the learner
+// on their lesson.
+function isReloadInSameTab() {
+    try {
+        const wasActive = sessionStorage.getItem(SESSION_ACTIVE_KEY) === "true";
+        sessionStorage.setItem(SESSION_ACTIVE_KEY, "true");
+        return wasActive;
+    } catch (error) {
+        return true;
+    }
+}
+
+// The lesson the learner was last on, kept even after they return to the menu.
+function getResumeLesson() {
+    return lessonIndex[loadItem(RESUME_LESSON_KEY, null)] || null;
+}
+
 // -------------------------------
 // Home / Menu
 // -------------------------------
@@ -90,6 +123,7 @@ function renderHome() {
     appState.currentLessonId = null;
     saveCurrentLesson(null);
 
+    const resumeLesson = getResumeLesson();
     const app = document.getElementById("app");
 
     app.innerHTML = `
@@ -113,9 +147,25 @@ function renderHome() {
                             Created by <strong>${courseData.creator}</strong> • ${courseData.year}
                         </p>
 
-                        <button class="btn btn-primary btn-lg mt-3" id="startCourse">
-                            Begin Workshop
-                        </button>
+                        ${resumeLesson ? `
+                            <p class="home-resume-note mt-4 mb-0">
+                                You left off in <strong>${resumeLesson.moduleTitle}</strong>.
+                            </p>
+
+                            <div class="home-actions mt-3">
+                                <button class="btn btn-primary btn-lg" id="resumeCourse">
+                                    Resume Workshop
+                                </button>
+
+                                <button class="btn btn-outline-secondary secondary-navigation-button btn-lg" id="startCourse">
+                                    Start from the Beginning
+                                </button>
+                            </div>
+                        ` : `
+                            <button class="btn btn-primary btn-lg mt-3" id="startCourse">
+                                Begin Workshop
+                            </button>
+                        `}
 
                     </div>
 
@@ -128,69 +178,6 @@ function renderHome() {
 
                 </div>
 
-            </div>
-        </section>
-
-        <section class="container project-development-section my-5" aria-labelledby="workInProgressTitle">
-            <div class="project-development-content">
-                <div class="project-status-callout">
-                    <h2 class="h4 mb-2" id="workInProgressTitle">
-                        Work in Progress
-                    </h2>
-
-                    <p class="mb-0">
-                        This workshop is an active instructional design project and is still being developed and refined. Core learning activities are functional, but some features, accessibility improvements, and supporting resources are still planned.
-                    </p>
-                </div>
-
-                <details class="project-roadmap mt-3">
-                    <summary>Future Development Plans</summary>
-
-                    <div class="project-roadmap-content">
-                        <ul class="project-roadmap-list">
-                            <li>
-                                <strong>REFLECTION RESULTS BY EMAIL</strong>
-                                <span>Allow learners to send themselves a copy of their workshop reflections and takeaways after completing the workshop.</span>
-                            </li>
-                            <li>
-                                <strong>EXPANDED ACCESSIBILITY</strong>
-                                <span>Continue accessibility testing and refinement, including keyboard navigation, screen-reader support, alternative text and descriptions, responsive behavior, and reduced-motion support.</span>
-                            </li>
-                            <li>
-                                <strong>LOCALIZATION</strong>
-                                <span>Explore additional language support, beginning with Spanish localization.</span>
-                            </li>
-                            <li>
-                                <strong>ADDITIONAL SCENARIOS AND ACTIVITIES</strong>
-                                <span>Expand the collection of intercultural critical incidents and opportunities to practice applying workshop strategies.</span>
-                            </li>
-                            <li>
-                                <strong>LEARNER RESOURCES</strong>
-                                <span>Develop downloadable or printable resources that learners can use after completing the workshop.</span>
-                            </li>
-                            <li>
-                                <strong>ONGOING EVALUATION</strong>
-                                <span>Conduct learner testing and use feedback to refine content, interactions, and instructional sequencing.</span>
-                            </li>
-                        </ul>
-                    </div>
-                </details>
-
-                <div class="project-documentation mt-4">
-                    <h2 class="h4 mb-2">
-                        Interested in how this workshop was designed?
-                    </h2>
-
-                    <p>
-                        This project includes documentation of the instructional design decisions, learning architecture, development process, and technical implementation.
-                    </p>
-
-                    <a
-                        class="project-documentation-link"
-                        href="https://github.com/DanielBScharf/Intercultural-Communication-Online-Web-Training/blob/main/docs/DESIGN_DECISIONS.md">
-                        View Project Documentation <span aria-hidden="true">→</span>
-                    </a>
-                </div>
             </div>
         </section>
 
@@ -280,10 +267,94 @@ function renderHome() {
             </div>
 
         </section>
+
+        <section class="container project-development-section my-5" aria-labelledby="aboutProjectTitle">
+            <div class="project-development-content">
+                <div class="project-documentation">
+                    <h2 class="h4 mb-2" id="aboutProjectTitle">
+                        About This Project
+                    </h2>
+
+                    <p>
+                        This workshop was designed, written, and built by ${courseData.creator} as an instructional design project. The project documentation covers the design decisions, learning architecture, development process, and technical implementation.
+                    </p>
+
+                    <a
+                        class="project-documentation-link"
+                        href="${REPOSITORY_URL}/blob/main/docs/DESIGN_DECISIONS.md">
+                        View Project Documentation <span aria-hidden="true">→</span>
+                    </a>
+                </div>
+
+                <div class="project-status-callout mt-4">
+                    <h3 class="h5 mb-2">
+                        Version 1 and Roadmap
+                    </h3>
+
+                    <p class="mb-0">
+                        All seven modules are complete and can be taken from start to finish. The workshop continues to be refined, and the additions planned next are listed below.
+                    </p>
+                </div>
+
+                <details class="project-roadmap mt-3">
+                    <summary>Planned Additions</summary>
+
+                    <div class="project-roadmap-content">
+                        <ul class="project-roadmap-list">
+                            <li>
+                                <strong>REFLECTION RESULTS BY EMAIL</strong>
+                                <span>Allow learners to send themselves a copy of their workshop reflections and takeaways after completing the workshop.</span>
+                            </li>
+                            <li>
+                                <strong>EXPANDED ACCESSIBILITY</strong>
+                                <span>Continue accessibility testing and refinement, including keyboard navigation, screen-reader support, alternative text and descriptions, responsive behavior, and reduced-motion support.</span>
+                            </li>
+                            <li>
+                                <strong>LOCALIZATION</strong>
+                                <span>Explore additional language support, beginning with Spanish localization.</span>
+                            </li>
+                            <li>
+                                <strong>ADDITIONAL SCENARIOS AND ACTIVITIES</strong>
+                                <span>Expand the collection of intercultural critical incidents and opportunities to practice applying workshop strategies.</span>
+                            </li>
+                            <li>
+                                <strong>VOICED SCENARIOS</strong>
+                                <span>Add voice-over to the branching scenarios, with the text kept on screen as a transcript.</span>
+                            </li>
+                            <li>
+                                <strong>CULTURAL DIMENSIONS SELF-CHECK</strong>
+                                <span>Add a short activity where learners place themselves on scales such as direct to indirect communication, then see how someone at the other end might read their behavior.</span>
+                            </li>
+                            <li>
+                                <strong>LEARNER RESOURCES</strong>
+                                <span>Develop downloadable or printable resources that learners can use after completing the workshop.</span>
+                            </li>
+                            <li>
+                                <strong>ONGOING EVALUATION</strong>
+                                <span>Conduct learner testing and use feedback to refine content, interactions, and instructional sequencing.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div class="container">
+                <p class="mb-0">
+                    Designed and built by ${courseData.creator} • ${courseData.year} •
+                    <a href="${REPOSITORY_URL}">View the source on GitHub</a>
+                </p>
+            </div>
+        </footer>
     `;
 
     document.getElementById("startCourse").addEventListener("click", () => {
         goToModule(courseData.modules[0].key);
+    });
+
+    document.getElementById("resumeCourse")?.addEventListener("click", () => {
+        goToLesson(resumeLesson.id);
     });
 
     document.querySelectorAll("[data-module-start]").forEach(button => {
@@ -651,6 +722,7 @@ function goToLesson(lessonId, initialReflectionStorageKey = null) {
 
     appState.currentLessonId = lessonId;
     saveCurrentLesson(lessonId);
+    saveItem(RESUME_LESSON_KEY, lessonId);
 
     const context = buildLessonContext(lesson);
     context.initialReflectionStorageKey = initialReflectionStorageKey;
