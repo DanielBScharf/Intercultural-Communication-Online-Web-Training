@@ -2,6 +2,8 @@
 
 Current course data is authoritative. This change adds only response requirements and validation behavior; prompts, rationales, prose, metadata definitions, and segmented position logic are unchanged.
 
+> **Update, October 2026:** `incidentDrinkingInitialReflection` is now the open question inside the "A Work Dinner" branching scenario. It is still saved and still appears in the Reflection Summary, but it no longer blocks module completion. The course now has 26 reflection entries, 24 of them required. The table below is the original audit.
+
 ## Required (25 responses)
 
 | Reflection ID / storage key | Module | Title |

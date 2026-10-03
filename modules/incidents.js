@@ -10,6 +10,8 @@
 // Important:
 // The "type" field tells renderer.js what layout/activity to use.
 // type: "guidedActivity" creates a reusable slide-based activity.
+// type: "branchingScenario" creates a multiple-choice scenario.
+// Its format is documented at the top of js/branchingScenario.js.
 // ======================================
 
 const criticalIncidentReflectionRationale = `Think back to the cultural iceberg. There may be deeper values, expectations, assumptions, or communication norms influencing this situation that are not immediately visible. You may not yet have enough information to understand why someone behaved the way they did.
@@ -55,78 +57,153 @@ export const incidentsModule = {
 
         {
             id: "incident-drinking-expectation",
-            type: "guidedActivity",
-            title: "Drinking Expectation Incident",
+            type: "branchingScenario",
+            title: "A Work Dinner",
             moduleLabel: "Critical Incidents",
-            instructions: "Read the incident one slide at a time. Notice your first interpretation, then use DAEA to examine it more carefully.",
-            slides: [
+            instructions: "Read the situation and choose what you would do. After you see how your choices play out, you will be asked to explain what happened before you find out more.",
+            learningObjectives: ["LO3"],
+            competencies: ["IC2", "IC3"],
+
+            // The tags hint at which choices worked, so they wait for the compare screen.
+            showTagsAfterChoice: false,
+
+            scene: {
+                body: [
+                    "You are visiting a partner organization in another country. After a long day of meetings, your hosts invite the group to dinner.",
+                    "Every time your glass is empty, the colleague beside you fills it again. It is a work night, and everyone is due in the office in the morning. You have had enough."
+                ]
+            },
+
+            decisions: [
                 {
-                    slideType: "story",
-                    title: "A Work Dinner",
-                    body: [
-                        "You are visiting a partner organization in another country. After a long day of meetings, your hosts invite the group to dinner.",
-                        "Whenever you finish your drink, one of your colleagues fills your glass whenever it is empty. It is a work night, and you all have to be in the office in the morning. You eventually begin leaving your glass half full because you don't want to drink any more.",
-                        "Your colleague seems disappointed and becomes less engaged for the rest of the evening."
+                    id: "moment",
+                    prompt: "What do you do about the refills?",
+                    options: [
+                        {
+                            id: "go-along",
+                            label: "Keep drinking. You don't want to offend anyone.",
+                            tag: "Going along",
+                            outcome: [
+                                "Your glass is refilled four more times over the next hour. You have now had far more than you wanted, and the refills show no sign of stopping."
+                            ],
+                            explanation: [
+                                "You guessed that stopping would offend, and treated the guess as a fact. Each empty glass was also read as a request for more."
+                            ]
+                        },
+                        {
+                            id: "withdraw",
+                            label: "Stop drinking and sit out the toasts.",
+                            tag: "Withdrawing",
+                            outcome: [
+                                "The refills stop. Your colleague seems disappointed and talks to you less."
+                            ],
+                            explanation: [
+                                "You kept your limit, but sitting out the toasts looked like stepping away from the group. You still did not know what the refills meant."
+                            ]
+                        },
+                        {
+                            id: "find-out",
+                            label: "Hold off for a moment and watch what others at the table are doing.",
+                            tag: "Finding out",
+                            recommended: true,
+                            outcome: [
+                                "You notice that several people have full glasses they have barely touched. Whenever someone proposes a toast, everyone raises a glass, whatever is in it."
+                            ],
+                            explanation: [
+                                "Watching cost you a minute and gave you evidence to work from, before you had to decide anything."
+                            ]
+                        }
                     ]
                 },
                 {
-                    slideType: "reflection",
-                    title: "First Reflection",
+                    id: "toast",
                     body: [
-                        "Begin with what is observable, then notice the assumptions that may appear quickly.",
-                        "There is no single correct answer. The goal is to slow down your interpretation."
+                        "A little later, your host stands to toast the new partnership and turns toward you."
                     ],
-                    prompt: "Describe what happened. What assumptions might the visitor make about the hosts, and what assumptions might the hosts make about the visitor?",
-                    storageKey: "incidentDrinkingInitialReflection",
-                    required: true,
-                    reflectionTitle: "First Impressions",
-                    showPurposeDisclosure: false,
-                    rationale: "This reflection helps learners identify assumptions before deciding what the drinking expectation means.",
-                    learningObjectives: ["LO2", "LO3"],
-                    competencies: ["IC2", "IC3"],
-                    placeholder: "Describe: ...\nAssumptions: ..."
-                },
-                {
-                    slideType: "reveal",
-                    title: "Additional Perspective",
-                    body: [
-                        "This sort of drinking is a fairly common form of 'team building' in many parts of the world. It's very common in China, South Korea, and Japan.",
-                        "At the same time, the visitor's boundary still matters. Cultural understanding does not require ignoring personal needs, health, religion, recovery, or values.",
-                        "The tension in this incident comes from different expectations about hospitality, participation, and how directly a refusal should be stated."
-                    ]
-                },
-                {
-                    slideType: "reflection",
-                    title: "DAEA Reflection",
-                    body: [
-                        "Use DAEA to separate what happened from possible explanations, your reaction, and your future plan."
-                    ],
-                    prompt: "Analyze possible cultural perspectives. Evaluate your own reaction to the pressure or refusal. What might you do next time to communicate clearly while showing respect?",
-                    storageKey: "incidentDrinkingDaeaReflection",
-                    required: true,
-                    reflectionTitle: "Reconsidering the Situation",
-                    rationale: criticalIncidentReflectionRationale,
-                    learningObjectives: ["LO4", "LO5"],
-                    competencies: ["IC4", "IC5"],
-                    placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."
-                },
-                {
-                    slideType: "summary",
-                    title: "Takeaways",
-                    body: [
-                        "This incident connects to culture as perspective because the same repeated offer can be interpreted in different ways.",
-                        "It also connects to tolerance of ambiguity because you may need to stay calm while you gather more information."
-                    ],
-                    points: [
-                        "First interpretations may be incomplete.",
-                        "Avoid stereotyping the hosts as rude or the visitor as ungrateful.",
-                        "Respectful communication can include both cultural curiosity and personal boundaries.",
-                        "DAEA can help you plan language for future situations."
+                    prompt: "How do you respond to the toast?",
+                    options: [
+                        {
+                            id: "finish",
+                            label: "Finish your glass so you can join the toast properly.",
+                            tag: "Giving up your limit",
+                            outcome: [
+                                "Your host is delighted and refills your glass at once. You are back where you started."
+                            ],
+                            explanation: [
+                                "Understanding a custom does not mean you have to ignore your own needs. Here you could have taken part without drinking more."
+                            ]
+                        },
+                        {
+                            id: "own-norm",
+                            label: "Explain that where you come from, people don't drink like this on a work night.",
+                            tag: "Treating your own norm as the standard",
+                            outcome: [
+                                "People nod politely. Your host apologizes, and the table goes quiet for a while."
+                            ],
+                            explanation: [
+                                "You protected your limit by making their custom the problem. A difference between two norms became a judgment of one of them."
+                            ]
+                        },
+                        {
+                            id: "join",
+                            label: "Raise your glass with everyone, take a small sip or toast with tea, and thank your host for the evening.",
+                            tag: "Joining in and keeping your limit",
+                            recommended: true,
+                            outcome: [
+                                "Your host beams and the evening carries on. Nobody checks how much you drank."
+                            ],
+                            explanation: [
+                                "Taking part was the point. You did that without giving up your limit or making anyone wrong."
+                            ]
+                        }
                     ]
                 }
-            ]
-        },
+            ],
 
+            question: {
+                prompt: "Why do you think the evening went the way it did? Try to give at least two possible explanations.",
+                storageKey: "incidentDrinkingInitialReflection",
+                reflectionTitle: "Possible Explanations",
+                rationale: "Explaining a situation before you are told the answer shows you how many readings are possible, and how much you would still need to find out.",
+                learningObjectives: ["LO3"],
+                competencies: ["IC2", "IC3"],
+                placeholder: "One explanation: ...\nAnother explanation: ..."
+            },
+
+            debrief: {
+                title: "Another perspective",
+                body: [
+                    "On the way out, Priya, a colleague from your own office who has worked with this team for two years, explains the custom. Here, an empty glass is an invitation to pour. If you have had enough, you leave it full. What matters most is joining the toasts.",
+                    "Shared drinking is a common form of team building in many workplaces, including in China, South Korea, and Japan. Customs still differ between companies, and between people.",
+                    "Your own limit matters too. Cultural understanding does not require you to ignore your health, religion, recovery, or values. The same approach works if you do not drink at all.",
+                    "The tension in this incident comes from different expectations about hospitality, taking part, and how directly a refusal is stated."
+                ],
+                takeaways: [
+                    "When you don't know what a behavior means, find out before you act on a guess.",
+                    "Going along and withdrawing both leave the question unanswered.",
+                    "You can respect a custom and keep your own limit.",
+                    "Describing your own norm as the correct one turns a difference into a judgment."
+                ]
+            }
+        },
+        {
+            id: "incident-drinking-reflection",
+            type: "reflection",
+            title: "After the Dinner",
+            moduleLabel: "Critical Incidents",
+            body: [
+                "The scenario took you through the first steps of DAEA. You saw what happened and analyzed possible explanations. Now finish with Evaluate and Apply."
+            ],
+            scenarioRecap: "incident-drinking-expectation",
+            prompt: "Look at the choices you made. Evaluate your own reaction to the pressure to keep drinking. What would you say or do at a similar dinner in the future?",
+            storageKey: "incidentDrinkingDaeaReflection",
+            required: true,
+            reflectionTitle: "Reconsidering the Situation",
+            rationale: criticalIncidentReflectionRationale,
+            learningObjectives: ["LO4", "LO5"],
+            competencies: ["IC4", "IC5"],
+            placeholder: "Evaluate: ...\nApply: ..."
+        },
         {
             id: "incident-negotiation-misunderstanding",
             type: "guidedActivity",

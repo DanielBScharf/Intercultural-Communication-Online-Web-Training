@@ -61,7 +61,11 @@ export const lessons = {
   },
   "incident-drinking-expectation": {
     id: "incident-drinking-expectation",
-    title: "Drinking Expectation Incident",
+    title: "A Work Dinner",
+  },
+  "incident-drinking-reflection": {
+    id: "incident-drinking-reflection",
+    title: "After the Dinner",
   },
   "incident-negotiation-misunderstanding": {
     id: "incident-negotiation-misunderstanding",
@@ -347,25 +351,25 @@ export const reflections = {
   incidentDrinkingInitialReflection: {
     reflectionId: "incidentDrinkingInitialReflection",
     lessonId: "incident-drinking-expectation",
-    reflectionTitle: "First Impressions",
+    reflectionTitle: "Possible Explanations",
     competencies: ["perspectiveTaking", "delayingJudgment", "toleranceOfAmbiguity"],
     designPrinciples: ["recognizeIncompletePicture", "multipleInterpretations"],
     learningOutcomes: ["culturalAwareness", "toleranceOfAmbiguity"],
     whatYouPracticed:
-      "You examined how people in the same interaction can make different assumptions about one another based on their own expectations.",
+      "You saw how your choices played out and offered more than one possible explanation before finding out more.",
     howThisBuildsYourSkills:
-      "Considering what each person may be assuming can help you recognize when your understanding of a situation is incomplete and consider perspectives beyond your own.",
+      "Generating more than one explanation can help you recognize when your understanding of a situation is incomplete, and what you would need to find out.",
   },
 
   incidentDrinkingDaeaReflection: {
     reflectionId: "incidentDrinkingDaeaReflection",
-    lessonId: "incident-drinking-expectation",
+    lessonId: "incident-drinking-reflection",
     reflectionTitle: "Reconsidering the Situation",
     competencies: ["criticalReflection", "perspectiveTaking", "toleranceOfAmbiguity"],
     designPrinciples: ["multipleInterpretations", "reflectionToAction"],
     learningOutcomes: ["toleranceOfAmbiguity", "interculturalNavigation"],
     whatYouPracticed:
-      "You considered different perspectives on the interaction, examined your own response, and planned how you might communicate in a similar situation.",
+      "You looked back at your choices, examined your own response, and planned how you might communicate in a similar situation.",
     howThisBuildsYourSkills:
       "Understanding another perspective does not require you to abandon your own needs or boundaries. Reflection can help you consider how to communicate those needs while remaining respectful of different expectations.",
   },

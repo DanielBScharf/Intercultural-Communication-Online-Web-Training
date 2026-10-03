@@ -103,6 +103,9 @@ Behavior:
 - Choices are saved in the browser and restored on return.
 - A scenario is optional. Skip for Now is offered until a choice is made, and a scenario never blocks module completion.
 - Optional `audio` fields add voice-over to the scene and to outcomes. The written text is always shown and serves as the transcript.
+- A scenario can include an open `question`. Placed on the scenario, it gets its own step after the last decision, with a recap of how every choice played out, before the compare screen. Placed on a single decision, it appears under that decision's outcome. Next asks for an answer and Skip for Now passes it. The answer is saved like other reflections and appears in the Reflection Summary, but it never blocks module completion.
+- `showTagsAfterChoice: false` holds each option's tag back until the compare screen, for scenarios where the tags would give the answer away.
+- Each option has an `outcome` (what happens) and an optional `explanation` (why). The explanation is shown only on the compare screen, so learners think before they are told.
 - A later reflection can show the learner's choices by setting `scenarioRecap` to the scenario's lesson id.
 - `validateScenario()` reports content mistakes, and `tests/branchingScenario.test.mjs` runs it on every scenario in the course.
 

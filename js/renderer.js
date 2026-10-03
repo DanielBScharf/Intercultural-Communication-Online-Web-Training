@@ -34,7 +34,8 @@ import {
 import {
     renderBranchingScenarioContent,
     initializeBranchingScenario,
-    renderScenarioRecap
+    renderScenarioRecap,
+    getScenarioQuestions
 } from "./branchingScenario.js";
 
 import {
@@ -934,6 +935,10 @@ function getLessonReflectionItems(lesson) {
             }));
     }
 
+    if (lesson.type === "branchingScenario") {
+        return getScenarioQuestions(lesson);
+    }
+
     if (lesson.type === "imageReveal") {
         return (lesson.steps || [])
             .filter(step => step.storageKey)
@@ -1032,6 +1037,7 @@ function attachSharedLessonEvents(lesson, context) {
     document.querySelectorAll("[data-action='skip']").forEach(button => {
         button.addEventListener("click", () => {
             saveResponseDrafts();
+            if (lesson.type === "branchingScenario" && context.skipBranchingScenario?.()) return;
             if (lesson.type === "guidedActivity") context.advanceGuidedActivity?.(true);
             else if (context.nextLesson) context.goToLesson(context.nextLesson.id);
         });
