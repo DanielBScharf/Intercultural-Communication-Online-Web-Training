@@ -1741,3 +1741,33 @@ textarea[aria-invalid="true"] {
     outline: 3px solid var(--primary);
     outline-offset: 3px;
 }
+
+/* Showcase */
+
+.home-restart-link {
+    padding: 0;
+    vertical-align: baseline;
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+.home-restart-link:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+}
+
+.showcase-end-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: 2rem;
+}
+
+/* Wide row gutters are larger than the page padding on phones and cause sideways scroll */
+
+@media (max-width: 575.98px) {
+    .row.g-5 {
+        --bs-gutter-x: 1.5rem;
+    }
+}

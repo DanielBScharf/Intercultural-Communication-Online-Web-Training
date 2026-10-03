@@ -207,7 +207,7 @@ export function initializeSortingActivity(lesson) {
 }
 
 function getSourcePoolState(lesson) {
-    const saved = loadItem(`sorting_${lesson.id}`, {}) || {};
+    const saved = loadItem(`sorting_${lesson.stateId || lesson.id}`, {}) || {};
     const byText = new Map(lesson.items.map(item => [item.text, item]));
     const names = [...new Set(Array.isArray(saved.order) ? saved.order : [])].filter(name => byText.has(name));
     const items = [...names.map(name => byText.get(name)), ...shuffleItems(lesson.items.filter(item => !names.includes(item.text)))];
@@ -280,7 +280,7 @@ function initializeSourcePoolSorting(lesson) {
     const completion = document.getElementById("sortingCompletion");
     const sourceButtons = [...document.querySelectorAll("[data-pool-sort-index]")];
 
-    const saveState = () => saveItem(`sorting_${lesson.id}`, {
+    const saveState = () => saveItem(`sorting_${lesson.stateId || lesson.id}`, {
         order: items.map(item => item.text), sorted: [...sorted]
     });
     const addToDestination = (item, index) => document.querySelector(`[data-category-items="${item.answer}"]`)

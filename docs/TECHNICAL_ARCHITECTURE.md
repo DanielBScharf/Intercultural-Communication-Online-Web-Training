@@ -244,3 +244,15 @@ Competency metadata must be intentionally authored in module data. It should not
 Each saved reflection should include a concise `rationale` field explaining why the reflection matters instructionally.
 
 The reflection summary displays this rationale under the label "Why this Reflection Matters." Rationale text belongs in module data, not in renderer logic.
+
+### Showcase route
+
+The showcase is a short route (about ten minutes) through the workshop for reviewers. It is defined in `modules/showcase.js` and exposed as `courseData.showcase`.
+
+- The route does not duplicate content. `fromModule(module, id, changes)` copies a lesson from its module, gives it the id `showcase-<id>`, and records `sourceLessonId` and `stateId`.
+- Activity engines store their state under `lesson.stateId || lesson.id`, so progress in a showcase activity and in the same activity in the full workshop is shared.
+- Showcase lessons are indexed separately from the modules (`isShowcase: true`). They are not subject to the module guard, and reflections in the route are optional.
+- The top bar counts steps across the whole route, in the same way as a module.
+- The route ends with a `showcaseEnd` lesson, rendered by `renderShowcaseEnd` in `js/renderer.js`.
+- The route can be opened from the landing page, from the sidebar, or directly with the `#showcase` link.
+- To change what the showcase contains, edit the list in `modules/showcase.js`. Edits to a lesson in its own module appear in the showcase automatically.

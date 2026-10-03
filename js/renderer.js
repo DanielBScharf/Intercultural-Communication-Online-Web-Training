@@ -109,7 +109,8 @@ const lessonRenderers = {
     storyActivity: renderStoryActivity,
     guidedActivity: renderGuidedActivity,
     branchingScenario: renderBranchingScenario,
-    perspectiveFlip: renderPerspectiveFlip
+    perspectiveFlip: renderPerspectiveFlip,
+    showcaseEnd: renderShowcaseEnd
 };
 
 // ---------- Shared Layout ----------
@@ -180,7 +181,7 @@ function renderModulePosition(position) {
 }
 
 function renderLessonNavigation(context) {
-    const showNextButton = context.currentLesson?.type !== "reflectionSummary";
+    const showNextButton = !["reflectionSummary", "showcaseEnd"].includes(context.currentLesson?.type);
 
     return `
         <div class="lesson-navigation" data-responsive-navigation>
@@ -654,6 +655,44 @@ function renderPerspectiveFlip(lesson, context) {
         renderPerspectiveFlipContent(lesson),
         context
     );
+}
+
+// The last screen of the showcase: what else the workshop contains,
+// with a way into the full workshop.
+function renderShowcaseEnd(lesson, context) {
+    const sections = (lesson.sections || []).map(section => `
+        <div class="col-md-6">
+            <div class="info-column">
+                <h3 class="h5">${section.title}</h3>
+                <ul class="mb-0">
+                    ${(section.items || []).map(item => `<li>${item}</li>`).join("")}
+                </ul>
+            </div>
+        </div>
+    `).join("");
+
+    const links = (lesson.links || []).map(link => `
+        <a class="project-documentation-link" href="${link.href}">
+            ${link.label} <span aria-hidden="true">→</span>
+        </a>
+    `).join("");
+
+    const content = `
+        ${renderParagraphs(lesson.body)}
+
+        <div class="row g-4 mt-1">
+            ${sections}
+        </div>
+
+        <div class="showcase-end-actions">
+            <button class="btn btn-primary btn-lg" type="button" data-action="menu">
+                ${lesson.menuButtonText || "Explore the Full Workshop"}
+            </button>
+            ${links}
+        </div>
+    `;
+
+    return renderPageShell(lesson, content, context);
 }
 
 function renderReflectionSummary(lesson, context) {

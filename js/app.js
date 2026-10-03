@@ -21,6 +21,7 @@ const REFLECTION_SUMMARY_ID = "reflection-summary";
 const REFLECTION_SUMMARY_INTRODUCED_KEY = "reflectionSummaryIntroduced";
 const RESUME_LESSON_KEY = "resumeLesson";
 const SESSION_ACTIVE_KEY = "interculturalWorkshop_sessionActive";
+const SHOWCASE_HASH = "#showcase";
 const REPOSITORY_URL = "https://github.com/DanielBScharf/Intercultural-Communication-Online-Web-Training";
 
 // -------------------------------
@@ -59,6 +60,25 @@ courseData.modules.forEach((module, moduleIndex) => {
     });
 });
 
+// The showcase is a separate route. Its screens are indexed so they can
+// be opened, but they are not part of the module sequence, the module
+// count, or module completion.
+const showcaseSequence = [];
+
+(courseData.showcase?.lessons || []).forEach((lesson, lessonIndexInModule) => {
+    const indexedLesson = {
+        ...lesson,
+        moduleKey: courseData.showcase.key,
+        moduleTitle: courseData.showcase.title,
+        moduleIndex: -1,
+        lessonIndexInModule,
+        isShowcase: true
+    };
+
+    lessonIndex[lesson.id] = indexedLesson;
+    showcaseSequence.push(indexedLesson);
+});
+
 // -------------------------------
 // App Initialization
 // -------------------------------
@@ -75,9 +95,20 @@ function initApp() {
         saveItem(RESUME_LESSON_KEY, appState.currentLessonId);
     }
 
+    const isReload = isReloadInSameTab();
+
+    // A link ending in #showcase opens the showcase directly. A reload
+    // partway through the showcase stays where the learner was.
+    const isInShowcase = Boolean(lessonIndex[appState.currentLessonId]?.isShowcase);
+
+    if (window.location.hash === SHOWCASE_HASH && showcaseSequence.length && !(isReload && isInShowcase)) {
+        goToShowcase();
+        return;
+    }
+
     // A new visit opens on the home page, which offers to resume.
     // Reloading the page in the same tab stays on the current lesson.
-    if (!isReloadInSameTab()) {
+    if (!isReload) {
         renderHome();
         return;
     }
@@ -124,6 +155,9 @@ function renderHome() {
     saveCurrentLesson(null);
 
     const resumeLesson = getResumeLesson();
+    const hasShowcase = showcaseSequence.length > 0;
+    const resumeInShowcase = Boolean(resumeLesson?.isShowcase);
+    const resumeInWorkshop = Boolean(resumeLesson) && !resumeInShowcase;
     const app = document.getElementById("app");
 
     app.innerHTML = `
@@ -147,25 +181,43 @@ function renderHome() {
                             Created by <strong>${courseData.creator}</strong> • ${courseData.year}
                         </p>
 
-                        ${resumeLesson ? `
-                            <p class="home-resume-note mt-4 mb-0">
-                                You left off in <strong>${resumeLesson.moduleTitle}</strong>.
-                            </p>
+                        <div class="home-actions mt-4">
+                            ${hasShowcase ? `
+                                <button class="btn btn-primary btn-lg" id="startShowcase">
+                                    ${resumeInShowcase ? "Resume the Showcase" : "Take the 10-Minute Showcase"}
+                                </button>
+                            ` : ""}
 
-                            <div class="home-actions mt-3">
-                                <button class="btn btn-primary btn-lg" id="resumeCourse">
+                            ${resumeInWorkshop ? `
+                                <button class="btn ${hasShowcase ? "btn-outline-secondary secondary-navigation-button" : "btn-primary"} btn-lg" id="resumeCourse">
                                     Resume Workshop
                                 </button>
-
-                                <button class="btn btn-outline-secondary secondary-navigation-button btn-lg" id="startCourse">
-                                    Start from the Beginning
+                            ` : `
+                                <button class="btn ${hasShowcase ? "btn-outline-secondary secondary-navigation-button" : "btn-primary"} btn-lg" id="startCourse">
+                                    ${hasShowcase ? "Begin the Full Workshop" : "Begin Workshop"}
                                 </button>
-                            </div>
-                        ` : `
-                            <button class="btn btn-primary btn-lg mt-3" id="startCourse">
-                                Begin Workshop
-                            </button>
-                        `}
+                            `}
+                        </div>
+
+                        ${hasShowcase ? `
+                            <p class="home-resume-note mt-3 mb-0">
+                                The showcase is a short tour of the key ideas and activities.
+                            </p>
+                        ` : ""}
+
+                        ${resumeInWorkshop ? `
+                            <p class="home-resume-note mt-2 mb-0">
+                                You left off in <strong>${resumeLesson.moduleTitle}</strong>.
+                                <button class="btn btn-link home-restart-link" id="startCourse">Start the workshop from the beginning</button>
+                            </p>
+                        ` : ""}
+
+                        ${resumeInShowcase ? `
+                            <p class="home-resume-note mt-2 mb-0">
+                                You left off partway through the showcase.
+                                <button class="btn btn-link home-restart-link" id="restartShowcase">Start the showcase again</button>
+                            </p>
+                        ` : ""}
 
                     </div>
 
@@ -357,6 +409,13 @@ function renderHome() {
         goToLesson(resumeLesson.id);
     });
 
+    document.getElementById("startShowcase")?.addEventListener("click", () => {
+        if (resumeInShowcase) goToLesson(resumeLesson.id);
+        else goToShowcase();
+    });
+
+    document.getElementById("restartShowcase")?.addEventListener("click", goToShowcase);
+
     document.querySelectorAll("[data-module-start]").forEach(button => {
         button.addEventListener("click", () => {
             goToModule(button.dataset.moduleStart);
@@ -422,6 +481,13 @@ function renderSidebar() {
                     Menu
                 </button>
 
+                ${showcaseSequence.length ? `
+                    <button class="sidebar-link" data-showcase-link>
+                        <span class="status-dot"></span>
+                        ${courseData.showcase.title}
+                    </button>
+                ` : ""}
+
                 ${courseData.modules.map(module => `
                     <button class="sidebar-link"
                         data-sidebar-module="${module.key}">
@@ -466,6 +532,11 @@ function renderSidebar() {
 
     document.querySelector("[data-menu-link]").addEventListener("click", () => {
         renderHome();
+        closeSidebarAfterOverlayNavigation();
+    });
+
+    document.querySelector("[data-showcase-link]")?.addEventListener("click", () => {
+        goToShowcase();
         closeSidebarAfterOverlayNavigation();
     });
 
@@ -595,6 +666,10 @@ function updateSidebar() {
         link.classList.remove("active", "completed");
     });
 
+    if (currentLesson?.isShowcase) {
+        document.querySelector("[data-showcase-link]")?.classList.add("active");
+    }
+
     if (!currentLesson && !isReflectionSummaryCurrent) {
         const menuLink = document.querySelector("[data-menu-link]");
         if (menuLink) menuLink.classList.add("active");
@@ -655,6 +730,10 @@ function updateProgressText(currentLesson, currentModule, isReflectionSummaryCur
     if (isReflectionSummaryCurrent) {
         currentModuleTitle.textContent = "Reflection Summary";
         lessonCounter.textContent = "Post-workshop review";
+    } else if (currentLesson?.isShowcase) {
+        currentModuleTitle.textContent = courseData.showcase.title;
+        lessonCounter.textContent =
+            `Screen ${currentLesson.lessonIndexInModule + 1} of ${showcaseSequence.length}: ${currentLesson.title}`;
     } else if (!currentLesson || !currentModule) {
         currentModuleTitle.textContent = "Course Menu";
         lessonCounter.textContent = "Select a module to begin";
@@ -688,6 +767,28 @@ function goToModule(moduleKey) {
     goToLesson(module.lessons[0].id);
 }
 
+function goToShowcase() {
+    if (showcaseSequence.length) goToLesson(showcaseSequence[0].id);
+}
+
+// Showcase screens sit outside the modules, so they skip the checks
+// that keep a learner from moving on with unfinished reflections.
+function goToShowcaseLesson(lesson) {
+    saveResponseDrafts();
+
+    appState.currentLessonId = lesson.id;
+    saveCurrentLesson(lesson.id);
+    saveItem(RESUME_LESSON_KEY, lesson.id);
+
+    renderLesson(lesson, buildLessonContext(lesson));
+    updateSidebar();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
 function goToLesson(lessonId, initialReflectionStorageKey = null) {
     if (lessonId === REFLECTION_SUMMARY_ID) {
         goToReflectionSummary();
@@ -698,6 +799,11 @@ function goToLesson(lessonId, initialReflectionStorageKey = null) {
 
     if (!lesson) {
         console.warn(`Lesson not found: ${lessonId}`);
+        return;
+    }
+
+    if (lesson.isShowcase) {
+        goToShowcaseLesson(lesson);
         return;
     }
 
@@ -764,15 +870,19 @@ function goToReflectionSummary() {
 }
 
 function buildLessonContext(lesson) {
-    const sequenceIndex = lessonSequence.findIndex(item => item.id === lesson.id);
-    const currentModule = courseData.modules[lesson.moduleIndex];
+    // A showcase screen moves through the showcase, not the modules.
+    const sequence = lesson.isShowcase ? showcaseSequence : lessonSequence;
+    const sequenceIndex = sequence.findIndex(item => item.id === lesson.id);
+    const currentModule = lesson.isShowcase
+        ? courseData.showcase
+        : courseData.modules[lesson.moduleIndex];
 
     const previousLesson = sequenceIndex > 0
-        ? lessonSequence[sequenceIndex - 1]
+        ? sequence[sequenceIndex - 1]
         : null;
 
-    const nextLesson = sequenceIndex < lessonSequence.length - 1
-        ? lessonSequence[sequenceIndex + 1]
+    const nextLesson = sequenceIndex < sequence.length - 1
+        ? sequence[sequenceIndex + 1]
         : null;
 
     const modulePosition = getModulePosition(lesson, currentModule);

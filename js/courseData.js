@@ -10,6 +10,7 @@ import { daeaModule } from "../modules/daea.js";
 import { pragueModule } from "../modules/prague.js";
 import { incidentsModule } from "../modules/incidents.js";
 import { finalReflectionModule } from "../modules/finalReflection.js";
+import { showcaseRoute } from "../modules/showcase.js";
 
 // Temporary placeholder modules.
 // We will replace these one at a time as we build them.
@@ -53,6 +54,10 @@ export const courseData = {
         competencySummaryTitle: "Competencies You Practiced Throughout This Workshop",
         competencySummaryText: "These reflections demonstrate opportunities to practice the habits associated with intercultural competence. Continued growth occurs through real-world experiences followed by thoughtful reflection."
     },
+
+    // A short route for reviewers. It reuses screens from the modules
+    // and is not counted as a module.
+    showcase: showcaseRoute,
 
     modules: [
         cultureModule,

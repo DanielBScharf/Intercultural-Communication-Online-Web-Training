@@ -359,8 +359,10 @@ export function validateScenario(lesson) {
 // Saved progress
 // ======================================
 
+// A copy of a scenario (for example in the showcase) shares progress
+// with the original through its stateId.
 function getScenarioStorageKey(lesson) {
-    return `scenario_${lesson.id}`;
+    return `scenario_${lesson.stateId || lesson.id}`;
 }
 
 export function loadScenarioState(lesson) {

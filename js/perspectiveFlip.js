@@ -287,8 +287,10 @@ export function validatePerspectiveFlip(lesson) {
 // Saved progress
 // ======================================
 
+// A copy of an activity (for example in the showcase) shares progress
+// with the original through its stateId.
 function getPerspectiveStorageKey(lesson) {
-    return `perspective_${lesson.id}`;
+    return `perspective_${lesson.stateId || lesson.id}`;
 }
 
 export function loadPerspectiveState(lesson) {
