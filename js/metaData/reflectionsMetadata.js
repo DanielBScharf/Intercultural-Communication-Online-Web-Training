@@ -57,7 +57,7 @@ export const lessons = {
   },
   "prague-guided-activity": {
     id: "prague-guided-activity",
-    title: "A Misunderstanding in Prague",
+    title: "What Happened Next",
   },
   "incident-drinking-expectation": {
     id: "incident-drinking-expectation",
@@ -305,19 +305,6 @@ export const reflections = {
       "First impressions are often formed before all of the relevant information is available. Critical reflection allows you to revisit those impressions as new information emerges and use what you learn to make more thoughtful decisions in future situations.",
   },
 
-  pragueInitialDescription: {
-    reflectionId: "pragueInitialDescription",
-    lessonId: "prague-guided-activity",
-    reflectionTitle: "First Impressions",
-    competencies: ["delayingJudgment", "toleranceOfAmbiguity", "curiosity"],
-    designPrinciples: ["recognizeIncompletePicture", "delayJudgment"],
-    learningOutcomes: ["culturalAwareness", "toleranceOfAmbiguity"],
-    whatYouPracticed:
-      "You observed an unfamiliar situation while important information about what was happening was still unavailable.",
-    howThisBuildsYourSkills:
-      "Intercultural interactions often unfold before you have enough information to fully understand them. Recognizing what you know and what you do not yet know can help you avoid turning an early impression into a conclusion.",
-  },
-
   pragueDaeaReflection: {
     reflectionId: "pragueDaeaReflection",
     lessonId: "prague-guided-activity",
@@ -343,7 +330,7 @@ export const reflections = {
       "interculturalNavigation",
     ],
     whatYouPracticed:
-      "You used DAEA to work through an authentic intercultural misunderstanding by separating what happened from possible explanations, examining your reaction, and considering how you might respond in the future.",
+      "You applied the steps from the Prague story to an experience of your own: describing what happened, considering the other person's possible view, and deciding what you would do now.",
     howThisBuildsYourSkills:
       "When an intercultural situation is confusing, your first interpretation may be based on incomplete information or your own expectations. Pausing to consider other explanations, seeking additional context, and revising your understanding as you learn more can help you respond more thoughtfully. Reflecting afterward can then turn the experience into preparation for future interactions.",
   },

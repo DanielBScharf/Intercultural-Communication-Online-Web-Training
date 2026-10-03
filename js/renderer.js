@@ -39,6 +39,13 @@ import {
 } from "./branchingScenario.js";
 
 import {
+    renderPerspectiveFlipContent,
+    initializePerspectiveFlip
+} from "./perspectiveFlip.js";
+
+import { getModuleStepPosition } from "./moduleProgress.js";
+
+import {
     getReflectionMetadata
 } from "./metaData/reflectionsMetadata.js";
 
@@ -68,12 +75,22 @@ export function renderLesson(lesson, context) {
 
     app.innerHTML = renderer(lesson, context);
 
+    // Activities with their own steps call this as the learner moves
+    // through them, so the bar at the top counts every step in the module.
+    context.updateModuleStep = stepInLesson => {
+        const bar = document.querySelector(".module-position");
+        const position = getPagePosition(context, stepInLesson);
+
+        if (bar && position) bar.outerHTML = renderModulePosition(position);
+    };
+
     attachSharedLessonEvents(lesson, context);
     initializeSortingActivity(lesson);
     initializeImageReveal(lesson);
     initializeStoryActivity(lesson, context);
     initializeGuidedActivity(lesson, context);
     initializeBranchingScenario(lesson, context);
+    initializePerspectiveFlip(lesson, context);
     updateNavigationOrder();
 }
 
@@ -91,7 +108,8 @@ const lessonRenderers = {
     imageReveal: renderImageReveal,
     storyActivity: renderStoryActivity,
     guidedActivity: renderGuidedActivity,
-    branchingScenario: renderBranchingScenario
+    branchingScenario: renderBranchingScenario,
+    perspectiveFlip: renderPerspectiveFlip
 };
 
 // ---------- Shared Layout ----------
@@ -106,7 +124,7 @@ function renderPageShell(lesson, content, context) {
                         ${lesson.moduleLabel || context.currentModule.title}
                     </p>
 
-                    ${renderModulePosition(context.modulePosition)}
+                    ${renderModulePosition(getPagePosition(context))}
 
                     <h2>${lesson.title}</h2>
 
@@ -118,6 +136,15 @@ function renderPageShell(lesson, content, context) {
             </div>
         </section>
     `;
+}
+
+// The learner's place in the module, counting every step. Lessons that
+// show no progress bar (module intro, completion, summary) stay without one.
+function getPagePosition(context, stepInLesson = 0) {
+    if (!context.modulePosition) return null;
+
+    return getModuleStepPosition(context.currentModule, context.currentLesson, stepInLesson)
+        || context.modulePosition;
 }
 
 function renderModulePosition(position) {
@@ -168,7 +195,7 @@ function renderLessonNavigation(context) {
             </button>
 
             ${getReflectionEntries(context.currentLesson || {}).some(entry => entry.required)
-                || context.currentLesson?.type === "branchingScenario" ? `
+                || ["branchingScenario", "perspectiveFlip"].includes(context.currentLesson?.type) ? `
                 <button class="btn btn-outline-secondary secondary-navigation-button" data-action="skip"
                     ${context.currentLesson?.type === "guidedActivity" ? "hidden" : ""}>Skip for Now</button>
             ` : ""}
@@ -621,6 +648,14 @@ function renderBranchingScenario(lesson, context) {
     );
 }
 
+function renderPerspectiveFlip(lesson, context) {
+    return renderPageShell(
+        lesson,
+        renderPerspectiveFlipContent(lesson),
+        context
+    );
+}
+
 function renderReflectionSummary(lesson, context) {
     const reflections = collectReflectionSummaryItems(context.courseData);
     const savedCount = reflections.filter(reflection =>
@@ -1014,6 +1049,7 @@ function attachSharedLessonEvents(lesson, context) {
             }
             // A scenario moves through its own steps before the lesson moves on.
             if (lesson.type === "branchingScenario" && context.advanceBranchingScenario?.()) return;
+            if (lesson.type === "perspectiveFlip" && context.advancePerspectiveFlip?.()) return;
             if (!validateRequiredFields()) return;
             if (lesson.type === "moduleComplete" && lesson.moduleKey) {
                 if (context.completeModule) {
@@ -1038,6 +1074,7 @@ function attachSharedLessonEvents(lesson, context) {
         button.addEventListener("click", () => {
             saveResponseDrafts();
             if (lesson.type === "branchingScenario" && context.skipBranchingScenario?.()) return;
+            if (lesson.type === "perspectiveFlip" && context.skipPerspectiveFlip?.()) return;
             if (lesson.type === "guidedActivity") context.advanceGuidedActivity?.(true);
             else if (context.nextLesson) context.goToLesson(context.nextLesson.id);
         });
@@ -1046,6 +1083,7 @@ function attachSharedLessonEvents(lesson, context) {
     document.querySelectorAll("[data-action='previous']").forEach(button => {
         button.addEventListener("click", () => {
             if (lesson.type === "branchingScenario" && context.retreatBranchingScenario?.()) return;
+            if (lesson.type === "perspectiveFlip" && context.retreatPerspectiveFlip?.()) return;
             if (context.previousLesson) {
                 context.goToLesson(context.previousLesson.id);
             }

@@ -33,6 +33,8 @@ intercultural-workshop/
 │   ├── renderer.js
 │   ├── activities.js
 │   ├── branchingScenario.js
+│   ├── perspectiveFlip.js
+│   ├── moduleProgress.js
 │   └── storage.js
 ├── modules/
 │   ├── culture.js
@@ -86,6 +88,14 @@ Use `guidedActivity` for:
 
 Do not force decisions when the learning goal is analysis or reflection.
 
+### Module progress bar
+
+The bar at the top of each lesson shows the learner's progress through the whole module. It counts every step, not every lesson. A plain lesson is one step. An activity with steps of its own counts each of them: a `guidedActivity` counts its slides, a `branchingScenario` counts its decisions, its question step and its compare screen, and a `perspectiveFlip` counts its panels and its closing table. The module's intro and completion screens are not counted.
+
+The counting lives in `js/moduleProgress.js`. An activity keeps the bar up to date by calling `context.updateModuleStep(step)` whenever it moves, where `step` is its own position starting at 0. Activities also show their own counter underneath, such as "Step 2 of 3", so the learner can see both how far they are in the activity and how far they are in the module.
+
+A new activity type with its own steps needs two things: a line in `getLessonStepCount()` saying how many steps it has, and a call to `context.updateModuleStep()` when it moves.
+
 ### branchingScenario
 
 `branchingScenario` is a reusable multiple-choice scenario. The learner reads a situation, makes one or more decisions, sees what each choice leads to, and then compares every path side by side.
@@ -108,6 +118,24 @@ Behavior:
 - Each option has an `outcome` (what happens) and an optional `explanation` (why). The explanation is shown only on the compare screen, so learners think before they are told.
 - A later reflection can show the learner's choices by setting `scenarioRecap` to the scenario's lesson id.
 - `validateScenario()` reports content mistakes, and `tests/branchingScenario.test.mjs` runs it on every scenario in the course.
+
+### perspectiveFlip
+
+`perspectiveFlip` shows the same moment from two points of view. The learner sees one person's view of a picture, guesses what the other person is thinking, then flips to the other view. A closing table sets the two views side by side.
+
+All of its logic and layout live in `js/perspectiveFlip.js`. The content lives in the module file. The data format is documented at the top of `js/perspectiveFlip.js`.
+
+Use `perspectiveFlip` when the learning goal is seeing a situation through someone else's eyes.
+
+Behavior:
+
+- Each panel shows a picture and the first view. The learner writes a short guess first. The options stay hidden until they have written something, so they think before they see the choices. Picking an option flips the panel to the second view and shows feedback on the guess. `writeFirst: false` shows the options straight away and makes the written guess optional.
+- After the flip, the learner can switch between the two views.
+- The second view can include a list of what was said with its meaning, for example translations.
+- The lesson's own Next and Previous buttons step through the panels. Skip for Now flips a panel without a guess.
+- An optional closing table compares the two views row by row and lists the learner's guesses.
+- Guesses are saved in the browser and restored on return. They are not reflections: they do not appear in the Reflection Summary and never block module completion.
+- `validatePerspectiveFlip()` reports content mistakes, and `tests/perspectiveFlip.test.mjs` runs it on every perspective flip in the course.
 
 ### reflectionSummary
 

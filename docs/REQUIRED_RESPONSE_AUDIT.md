@@ -2,7 +2,9 @@
 
 Current course data is authoritative. This change adds only response requirements and validation behavior; prompts, rationales, prose, metadata definitions, and segmented position logic are unchanged.
 
-> **Update, October 2026:** `incidentDrinkingInitialReflection` is now the open question inside the "A Work Dinner" branching scenario. It is still saved and still appears in the Reflection Summary, but it no longer blocks module completion. The course now has 26 reflection entries, 24 of them required. The table below is the original audit.
+> **Update, October 2026:** `incidentDrinkingInitialReflection` is now the open question inside the "A Work Dinner" branching scenario. It is still saved and still appears in the Reflection Summary, but it no longer blocks module completion. The table below is the original audit.
+>
+> **Update, October 2026:** `pragueInitialDescription` and the `pragueDecision` choice were removed when the Prague module was rebuilt around the perspective-flip activity. The course now has 25 reflection entries, 23 of them required.
 
 ## Required (25 responses)
 

@@ -190,6 +190,13 @@ export function getScenarioView(lesson, state) {
     return { kind: "review" };
 }
 
+// How many steps the scenario adds to the module's progress bar: one
+// for each decision, one for a scenario-level question, and one for
+// the compare screen.
+export function getScenarioStepCount(lesson) {
+    return getScenarioDecisions(lesson).length + (getScenarioQuestion(lesson) ? 1 : 0) + 1;
+}
+
 // The last view a learner can be on for the choices made so far.
 export function getLastScenarioView(lesson, state) {
     const hasQuestionStep = isScenarioComplete(lesson, state) && getScenarioQuestion(lesson);
@@ -697,6 +704,9 @@ export function initializeBranchingScenario(lesson, context = {}) {
                 : renderDecisionView(lesson, state, view);
 
         if (progress) progress.textContent = getProgressText(lesson, state, view);
+
+        // Keep the module's progress bar in step with the scenario.
+        context.updateModuleStep?.(state.view);
 
         updateSkipButton();
 

@@ -1038,6 +1038,9 @@ export function initializeGuidedActivity(lesson, context = {}) {
         progress.textContent =
             `Slide ${currentSlideIndex + 1} of ${slides.length}`;
 
+        // Keep the module's progress bar in step with the slides.
+        context.updateModuleStep?.(currentSlideIndex);
+
         previousButton.disabled = currentSlideIndex === 0;
         nextButton.disabled = currentSlideIndex === slides.length - 1;
         const canSkip = slide.slideType === "reflection" && slide.required === true;
