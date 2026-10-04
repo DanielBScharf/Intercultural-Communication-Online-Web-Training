@@ -12,6 +12,8 @@
 // type: "guidedActivity" creates a reusable slide-based activity.
 // type: "branchingScenario" creates a multiple-choice scenario.
 // Its format is documented at the top of js/branchingScenario.js.
+// type: "signalTranscript" creates a mark-the-lines conversation activity.
+// Its format is documented at the top of js/signalTranscript.js.
 // ======================================
 
 const criticalIncidentReflectionRationale = `Think back to the cultural iceberg. There may be deeper values, expectations, assumptions, or communication norms influencing this situation that are not immediately visible. You may not yet have enough information to understand why someone behaved the way they did.
@@ -205,77 +207,230 @@ export const incidentsModule = {
             placeholder: "Evaluate: ...\nApply: ..."
         },
         {
-            id: "incident-negotiation-misunderstanding",
-            type: "guidedActivity",
-            title: "Negotiation Misunderstanding Incident",
+            id: "incident-negotiation-indirect",
+            type: "twoColumn",
+            title: "Saying No Without Saying No",
             moduleLabel: "Critical Incidents",
-            instructions: "Consider how decision-making expectations can shape the way people interpret the same business discussion.",
-            slides: [
+            body: [
+                "Before the next incident, think about how you turn people down. Most of us do not always say “no” outright. We soften it, and we expect the other person to understand.",
+                "You probably use phrases like the ones below, and know what they usually mean."
+            ],
+            leftTitle: "What is said",
+            leftItems: [
+                "“Let's get coffee sometime.”",
+                "“I'll think about it.”",
+                "“That's an interesting idea.”",
+                "“I'd love to, but this month is really busy.”"
+            ],
+            rightTitle: "What it can mean",
+            rightItems: [
+                "I am being friendly. I am not making a plan.",
+                "Probably not.",
+                "I am not convinced.",
+                "No."
+            ],
+            note: "How much of a message is put into words, and how much is left for the listener to work out, differs between people, workplaces, and cultures. So does the cost of refusing someone in front of others. Keep both in mind in the next meeting."
+        },
+
+        {
+            id: "incident-negotiation-misunderstanding",
+            type: "signalTranscript",
+            title: "Where Was the No?",
+            moduleLabel: "Critical Incidents",
+            instructions: "Read the end of a business meeting, then mark the lines where you think the answer was being given without being said outright.",
+            learningObjectives: ["LO3", "LO4"],
+            competencies: ["IC2", "IC3"],
+
+            scene: {
+                body: [
+                    "Your team is meeting a partner organization in another country to discuss a new agreement. Ms. Chen, their director, leads the meeting. Six people from her team are in the room.",
+                    "You have just finished presenting your proposal. You left the meeting believing the negotiation was still open. Several days later, you learn that her team believed they had already said no.",
+                    "This is how the meeting ended."
+                ]
+            },
+
+            prompt: "Her team believed they had already said no. Which lines do you think carried that message?",
+            signalName: "signals",
+
+            speakers: {
+                you: { name: "You", self: true },
+                chen: { name: "Ms. Chen" }
+            },
+
+            lines: [
                 {
-                    slideType: "story",
-                    title: "Vague Communication",
-                    body: [
-                        "Your team is meeting with a partner organization to discuss a new business agreement.",
-                        "You explain your proposal and ask if the other side agrees. The response is: 'That may be difficult.' You leave the meeting thinking negotiations are still ongoing.",
-                        "Several days later you learn they believed they had already rejected the proposal."
-                    ]
+                    id: "ask",
+                    speaker: "you",
+                    text: "“So that is our proposal: a three-year agreement, starting in January. Can we agree on that today?”",
+                    note: "This was your own line, but it shaped the rest of the meeting. A yes-or-no question, asked in front of her whole team, left Ms. Chen with no comfortable way to refuse."
                 },
                 {
-                    slideType: "reflection",
-                    title: "First Reflection",
-                    body: [
-                        "Before labeling the discussion as inefficient, evasive, or unserious, pause and separate evidence from interpretation."
-                    ],
-                    prompt: "Describe what happened in the meeting. What assumptions might each side be making about progress, directness, authority, or trust?",
-                    storageKey: "incidentNegotiationInitialReflection",
-                    required: true,
-                    reflectionTitle: "First Impressions",
-                    showPurposeDisclosure: false,
-                    rationale: "This reflection asks learners to identify assumptions about communication and decision-making before judging the interaction.",
-                    learningObjectives: ["LO2", "LO3"],
-                    competencies: ["IC2", "IC3"],
-                    placeholder: "Describe: ...\nAssumptions: ..."
+                    id: "thanks",
+                    speaker: "chen",
+                    text: "“Thank you. It is clear how much work your team has put into this.”",
+                    note: "A courtesy. On its own, it tells you nothing about the decision either way."
                 },
                 {
-                    slideType: "reveal",
-                    title: "Additional Perspective",
-                    body: [
-                        "The other team may be working within a culture that worries that directly saying 'no' can be seen as rude and will cause the other person to lose face.",
-                        "Their indirect communication may not mean they are avoiding the decision. In their eyes they gave you the most direct way to say no that they could.",
-                        "The misunderstanding can also build over reluctance to share information. In many cultures, the spread of information, including in decision making, is very top-down. If upper management says something is not possible, they may not share their reasoning or allow further negotiation."
-                    ]
+                    id: "difficult",
+                    speaker: "chen",
+                    text: "“A three-year term… that may be difficult.”",
+                    signal: true,
+                    heard: "There is an obstacle, and we can work on it. The negotiation is still open.",
+                    meant: "No. For Ms. Chen, this was already a clear refusal, said in a way that let nobody in the room lose face."
                 },
                 {
-                    slideType: "reflection",
-                    title: "DAEA Reflection",
-                    body: [
-                        "Use the additional perspective to examine your reaction without turning either side into a stereotype.",
-                        "Think about what information would help reduce ambiguity."
-                    ],
-                    prompt: "Analyze possible cultural or organizational perspectives. Evaluate the frustration in this scenario. What could someone ask or do next time to understand the decision process more clearly?",
-                    storageKey: "incidentNegotiationDaeaReflection",
-                    required: true,
-                    reflectionTitle: "Reconsidering the Situation",
-                    rationale: criticalIncidentReflectionRationale,
-                    learningObjectives: ["LO4", "LO5"],
-                    competencies: ["IC4", "IC5"],
-                    placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."
+                    id: "price",
+                    speaker: "you",
+                    text: "“Difficult in what way? We could look again at the price.”",
+                    note: "You treated “difficult” as a problem to solve, and guessed that the problem was the price. The guess was never checked."
                 },
                 {
-                    slideType: "summary",
-                    title: "Takeaways",
-                    body: [
-                        "This incident connects to stereotypes because one side could quickly label the other as slow, evasive, or unserious.",
-                        "A tolerance-of-ambiguity approach asks you to investigate decision-making expectations before judging."
-                    ],
-                    points: [
-                        "Different cultures and organizations may define progress differently.",
-                        "Indirect communication can serve relationship-building or consensus-building purposes.",
-                        "Clear questions can reduce ambiguity without disrespecting the other side.",
-                        "DAEA helps turn frustration into a plan for better communication."
+                    id: "study",
+                    speaker: "chen",
+                    cue: "She pauses.",
+                    text: "“We will need to study it carefully.”",
+                    signal: true,
+                    heard: "They are going to review the proposal and come back with an answer.",
+                    meant: "The subject is closed for today. No date, no next step, and no person responsible were offered."
+                },
+                {
+                    id: "flight",
+                    speaker: "chen",
+                    text: "“But you must be tired. How was your flight?”",
+                    signal: true,
+                    heard: "Friendly small talk at the end of a long meeting.",
+                    meant: "A change of subject, to move everyone away from an uncomfortable moment and protect the relationship."
+                },
+                {
+                    id: "contract",
+                    speaker: "you",
+                    text: "“It was fine, thank you. Shall I send the contract next week, then?”",
+                    note: "You asked about the next step as if the first step had been agreed."
+                },
+                {
+                    id: "useful",
+                    speaker: "chen",
+                    text: "“Please send us whatever you think is useful.”",
+                    signal: true,
+                    heard: "Yes, send the contract.",
+                    meant: "A polite reply that commits to nothing. Notice what is missing: at no point in the meeting did anyone say yes."
+                }
+            ],
+
+            review: {
+                title: "What was said, and what was meant",
+                body: [
+                    "A few days later, Wei, your contact on Ms. Chen's team, tells you that they thought the answer had been clear. Here is the conversation again, with what he explained."
+                ],
+                heardLabel: "How you heard it",
+                meantLabel: "How it was meant",
+                note: "None of these phrases always means no. Sometimes “that may be difficult” only means that something is difficult. No single line gave you the answer. What you had was several signals in a row and no clear yes, and that is the moment to check your reading.",
+                takeaways: [
+                    "“They said it may be difficult” is what happened. “We are still negotiating” was your interpretation.",
+                    "A refusal can be given through what is left unsaid: no yes, no date, no next step.",
+                    "How you ask shapes what you can be told. A yes-or-no question in front of a group makes a direct no harder.",
+                    "Neither side was being evasive or careless. Each was being clear by its own standard."
+                ]
+            }
+        },
+
+        {
+            id: "incident-negotiation-followup",
+            type: "branchingScenario",
+            title: "The Follow-Up",
+            moduleLabel: "Critical Incidents",
+            instructions: "Go back to the evening after the meeting, before Wei has explained anything. Choose what you would do.",
+            learningObjectives: ["LO3"],
+            competencies: ["IC3", "IC5"],
+            showTagsAfterChoice: false,
+
+            scene: {
+                body: [
+                    "It is the evening after the meeting. Reading back through your notes, you notice that nobody on Ms. Chen's team actually said yes.",
+                    "You are no longer sure what was decided. Your manager is expecting an update tomorrow."
+                ]
+            },
+
+            decisions: [
+                {
+                    id: "followup",
+                    prompt: "What do you do next?",
+                    options: [
+                        {
+                            id: "contract",
+                            label: "Send the contract with a signing date, as you offered in the meeting.",
+                            tag: "Acting on your first reading",
+                            outcome: [
+                                "Nothing comes back. Ten days later, Wei tells you quietly that the team was surprised to receive a contract for something they had already declined.",
+                                "Ms. Chen now has to refuse a second time, and more plainly. The relationship is cooler than it was."
+                            ],
+                            explanation: [
+                                "You treated one interpretation as a fact and acted on it. The contract answered a question that nobody on their side thought was open."
+                            ]
+                        },
+                        {
+                            id: "confirm",
+                            label: "Email Ms. Chen: “To confirm, do we have an agreement? A yes or no would help us plan.”",
+                            tag: "Asking for the answer in your own style",
+                            outcome: [
+                                "Two days later, her assistant replies: “We are still considering the proposal internally.”",
+                                "You know no more than before, and Ms. Chen has been asked to say no in writing."
+                            ],
+                            explanation: [
+                                "Checking was the right instinct. The form of the question was the problem: it asked again for the one thing that had been hard to say, so it produced another indirect answer."
+                            ]
+                        },
+                        {
+                            id: "ask",
+                            label: "Call Wei: “I had the sense the three-year term is a problem. What would make this easier on your side?”",
+                            tag: "Checking your reading",
+                            recommended: true,
+                            outcome: [
+                                "Wei sounds relieved. A three-year commitment needs approval from head office, and Ms. Chen cannot ask for that this year. A one-year pilot would be within her authority.",
+                                "You tell your manager what you have learned and send a revised, shorter proposal. Ms. Chen replies the same week."
+                            ],
+                            explanation: [
+                                "You said what you had noticed, offered it as a guess, and asked an open question in private. That gave Wei room to tell you what the obstacle was. It was not the price."
+                            ]
+                        }
                     ]
                 }
-            ]
+            ],
+
+            debrief: {
+                title: "Another perspective",
+                body: [
+                    "What you met in this meeting has names. Communication is more direct when most of the message is in the words, and more indirect when much of it is left to tone, timing, and what goes unsaid. You may also see these called low-context and high-context communication. “Face” is a person's standing and dignity in front of others.",
+                    "In some workplaces, a direct “no” is felt to be rude, especially in front of other people, because it can cause the other person to lose face. An indirect refusal is not a way of avoiding the decision. For Ms. Chen, it was the clearest polite form available.",
+                    "There was also something you could not see from your side of the table. Ms. Chen did not have the authority to agree to three years, and she was not going to explain her organization's approval process in a meeting. Your offer on price answered a question nobody had asked.",
+                    "This is one team in one organization. How directly people refuse differs between companies and between individuals, so the useful habit is to check, and not to predict."
+                ],
+                takeaways: [
+                    "When you have no clear yes, treat your reading as a guess and test it.",
+                    "Ask open questions, in private, that can be answered without anyone having to refuse.",
+                    "Ask about the decision process as well as the decision: who needs to approve, and by when.",
+                    "A trusted contact can often tell you what a formal meeting cannot."
+                ]
+            }
+        },
+
+        {
+            id: "incident-negotiation-reflection",
+            type: "reflection",
+            title: "After the Meeting",
+            moduleLabel: "Critical Incidents",
+            body: [
+                "You have separated what was said from what it was taken to mean, and tried a way of checking. Now apply that to your own work."
+            ],
+            scenarioRecap: "incident-negotiation-followup",
+            prompt: "Think of a meeting or conversation in which you were not sure whether you had been given a yes. What was actually said? What did you take it to mean? Write one question you could ask next time to check.",
+            storageKey: "incidentNegotiationDaeaReflection",
+            required: true,
+            reflectionTitle: "Reconsidering the Situation",
+            rationale: criticalIncidentReflectionRationale,
+            learningObjectives: ["LO4", "LO5"],
+            competencies: ["IC4", "IC5"],
+            placeholder: "What was said: ...\nWhat I took it to mean: ...\nA question I could ask: ..."
         },
 
         {
@@ -344,7 +499,7 @@ export const incidentsModule = {
                     ],
                     points: [
                         "Culture influences what people define as family.",
-                        "Different views of family and community can cause confusion between different cultures. They may be confused sad about a small wedding with only immediate family and friends.",
+                        "Different views of family and community can cause confusion between different cultures. In the same way, they might be confused or sad about a small wedding with only immediate family and friends.",
                         "Situations like this are an excellent way to practice tolerance of ambiguity.",
                         "DAEA supports future action by helping you plan what to do in similar situations in the future."
                     ]

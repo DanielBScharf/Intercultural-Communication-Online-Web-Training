@@ -12,7 +12,8 @@ import {
 
 const saved = new Map();
 globalThis.localStorage = {
-    getItem: key => saved.get(key) ?? null,
+    // Explore mode is on by default; these tests cover the learner requirements, so it is off here.
+    getItem: key => saved.get(key) ?? (key === 'interculturalWorkshop_exploreMode' ? 'false' : null),
     setItem: (key, value) => saved.set(key, value)
 };
 
@@ -27,8 +28,8 @@ test("only non-whitespace text satisfies a response", () => {
 
 test("semantic configuration includes every active reflection and excludes decision inputs", () => {
     const entries = courseData.modules.flatMap(module => module.lessons.flatMap(getReflectionEntries));
-    assert.equal(entries.length, 25);
-    assert.equal(entries.filter(entry => entry.required).length, 23);
+    assert.equal(entries.length, 24);
+    assert.equal(entries.filter(entry => entry.required).length, 22);
     assert.equal(new Set(entries.map(entry => entry.storageKey)).size, entries.length);
     for (const entry of entries) assert.equal(typeof entry.required, "boolean");
     assert.equal(isRequiredReflection(courseData, "cultureHiddenMisunderstandingReflection"), true);

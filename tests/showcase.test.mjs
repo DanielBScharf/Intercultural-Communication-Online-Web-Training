@@ -15,7 +15,7 @@ const moduleLessons = courseData.modules.flatMap(module => module.lessons);
 
 // Runs the app controller without a page, the same way the other app tests do.
 function controllerFixture(saved = new Map()) {
-    globalThis.localStorage = {getItem: key => saved.get(key) ?? null, setItem: (key, value) => saved.set(key, value)};
+    globalThis.localStorage = {getItem: key => saved.get(key) ?? (key === 'interculturalWorkshop_exploreMode' ? 'false' : null), setItem: (key, value) => saved.set(key, value)};
     const source = readFileSync(new URL('../js/app.js', import.meta.url), 'utf8')
         .replace(/^import[\s\S]*?;\s*$/gm, '').replace(/\ninitApp\(\);\s*$/, '');
     const visits = [], contexts = [], boundaries = [];

@@ -256,3 +256,23 @@ The showcase is a short route (about ten minutes) through the workshop for revie
 - The route ends with a `showcaseEnd` lesson, rendered by `renderShowcaseEnd` in `js/renderer.js`.
 - The route can be opened from the landing page, from the sidebar, or directly with the `#showcase` link.
 - To change what the showcase contains, edit the list in `modules/showcase.js`. Edits to a lesson in its own module appear in the showcase automatically.
+
+### Signal transcript
+
+`js/signalTranscript.js` is a reusable activity (lesson type `signalTranscript`). The learner reads a short conversation, marks the lines they think carried an unspoken message, and then sees a line-by-line review of what they marked, what they missed, how each line could be heard, and how it was meant.
+
+- The conversation (speakers, lines, which lines are signals, and the review text) belongs in module data. The format is documented at the top of the file.
+- The activity has two steps, marking and review. The lesson's Next and Previous buttons move between them, and the top bar counts both.
+- At least one line must be marked before the review. Skip for Now is offered while marking.
+- Marks are saved under `transcript_<stateId or id>`.
+- Each line can carry an optional `audio` file for voice-over.
+- It is used in the negotiation incident ("Where Was the No?"), which is followed by a one-decision branching scenario and one reflection.
+
+### Explore mode
+
+The menu screen has an "Explore freely" switch for reviewers. It is on by default, because this is a portfolio project. A learner can switch it off to get the normal requirements.
+
+- The setting is saved as `exploreMode` and read through `isExploreModeOn()` in `js/reflectionValidation.js`.
+- While it is on, `getMissingRequiredResponses()` returns nothing and `validateRequiredFields()` always passes, so every place that enforces required reflections (the module guard, the Next button, module completion) lets the reviewer through. The Reflection Summary is also open.
+- Anything typed is still saved. Switching it off restores the normal requirements, based on the responses actually saved.
+- Steps inside activities (choosing an option, marking a line) still ask for an answer, and still offer Skip for Now.

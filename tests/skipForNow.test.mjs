@@ -7,7 +7,7 @@ import * as storage from '../js/storage.js';
 import {getMissingRequiredResponses,getReflectionEntries,saveResponseDrafts,hasResponse} from '../js/reflectionValidation.js';
 
 function controllerFixture(saved=new Map()) {
-    globalThis.localStorage={getItem:key=>saved.get(key)??null,setItem:(key,value)=>saved.set(key,value)};
+    globalThis.localStorage={getItem:key=>saved.get(key)??(key === 'interculturalWorkshop_exploreMode' ? 'false' : null),setItem:(key,value)=>saved.set(key,value)};
     const source=readFileSync(new URL('../js/app.js',import.meta.url),'utf8').replace(/^import[\s\S]*?;\s*$/gm,'').replace(/\ninitApp\(\);\s*$/,'');
     const visits=[],boundaries=[];
     const context={courseData,...storage,getMissingRequiredResponses,saveResponseDrafts:()=>{},validateRequiredFields:()=>true,

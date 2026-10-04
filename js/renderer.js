@@ -43,6 +43,11 @@ import {
     initializePerspectiveFlip
 } from "./perspectiveFlip.js";
 
+import {
+    renderSignalTranscriptContent,
+    initializeSignalTranscript
+} from "./signalTranscript.js";
+
 import { getModuleStepPosition } from "./moduleProgress.js";
 
 import {
@@ -91,6 +96,7 @@ export function renderLesson(lesson, context) {
     initializeGuidedActivity(lesson, context);
     initializeBranchingScenario(lesson, context);
     initializePerspectiveFlip(lesson, context);
+    initializeSignalTranscript(lesson, context);
     updateNavigationOrder();
 }
 
@@ -110,6 +116,7 @@ const lessonRenderers = {
     guidedActivity: renderGuidedActivity,
     branchingScenario: renderBranchingScenario,
     perspectiveFlip: renderPerspectiveFlip,
+    signalTranscript: renderSignalTranscript,
     showcaseEnd: renderShowcaseEnd
 };
 
@@ -196,7 +203,7 @@ function renderLessonNavigation(context) {
             </button>
 
             ${getReflectionEntries(context.currentLesson || {}).some(entry => entry.required)
-                || ["branchingScenario", "perspectiveFlip"].includes(context.currentLesson?.type) ? `
+                || ["branchingScenario", "perspectiveFlip", "signalTranscript"].includes(context.currentLesson?.type) ? `
                 <button class="btn btn-outline-secondary secondary-navigation-button" data-action="skip"
                     ${context.currentLesson?.type === "guidedActivity" ? "hidden" : ""}>Skip for Now</button>
             ` : ""}
@@ -554,6 +561,8 @@ function renderReflectionComparison(lesson) {
 function renderTwoColumn(lesson, context) {
     const isCultureSurfaceComparison = lesson.id === "culture-iceberg-details";
     const content = `
+        ${(lesson.body || []).map(paragraph => `<p>${paragraph}</p>`).join("")}
+
         <div class="row g-4 mt-3">
             <div class="col-md-6">
                 <div class="info-column${isCultureSurfaceComparison ? " info-column-visible" : ""}">
@@ -653,6 +662,14 @@ function renderPerspectiveFlip(lesson, context) {
     return renderPageShell(
         lesson,
         renderPerspectiveFlipContent(lesson),
+        context
+    );
+}
+
+function renderSignalTranscript(lesson, context) {
+    return renderPageShell(
+        lesson,
+        renderSignalTranscriptContent(lesson),
         context
     );
 }
@@ -1089,6 +1106,7 @@ function attachSharedLessonEvents(lesson, context) {
             // A scenario moves through its own steps before the lesson moves on.
             if (lesson.type === "branchingScenario" && context.advanceBranchingScenario?.()) return;
             if (lesson.type === "perspectiveFlip" && context.advancePerspectiveFlip?.()) return;
+            if (lesson.type === "signalTranscript" && context.advanceSignalTranscript?.()) return;
             if (!validateRequiredFields()) return;
             if (lesson.type === "moduleComplete" && lesson.moduleKey) {
                 if (context.completeModule) {
@@ -1123,6 +1141,7 @@ function attachSharedLessonEvents(lesson, context) {
         button.addEventListener("click", () => {
             if (lesson.type === "branchingScenario" && context.retreatBranchingScenario?.()) return;
             if (lesson.type === "perspectiveFlip" && context.retreatPerspectiveFlip?.()) return;
+            if (lesson.type === "signalTranscript" && context.retreatSignalTranscript?.()) return;
             if (context.previousLesson) {
                 context.goToLesson(context.previousLesson.id);
             }

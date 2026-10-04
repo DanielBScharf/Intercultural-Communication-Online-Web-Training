@@ -69,7 +69,11 @@ export const lessons = {
   },
   "incident-negotiation-misunderstanding": {
     id: "incident-negotiation-misunderstanding",
-    title: "Negotiation Misunderstanding Incident",
+    title: "Where Was the No?",
+  },
+  "incident-negotiation-reflection": {
+    id: "incident-negotiation-reflection",
+    title: "After the Meeting",
   },
   "incident-guest-host-communication": {
     id: "incident-guest-host-communication",
@@ -361,22 +365,9 @@ export const reflections = {
       "Understanding another perspective does not require you to abandon your own needs or boundaries. Reflection can help you consider how to communicate those needs while remaining respectful of different expectations.",
   },
 
-  incidentNegotiationInitialReflection: {
-    reflectionId: "incidentNegotiationInitialReflection",
-    lessonId: "incident-negotiation-misunderstanding",
-    reflectionTitle: "First Impressions",
-    competencies: ["perspectiveTaking", "delayingJudgment", "toleranceOfAmbiguity"],
-    designPrinciples: ["recognizeIncompletePicture", "multipleInterpretations"],
-    learningOutcomes: ["culturalAwareness", "toleranceOfAmbiguity"],
-    whatYouPracticed:
-      "You examined how different expectations about communication and decision making can lead people to interpret the same workplace interaction differently.",
-    howThisBuildsYourSkills:
-      "When expectations are not shared, behavior that seems confusing or frustrating may have explanations you have not yet considered. Recognizing that possibility can help you avoid assuming your first interpretation is complete.",
-  },
-
   incidentNegotiationDaeaReflection: {
     reflectionId: "incidentNegotiationDaeaReflection",
-    lessonId: "incident-negotiation-misunderstanding",
+    lessonId: "incident-negotiation-reflection",
     reflectionTitle: "Reconsidering the Situation",
     competencies: [
       "curiosity",

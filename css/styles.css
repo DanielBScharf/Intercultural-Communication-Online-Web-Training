@@ -1771,3 +1771,214 @@ textarea[aria-invalid="true"] {
         --bs-gutter-x: 1.5rem;
     }
 }
+
+/* =====================================
+   Signal transcript (js/signalTranscript.js)
+   ===================================== */
+
+.transcript-hint,
+.transcript-count {
+    color: var(--text-muted);
+}
+
+.lesson-card .transcript-hint,
+.lesson-card .transcript-count {
+    font-size: 0.95rem;
+}
+
+.transcript-lines,
+.transcript-review {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    display: grid;
+    gap: 0.75rem;
+}
+
+/* The learner's own lines sit to the right, like a chat. */
+.transcript-line,
+.transcript-review-line {
+    max-width: 88%;
+}
+
+.transcript-line.is-self,
+.transcript-review-line.is-self {
+    justify-self: end;
+}
+
+.transcript-line-button {
+    display: grid;
+    gap: 0.15rem;
+    width: 100%;
+    min-height: 44px;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    background: var(--surface);
+    color: var(--text-dark);
+    border: 1px solid var(--border);
+    border-radius: 0.85rem;
+    overflow-wrap: anywhere;
+}
+
+.transcript-line.is-self .transcript-line-button {
+    background: var(--surface-info);
+}
+
+.transcript-line-button:hover {
+    border-color: var(--primary);
+}
+
+.transcript-line-button:focus-visible,
+#transcriptRestart:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+}
+
+.transcript-line-button[aria-pressed="true"],
+.transcript-line.is-self .transcript-line-button[aria-pressed="true"] {
+    border: 2px solid var(--accent);
+    background: var(--accent-soft);
+}
+
+.transcript-speaker {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.transcript-cue {
+    font-style: italic;
+    color: var(--text-muted);
+}
+
+.transcript-mark {
+    justify-self: end;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.transcript-line-button[aria-pressed="true"] .transcript-mark {
+    color: var(--accent-text);
+}
+
+.transcript-line-button[aria-pressed="true"] .transcript-mark::before {
+    content: "\2713\00a0";
+}
+
+.transcript-score {
+    font-weight: 700;
+}
+
+.transcript-review-line {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.85rem;
+    padding: 1rem;
+}
+
+.transcript-review-line.is-self {
+    background: var(--surface-info);
+}
+
+.transcript-review-line.is-found {
+    border: 2px solid var(--success);
+}
+
+.transcript-review-line.is-missed {
+    border: 2px solid var(--accent);
+    background: var(--accent-soft);
+}
+
+.transcript-review-said {
+    display: grid;
+    gap: 0.15rem;
+    margin-bottom: 0.5rem;
+}
+
+.lesson-card .transcript-status {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-muted);
+}
+
+.lesson-card .is-found .transcript-status {
+    color: var(--success);
+}
+
+.is-found .transcript-status::before {
+    content: "\2713\00a0";
+}
+
+.lesson-card .is-missed .transcript-status {
+    color: var(--accent-text);
+}
+
+.transcript-meanings {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin: 0;
+}
+
+.transcript-meanings dt {
+    font-size: 0.85rem;
+    color: var(--primary-dark);
+}
+
+.transcript-meanings dd {
+    margin: 0;
+    font-size: 0.98rem;
+}
+
+.lesson-card .transcript-line-note {
+    font-size: 0.98rem;
+    margin: 0;
+}
+
+@media (max-width: 575.98px) {
+    .transcript-line,
+    .transcript-review-line {
+        max-width: 100%;
+    }
+
+    .transcript-meanings {
+        grid-template-columns: 1fr;
+    }
+}
+
+#transcriptRestart {
+    margin-top: 1rem;
+}
+
+/* Explore mode switch on the menu screen */
+
+.explore-mode {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.85rem;
+    padding: 0.85rem 1rem 0.85rem 3.5rem;
+}
+
+.explore-mode .form-check-label {
+    font-weight: 700;
+}
+
+.explore-mode-help {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin: 0.15rem 0 0;
+}
+
+/* The learner's own lines in a transcript are read-only. */
+
+.transcript-line-plain {
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.75rem 1rem;
+    background: var(--surface-info);
+    border: 1px dashed var(--border);
+    border-radius: 0.85rem;
+    overflow-wrap: anywhere;
+}

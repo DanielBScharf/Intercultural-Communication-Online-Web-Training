@@ -6,6 +6,8 @@ Current course data is authoritative. This change adds only response requirement
 >
 > **Update, October 2026:** `pragueInitialDescription` and the `pragueDecision` choice were removed when the Prague module was rebuilt around the perspective-flip activity. The course now has 25 reflection entries, 23 of them required.
 
+> **Update, October 2026:** `incidentNegotiationInitialReflection` was removed when the negotiation incident was rebuilt as a signal transcript ("Where Was the No?"), a follow-up scenario, and one reflection. The course now has 24 reflection entries, 22 of them required.
+
 ## Required (25 responses)
 
 | Reflection ID / storage key | Module | Title |

@@ -10,7 +10,7 @@
 // The bar counts every step in the module, not every lesson. A plain
 // lesson is one step. An activity with several steps of its own (a
 // guided activity's slides, a scenario's decisions, a perspective
-// flip's panels) counts each of them, so the bar keeps moving while
+// flip's panels, a signal transcript's two steps) counts each of them, so the bar keeps moving while
 // the learner works through the activity.
 //
 // The module's intro and completion screens are not counted.
@@ -18,6 +18,7 @@
 
 import { getScenarioStepCount } from "./branchingScenario.js";
 import { getPerspectiveStepCount } from "./perspectiveFlip.js";
+import { getTranscriptStepCount } from "./signalTranscript.js";
 
 function isCountedLesson(lesson) {
     return lesson.type !== "moduleIntro" && lesson.type !== "moduleComplete";
@@ -30,6 +31,7 @@ export function getLessonStepCount(lesson) {
     if (lesson?.type === "guidedActivity") count = (lesson.slides || []).length;
     if (lesson?.type === "branchingScenario") count = getScenarioStepCount(lesson);
     if (lesson?.type === "perspectiveFlip") count = getPerspectiveStepCount(lesson);
+    if (lesson?.type === "signalTranscript") count = getTranscriptStepCount(lesson);
 
     return Math.max(count, 1);
 }

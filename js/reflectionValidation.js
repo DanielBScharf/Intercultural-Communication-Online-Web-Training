@@ -1,4 +1,18 @@
-import { loadResponse, saveResponse } from "./storage.js";
+import { loadResponse, saveResponse, loadItem, saveItem } from "./storage.js";
+
+// Explore mode lets a reviewer open any section without completing the
+// required reflections. This is a portfolio project, so it is on by
+// default. A learner can switch it off on the menu screen to get the
+// normal requirements.
+const EXPLORE_MODE_KEY = "exploreMode";
+
+export function isExploreModeOn() {
+    return loadItem(EXPLORE_MODE_KEY, true) !== false;
+}
+
+export function setExploreMode(on) {
+    saveItem(EXPLORE_MODE_KEY, on === true);
+}
 
 export const RESPONSE_REQUIRED_MESSAGE = "Please enter a response before continuing, or choose Skip for Now.";
 
@@ -22,6 +36,7 @@ export function getReflectionEntries(lesson) {
 }
 
 export function getMissingRequiredResponses(module) {
+    if (isExploreModeOn()) return [];
     return (module?.lessons || []).flatMap(getReflectionEntries)
         .filter(entry => entry.required && !hasResponse(loadResponse(entry.storageKey)));
 }
@@ -68,6 +83,10 @@ export function initializeResponseValidation(root = document) {
 }
 
 export function validateRequiredFields(root = document) {
+    if (isExploreModeOn()) {
+        saveResponseDrafts(root);
+        return true;
+    }
     let firstInvalid = null;
     root.querySelectorAll('[data-required-response="true"]').forEach(field => {
         if (!validateResponseField(field)) firstInvalid ||= field;

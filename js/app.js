@@ -5,7 +5,7 @@
 
 import { courseData } from "./courseData.js";
 import { renderLesson } from "./renderer.js";
-import { getMissingRequiredResponses, validateRequiredFields, saveResponseDrafts } from "./reflectionValidation.js";
+import { getMissingRequiredResponses, validateRequiredFields, saveResponseDrafts, isExploreModeOn, setExploreMode } from "./reflectionValidation.js";
 import { getReflectionMetadata } from "./metaData/reflectionsMetadata.js";
 import {
     saveItem,
@@ -275,9 +275,19 @@ function renderHome() {
 
         <section class="container mb-5">
 
-            <h2 class="mb-4">
+            <h2 class="mb-3">
                 Course Modules
             </h2>
+
+            <div class="form-check form-switch explore-mode mb-4">
+                <input class="form-check-input" type="checkbox" role="switch" id="exploreMode"
+                    aria-describedby="exploreModeHelp" ${isExploreModeOn() ? "checked" : ""}>
+                <label class="form-check-label" for="exploreMode">Explore freely</label>
+                <p class="explore-mode-help" id="exploreModeHelp">
+                    On for reviewers: open any section in any order without completing the required reflections.
+                    Turn this off to take the workshop as a learner would.
+                </p>
+            </div>
 
             <div class="row g-4">
 
@@ -415,6 +425,11 @@ function renderHome() {
     });
 
     document.getElementById("restartShowcase")?.addEventListener("click", goToShowcase);
+
+    document.getElementById("exploreMode")?.addEventListener("change", event => {
+        setExploreMode(event.target.checked);
+        updateSidebar();
+    });
 
     document.querySelectorAll("[data-module-start]").forEach(button => {
         button.addEventListener("click", () => {
@@ -978,7 +993,7 @@ function introduceReflectionSummary(options = {}) {
 }
 
 function isReflectionSummaryAvailable() {
-    return isWorkshopComplete();
+    return isExploreModeOn() || isWorkshopComplete();
 }
 
 function isWorkshopComplete() {
