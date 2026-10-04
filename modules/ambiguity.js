@@ -18,7 +18,7 @@ export const ambiguityModule = {
     key: "ambiguity",
     title: "Tolerance of Ambiguity",
     description: "Build comfort with unfamiliar, unclear, and unpredictable situations.",
-    image: "images/tolerance/intercultural_connection.png",
+    image: "images/menu/ambiguity.jpg",
 
     lessons: [
         {

@@ -34,7 +34,7 @@ export const cultureModule = {
     key: "culture",
     title: "Understanding Culture",
     description: "This module provides a definition of culture and explains why culture is important.",
-    image: "images/culture/understanding-culture.png",
+    image: "images/menu/culture.jpg",
 
     lessons: [
         {

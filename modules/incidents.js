@@ -22,7 +22,7 @@ export const incidentsModule = {
     key: "incidents",
     title: "Critical Incidents",
     description: "Practice intercultural reflection with realistic scenarios.",
-    image: "images/daea/critical_reflection.png",
+    image: "images/menu/incidents.jpg",
 
     lessons: [
         {

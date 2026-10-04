@@ -21,7 +21,7 @@ export const pragueModule = {
     key: "prague",
     title: "Prague Example Practice",
     description: "Apply DAEA to a real intercultural experience.",
-    image: "images/comic/prague-panel-1.png",
+    image: "images/menu/prague.jpg",
 
     lessons: [
         {

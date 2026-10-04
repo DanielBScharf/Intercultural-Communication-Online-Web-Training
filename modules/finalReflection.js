@@ -15,7 +15,7 @@ export const finalReflectionModule = {
     key: "final-reflection",
     title: "Final Reflection",
     description: "Reflect on the workshop and identify how you will apply what you have learned.",
-    image: "images/daea/reflection.jpg",
+    image: "images/menu/finalReflection.jpg",
 
     lessons: [
         {

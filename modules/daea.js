@@ -65,7 +65,7 @@ export const daeaModule = {
     key: "daea",
     title: "Critical Reflection / DAEA",
     description: "Practice Describe, Analyze, Evaluate, and Apply.",
-    image: "images/daea/critical_reflection.png",
+    image: "images/menu/daea.jpg",
 
     lessons: [
         {
