@@ -38,6 +38,13 @@ export const courseData = {
     title: "Intercultural Communication Workshop",
     creator: "Daniel Scharf",
     year: "2026",
+
+    // Shown on the menu screen. Leave a value empty to hide that link.
+    contact: {
+        email: "id.scharfd@gmail.com",
+        website: "https://daniel-scharf.com",
+        linkedin: "https://www.linkedin.com/in/scharf-daniel-/"
+    },
     heroImage: "images/tolerance/intercultural_connection.png",
     heroImageAlt: "People connecting through intercultural communication",
 

@@ -148,6 +148,18 @@ function getResumeLesson() {
 // Home / Menu
 // -------------------------------
 
+// Ways to reach the author, from courseData.contact. Empty values are left out.
+function renderContactLinks() {
+    const contact = courseData.contact || {};
+    const links = [
+        contact.email ? `<a href="mailto:${contact.email}">${contact.email}</a>` : "",
+        contact.linkedin ? `<a href="${contact.linkedin}">LinkedIn</a>` : "",
+        contact.website ? `<a href="${contact.website}">${contact.website.replace(/^https?:\/\//, "")}</a>` : ""
+    ].filter(Boolean);
+
+    return links.join(" • ");
+}
+
 function renderHome() {
     const currentModule = getCurrentModule();
     if (!appState.activeModuleKey && currentModule) setActiveModule(currentModule);
@@ -346,6 +358,7 @@ function renderHome() {
                         href="${REPOSITORY_URL}/blob/main/docs/DESIGN_DECISIONS.md">
                         View Project Documentation <span aria-hidden="true">→</span>
                     </a>
+                    ${renderContactLinks() ? `<p class="project-contact mt-3 mb-0">Get in touch: ${renderContactLinks()}</p>` : ""}
                 </div>
 
                 <div class="project-status-callout mt-4">
@@ -403,10 +416,11 @@ function renderHome() {
 
         <footer class="site-footer">
             <div class="container">
-                <p class="mb-0">
+                <p class="mb-2">
                     Designed and built by ${courseData.creator} • ${courseData.year} •
                     <a href="${REPOSITORY_URL}">View the source on GitHub</a>
                 </p>
+                ${renderContactLinks() ? `<p class="mb-0">Contact: ${renderContactLinks()}</p>` : ""}
             </div>
         </footer>
     `;

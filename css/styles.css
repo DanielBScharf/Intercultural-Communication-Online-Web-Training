@@ -1982,3 +1982,10 @@ textarea[aria-invalid="true"] {
     border-radius: 0.85rem;
     overflow-wrap: anywhere;
 }
+
+.project-contact a {
+    color: var(--primary-dark);
+    font-weight: 600;
+    text-underline-offset: 0.2em;
+    overflow-wrap: anywhere;
+}

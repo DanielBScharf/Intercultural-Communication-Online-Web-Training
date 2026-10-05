@@ -1,165 +1,117 @@
 # Intercultural Communication Workshop
 
-An interactive, web-based learning experience designed to help learners build intercultural communication skills through reflection, scenario-based practice, and critical incidents.
+An interactive, self-paced workshop that builds intercultural communication skills through branching scenarios, perspective-taking activities, and guided reflection.
 
-Created by **Daniel Scharf**.
+Designed, written, and built by **Daniel Scharf** as an instructional design portfolio project.
 
-## Project Overview
+**[Open the workshop](https://danielbscharf.github.io/Intercultural-Communication-Online-Web-Training/)** · **[Take the 10-minute showcase](https://danielbscharf.github.io/Intercultural-Communication-Online-Web-Training/#showcase)**
 
-This project began as a PowerPoint-based intercultural communication workshop and is being redesigned as a responsive web-based learning module. The course introduces learners to culture, cultural perspectives, stereotypes, tolerance of ambiguity, critical reflection, and the DAEA reflection model.
+## For reviewers
 
-The project is also designed as a portfolio piece demonstrating instructional design, learning experience design, and front-end development skills.
+- The **10-minute showcase** is a short route through the main ideas and each type of activity.
+- **Explore freely** is on by default, so you can open any module in any order without completing the reflections. Switch it off on the menu screen to take the workshop as a learner would.
+- The **[design decisions](docs/DESIGN_DECISIONS.md)** document explains the instructional reasoning behind the workshop.
 
-## Learning Goals
+## Learning objectives
 
-By the end of the course, learners will be able to:
+By the end of the workshop, learners will be able to:
 
-* Explain what culture is and how it influences perception.
-* Identify stereotypes and assumptions.
-* Demonstrate and build tolerance of ambiguity.
-* Use DAEA to critically reflect on experiences.
-* Create a plan of action based on critical reflection.
+1. Distinguish visible from less visible elements of culture and explain how a less visible element can cause a misunderstanding.
+2. Given a situation, recognize when a conclusion rests on a stereotype and replace it with a tentative, individual-level observation.
+3. Given an unclear situation, generate at least two plausible explanations, identify what they would need to find out, and choose a response that doesn't depend on a single interpretation.
+4. In a written account of an intercultural incident, distinguish what happened from their interpretation of it and from their emotional reaction to it.
+5. Based on their reflection, write a specific next step for a future intercultural situation.
 
-## Course Modules
+## Modules
 
 1. Understanding Culture
 2. Stereotypes
 3. Tolerance of Ambiguity
-4. Critical Reflection / DAEA
+4. Critical Reflection / DAEA (Describe, Analyze, Evaluate, Apply)
 5. Prague Example Practice
 6. Critical Incidents
 7. Final Reflection
 
-## Key Features
+A Reflection Summary gathers everything the learner wrote and shows how each reflection connects to the objectives.
 
-* Modular JavaScript-based course structure
-* Reusable lesson templates
-* Dynamic lesson rendering
-* Local browser storage for learner responses
-* Progress tracking
-* Interactive reflection prompts
-* Accordion-based content sections
-* Sorting activity for visible and less visible culture
-* Scenario-based learning using a Prague comic case study
-* Critical incident practice activities
+## Activity types
 
-## Project Structure
+| Activity | What the learner does | Example |
+| --- | --- | --- |
+| Sorting | Sorts items into visible and less visible culture | Iceberg Sorting Activity |
+| Branching scenario | Makes decisions, sees each play out, then compares every path | The New Colleague, A Work Dinner |
+| Perspective flip | Reads one side of an encounter, writes a guess, then sees the other side | Prague: Two Sides of the Counter |
+| Signal transcript | Marks the lines of a conversation that carried an unspoken message | Where Was the No? |
+| Guided activity | Works through a story in steps, with reflection | What Happened Next |
+| Reflection | Writes a response that is saved in the browser | Throughout |
+
+## How it is built
+
+The workshop is a single page written in plain HTML, CSS, and JavaScript modules, with Bootstrap 5 for layout. It has no build step and no server. Learner responses and progress are saved in the browser's local storage.
+
+Content is kept separate from behavior:
+
+- `modules/` holds the instructional content, one file per module.
+- `js/` holds the behavior. Each activity type is its own reusable file, so a new scenario can be written as content without changing code.
+- `tests/` holds automated tests for the activity logic and the navigation rules.
 
 ```text
 intercultural-workshop/
 ├── index.html
-├── css/
-│   └── styles.css
+├── css/styles.css
 ├── js/
-│   ├── app.js
+│   ├── app.js                 navigation, menu screen, sidebar
+│   ├── renderer.js            turns lesson data into screens
+│   ├── activities.js          sorting, guided activity, image reveal
+│   ├── branchingScenario.js   branching scenarios
+│   ├── perspectiveFlip.js     two-sided perspective activity
+│   ├── signalTranscript.js    marked conversation activity
+│   ├── moduleProgress.js      progress bar
+│   ├── reflectionValidation.js
 │   ├── courseData.js
-│   ├── renderer.js
 │   └── storage.js
-├── modules/
-│   ├── culture.js
-│   ├── stereotypes.js
-│   ├── ambiguity.js
-│   ├── daea.js
-│   ├── prague.js
-│   ├── incidents.js
-│   └── reflection.js
+├── modules/                   content for each module, plus the showcase route
+├── tests/
+├── docs/
 └── images/
-    ├── hero/
-    ├── culture/
-    ├── iceberg/
-    ├── daea/
-    └── comic/
 ```
 
-## Architecture
+## Documentation
 
-The site uses a modular structure:
+- [Design Decisions](docs/DESIGN_DECISIONS.md): instructional philosophy, learning outcomes, and the reasoning behind each module
+- [Technical Architecture](docs/TECHNICAL_ARCHITECTURE.md): how the code is organized and how each activity type works
+- [Required Response Audit](docs/REQUIRED_RESPONSE_AUDIT.md): which reflections are required
 
-* `index.html` provides the application shell.
-* `courseData.js` imports and organizes course modules.
-* `modules/*.js` files contain instructional content.
-* `renderer.js` converts lesson objects into HTML.
-* `storage.js` handles localStorage and saved learner responses.
-* `app.js` controls navigation, application state, and sidebar rendering.
+## Run it locally
 
-This structure keeps course content separate from presentation logic, making it easier to revise lessons or add future modules. Thinking of possibly making each module it's own JS file for easier editing and updating.
+The project uses JavaScript modules, so it needs a local web server. Opening `index.html` directly from the file system will not work.
 
-## Technologies Used
-
-* HTML5
-* CSS3
-* Bootstrap 5
-* Bootstrap Icons
-* JavaScript ES Modules
-* localStorage
-* GitHub Pages
-
-## Current Status
-
-This project is in active development.
-
-Completed or in progress:
-
-* Project architecture
-* Modular course data structure
-* Module 1 content structure
-* Dynamic rendering system
-* Local storage helpers
-* Basic navigation system
-
-Planned improvements:
-
-* Full Module 1 polish
-* Implementation of all modules
-* Improved sidebar navigation
-* Interactive iceberg sorting activity
-* DAEA image reveal activity
-* Prague comic activity
-* Critical incident templates
-* Reflection summary page
-* Downloadable learner response summary
-* Optional email response feature
-
-## How to Run Locally
-
-Because this project uses JavaScript ES modules, it should be run through a local development server.
-
-Recommended method:
-
-1. Open the project folder in VS Code.
+1. Open the folder in VS Code.
 2. Install the Live Server extension.
-3. Right-click `index.html`.
-4. Select **Open with Live Server**.
+3. Right-click `index.html` and choose **Open with Live Server**.
 
-The project should open at a local address such as:
+To run the tests (needs a recent version of Node.js):
 
 ```text
-http://127.0.0.1:5500/
+node --test tests/*.mjs
 ```
 
-Opening `index.html` directly with a `file:///` path may cause browser security errors.
+## Status and roadmap
 
-## Portfolio Purpose
+All seven modules are complete and can be taken from start to finish. Planned next:
 
-This project demonstrates:
+- Voice-over for the branching scenarios
+- A cultural dimensions self-check
+- Rebuilding the remaining critical incident as a practice activity
+- Testing with learners and revising from their feedback
+- Continued accessibility testing
 
-* Instructional design
-* Learning experience design
-* Scenario-based learning
-* Reflection-based learning
-* Web-based course design
-* Front-end development
-* Modular content architecture
-* Basic learner progress persistence
+## AI collaboration
 
-## Project Documentation
+The workshop was developed with AI assistance for code. The curriculum, instructional decisions, and final design choices are mine. The design decisions document describes how that collaboration worked.
 
-This project was intentionally documented to demonstrate the instructional design process behind the final product.
+## Contact
 
-- 📘 Design Decisions
-- 🏗 Technical Architecture
-- ♿ Accessibility Considerations
+Daniel Scharf · [id.scharfd@gmail.com](mailto:id.scharfd@gmail.com) · [LinkedIn](https://www.linkedin.com/in/scharf-daniel-/) · [daniel-scharf.com](https://daniel-scharf.com)
 
-## License
-
-This project is currently for portfolio and educational purposes.
+This project is shared for portfolio and educational purposes.
