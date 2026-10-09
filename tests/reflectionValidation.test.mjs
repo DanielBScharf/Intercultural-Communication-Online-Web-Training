@@ -28,8 +28,8 @@ test("only non-whitespace text satisfies a response", () => {
 
 test("semantic configuration includes every active reflection and excludes decision inputs", () => {
     const entries = courseData.modules.flatMap(module => module.lessons.flatMap(getReflectionEntries));
-    assert.equal(entries.length, 24);
-    assert.equal(entries.filter(entry => entry.required).length, 22);
+    assert.equal(entries.length, 23);
+    assert.equal(entries.filter(entry => entry.required).length, 21);
     assert.equal(new Set(entries.map(entry => entry.storageKey)).size, entries.length);
     for (const entry of entries) assert.equal(typeof entry.required, "boolean");
     assert.equal(isRequiredReflection(courseData, "cultureHiddenMisunderstandingReflection"), true);

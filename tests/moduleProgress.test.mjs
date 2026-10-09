@@ -50,7 +50,7 @@ test('every module has a total that matches its steps, and each lesson starts wh
     assert.equal(totals.culture, 13);
     assert.equal(totals.stereotypes, 8);
     assert.equal(totals.prague, 9);
-    assert.equal(totals.incidents, 17);
+    assert.equal(totals.incidents, 16);
     for (const module of courseData.modules) {
         let expected = 1;
         for (const lesson of module.lessons) {

@@ -77,7 +77,11 @@ export const lessons = {
   },
   "incident-guest-host-communication": {
     id: "incident-guest-host-communication",
-    title: "Guest/Host Communication Incident",
+    title: "Just Family",
+  },
+  "incident-guest-host-reflection": {
+    id: "incident-guest-host-reflection",
+    title: "Before the Next Invitation",
   },
   "final-reflection-questions": {
     id: "final-reflection-questions",
@@ -390,7 +394,7 @@ export const reflections = {
   incidentGuestHostInitialReflection: {
     reflectionId: "incidentGuestHostInitialReflection",
     lessonId: "incident-guest-host-communication",
-    reflectionTitle: "First Impressions",
+    reflectionTitle: "Possible Explanations",
     competencies: ["delayingJudgment", "criticalReflection"],
     designPrinciples: ["recognizeIncompletePicture", "delayJudgment"],
     learningOutcomes: ["culturalAwareness", "toleranceOfAmbiguity"],
@@ -402,7 +406,7 @@ export const reflections = {
 
   incidentGuestHostDaeaReflection: {
     reflectionId: "incidentGuestHostDaeaReflection",
-    lessonId: "incident-guest-host-communication",
+    lessonId: "incident-guest-host-reflection",
     reflectionTitle: "Reconsidering the Situation",
     competencies: [
       "perspectiveTaking",

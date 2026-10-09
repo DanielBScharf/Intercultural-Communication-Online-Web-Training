@@ -14,6 +14,8 @@
 // Its format is documented at the top of js/branchingScenario.js.
 // type: "signalTranscript" creates a mark-the-lines conversation activity.
 // Its format is documented at the top of js/signalTranscript.js.
+// type: "inquiry" creates a choose-what-to-find-out activity.
+// Its format is documented at the top of js/inquiryActivity.js.
 // ======================================
 
 const criticalIncidentReflectionRationale = `Think back to the cultural iceberg. There may be deeper values, expectations, assumptions, or communication norms influencing this situation that are not immediately visible. You may not yet have enough information to understand why someone behaved the way they did.
@@ -435,76 +437,136 @@ export const incidentsModule = {
 
         {
             id: "incident-guest-host-communication",
-            type: "guidedActivity",
-            title: "Guest/Host Communication Incident",
+            type: "inquiry",
+            title: "Just Family",
             moduleLabel: "Critical Incidents",
-            instructions: "Explore how politeness expectations can create confusion even when everyone has good intentions.",
-            slides: [
+            instructions: "Read the situation and explain it in your own words. Then decide what you would do to find out more.",
+            learningObjectives: ["LO1", "LO3"],
+            competencies: ["IC1", "IC3"],
+
+            scene: {
+                body: [
+                    "You are working abroad for a few months. Joseph, a colleague you have become friends with, invites you to his sister's wedding. “You must come,” he says. “It's just a family event.”",
+                    "You expect a small gathering. When you arrive, several hundred people are there, and more keep arriving. Some seem to know only one member of the family. Nobody is checking a guest list.",
+                    "The only person you know is Joseph who is busy with the actual family. You stand near the entrance with a small gift, unsure whether you are really welcome or whether you are intruding. Everyone else looks completely at ease."
+                ]
+            },
+
+            question: {
+                prompt: "Why might this wedding be so different from what you expected? Give at least two possible explanations.",
+                storageKey: "incidentGuestHostInitialReflection",
+                reflectionTitle: "Possible Explanations",
+                rationale: "Writing more than one explanation before you look for information keeps your first reading from becoming the only one, and shows you what you would need to find out.",
+                learningObjectives: ["LO3"],
+                competencies: ["IC2", "IC3"],
+                placeholder: "One explanation: ...\nAnother explanation: ..."
+            },
+
+            picks: 3,
+            prompt: "You do not know yet. Choose three things to do to find out.",
+
+            options: [
                 {
-                    slideType: "story",
-                    title: "A confusing party",
-                    body: [
-                        "You are traveling abroad and become friends with a local colleague. Several weeks later, they invite you to a family wedding.",
-                        "You attend expecting a small gathering of close family and friends. Instead, hundreds of people are present. Many guests seem to know only one member of the family, and some appear to have simply arrived after hearing about the event.",
-                        "You are unsure whether you are truly welcome or whether you are intruding. Everyone else seems completely comfortable."
-                    ]
-                },
-                {
-                    slideType: "reflection",
-                    title: "First Reflection",
-                    body: [
-                        "Many different cultures see \"family\" events and parties, such as weddings, differently. While you may think of it as a family event, they may see it as a community celebration."
+                    id: "watch",
+                    label: "Watch what other guests do when they arrive.",
+                    result: [
+                        "People walk straight in. Most greet a group of older relatives near the entrance first, then sit wherever there is space. Nobody shows an invitation."
                     ],
-                    prompt: "Describe what happened. What assumptions might you be making about the party and the invitation?",
-                    storageKey: "incidentGuestHostInitialReflection",
-                    required: true,
-                    reflectionTitle: "First Impressions",
-                    showPurposeDisclosure: false,
-                    rationale: "This reflection helps learners examine assumptions about family, community, and invitations.",
-                    learningObjectives: ["LO1", "LO2"],
-                    competencies: ["IC1", "IC2"],
-                    placeholder: "Describe: ...\nAssumptions: ..."
+                    value: "high",
+                    why: "Observation costs nothing and tells you two things: the event is open, and there is a first step you can copy."
                 },
                 {
-                    slideType: "reveal",
-                    title: "Additional Perspective",
-                    body: [
-                        "In some cultures \"family\" is defined differently and is expanded beyond the \"nuclear family\" to include extended family, neighbors, church members, members of the same community, and even historical affiliations. Someone could say \"it's just family\" but mean 300+ people.",
-                        "There are also sometimes social obligations of hospitality. People in some cultures may feel obligated to invite the entire community to events like this.",
-                        "In many cultures around the world, weddings are community celebrations instead of private family events. They are meant to build social bonds and cohesion, as well as to introduce the new \"family\" into the larger community family."
-                    ]
-                },
-                {
-                    slideType: "reflection",
-                    title: "DAEA Reflection",
-                    body: [
-                        "Use DAEA to examine the guest and host perspectives without turning either person into a stereotype.",
-                        "Focus on what each person may regard as family and what a wedding is supposed to represent."
+                    id: "ask-joseph",
+                    label: "Find Joseph and ask, “Who is everyone here?”",
+                    result: [
+                        "He laughs. “Family! Well, family, the neighbors, my mother's church, people from our home village. If we did not invite them, they would be hurt.”"
                     ],
-                    prompt: "Analyze your and their definitions of family. Evaluate your reaction to the confusion. What could you do in the future if you are invited to a wedding in a foreign country?",
-                    storageKey: "incidentGuestHostDaeaReflection",
-                    required: true,
-                    reflectionTitle: "Reconsidering the Situation",
-                    rationale: criticalIncidentReflectionRationale,
-                    learningObjectives: ["LO1", "LO4", "LO5"],
-                    competencies: ["IC1", "IC4", "IC5"],
-                    placeholder: "Analyze: ...\nEvaluate: ...\nApply: ..."
+                    value: "high",
+                    why: "An open question to someone who knows. It gives you the one thing you could not see: what “family” means here."
                 },
                 {
-                    slideType: "summary",
-                    title: "Takeaways",
-                    body: [
-                        "This incident shows less visible cultural differences in the definition of family and community.",
-                        "A \"family wedding\" may be a huge celebration with the entire community present."
+                    id: "ask-guest",
+                    label: "Ask the guest beside you how they know the couple.",
+                    result: [
+                        "“I don't, really. My cousin went to school with the groom's brother.” She smiles. “It's a wedding. Everyone comes.”"
                     ],
-                    points: [
-                        "Culture influences what people define as family.",
-                        "Different views of family and community can cause confusion between different cultures. In the same way, they might be confused or sad about a small wedding with only immediate family and friends.",
-                        "Situations like this are an excellent way to practice tolerance of ambiguity.",
-                        "DAEA supports future action by helping you plan what to do in similar situations in the future."
-                    ]
+                    value: "high",
+                    why: "A second source. She confirms that coming without a close tie is normal, which answers your worry about intruding."
+                },
+                {
+                    id: "reread",
+                    label: "Read Joseph's invitation message again.",
+                    result: [
+                        "“My sister is getting married on Saturday. You must come. It's just family.” The words are the same as before."
+                    ],
+                    value: "low",
+                    why: "The message has not changed, and neither has the meaning you gave it. Rereading it only repeats your own interpretation."
+                },
+                {
+                    id: "compare",
+                    label: "Look for other guests who seem as out of place as you feel.",
+                    result: [
+                        "You cannot find any. Everyone seems comfortable, which makes you feel more out of place than before."
+                    ],
+                    value: "low",
+                    why: "This measures the event against your own feelings. It tells you about your discomfort and nothing about what is expected."
+                },
+                {
+                    id: "wait",
+                    label: "Stay near the exit, so you can leave quietly if you should not be here.",
+                    result: [
+                        "Twenty minutes pass. Then Joseph's mother notices you standing alone, takes your arm, and brings you a plate of food."
+                    ],
+                    value: "some",
+                    why: "You did find out that you were welcome, but only because someone else acted. Waiting leaves the answer to chance."
                 }
-            ]
+            ],
+
+            debrief: {
+                title: "What “family” meant",
+                body: [
+                    "You and Joseph used the same word and meant different things. You heard “just family” as a small, private event. For Joseph, family reaches well beyond parents and children, and a wedding joins two communities as well as two people.",
+                    "In many communities around the world, a wedding is a public celebration. Hospitality can be an obligation, and leaving people out can cause real offense. “You must come” was not politeness. Being invited meant you were being counted in."
+                ],
+                leftTitle: "What you could see",
+                leftItems: [
+                    "Several hundred guests",
+                    "No guest list at the entrance",
+                    "People arriving throughout the day",
+                    "Guests greeting the older relatives first"
+                ],
+                rightTitle: "What was less visible",
+                rightItems: [
+                    "Who counts as family",
+                    "What a wedding is for",
+                    "The duty to include the whole community",
+                    "What an invitation says about your relationship"
+                ],
+                note: "This describes Joseph's family and community. Weddings differ between families everywhere, so the lasting skill is finding out, and it works in both directions. Joseph might find a wedding with forty guests puzzling, or even sad.",
+                takeaways: [
+                    "The same word can carry different expectations. When a familiar word leads to an unfamiliar situation, check what it means here.",
+                    "Observing, and asking open questions of people who know, give you new information. Rereading and comparing only repeat what you already assumed.",
+                    "Feeling out of place tells you about your own expectations. It does not tell you whether you are welcome."
+                ]
+            }
+        },
+
+        {
+            id: "incident-guest-host-reflection",
+            type: "reflection",
+            title: "Before the Next Invitation",
+            moduleLabel: "Critical Incidents",
+            body: [
+                "At the wedding you found out what was going on after you arrived. Much of it could have been asked beforehand."
+            ],
+            prompt: "Think of an invitation or event where you were not sure what was expected of you. What had you assumed? Write two questions you could ask before the next one.",
+            storageKey: "incidentGuestHostDaeaReflection",
+            required: true,
+            reflectionTitle: "Reconsidering the Situation",
+            rationale: criticalIncidentReflectionRationale,
+            learningObjectives: ["LO1", "LO5"],
+            competencies: ["IC1", "IC5"],
+            placeholder: "What I assumed: ...\nQuestion 1: ...\nQuestion 2: ..."
         },
 
         {

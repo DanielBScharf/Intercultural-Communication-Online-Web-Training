@@ -105,7 +105,7 @@ export const pragueModule = {
                 {
                     id: "shouts",
                     image: "images/comic/prague-panel-3.png",
-                    imageAlt: "Panel 3: The woman at the ticket counter is shouting at the American student in Czech: 'Ne! Tam! Tamhle! Přes chodbu! Ne tady!' She is pointing with her arms in different directions and has an angry look on her face. The student is thinking 'I have no idea what she is saying. Why is she angry and yelling at me?'",
+                    imageAlt: "Panel 3: The woman at the ticket counter is shouting at the American student in Czech: 'Ne! Tam! Tamhle! Přes chodbu! Ne tady!' She is pgit ointing with her arms in different directions and has an angry look on her face. The student is thinking 'I have no idea what she is saying. Why is she angry and yelling at me?'",
                     first: {
                         thought: "I have no idea what she is saying. Why is she angry and yelling at me?",
                         feeling: "Alarmed, embarrassed"

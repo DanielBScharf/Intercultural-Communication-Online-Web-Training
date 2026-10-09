@@ -19,6 +19,7 @@
 import { getScenarioStepCount } from "./branchingScenario.js";
 import { getPerspectiveStepCount } from "./perspectiveFlip.js";
 import { getTranscriptStepCount } from "./signalTranscript.js";
+import { getInquiryStepCount } from "./inquiryActivity.js";
 
 function isCountedLesson(lesson) {
     return lesson.type !== "moduleIntro" && lesson.type !== "moduleComplete";
@@ -32,6 +33,7 @@ export function getLessonStepCount(lesson) {
     if (lesson?.type === "branchingScenario") count = getScenarioStepCount(lesson);
     if (lesson?.type === "perspectiveFlip") count = getPerspectiveStepCount(lesson);
     if (lesson?.type === "signalTranscript") count = getTranscriptStepCount(lesson);
+    if (lesson?.type === "inquiry") count = getInquiryStepCount(lesson);
 
     return Math.max(count, 1);
 }

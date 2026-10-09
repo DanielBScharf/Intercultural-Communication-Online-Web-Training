@@ -8,6 +8,8 @@ Current course data is authoritative. This change adds only response requirement
 
 > **Update, October 2026:** `incidentNegotiationInitialReflection` was removed when the negotiation incident was rebuilt as a signal transcript ("Where Was the No?"), a follow-up scenario, and one reflection. The course now has 24 reflection entries, 22 of them required.
 
+> **Update, October 2026:** `incidentGuestHostInitialReflection` is now the open question inside the "Just Family" inquiry activity. It is still saved and still appears in the Reflection Summary, but it no longer blocks module completion. The course now has 23 reflection entries, 21 of them required.
+
 ## Required (25 responses)
 
 | Reflection ID / storage key | Module | Title |

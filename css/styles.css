@@ -1989,3 +1989,77 @@ textarea[aria-invalid="true"] {
     text-underline-offset: 0.2em;
     overflow-wrap: anywhere;
 }
+
+/* =====================================
+   Inquiry activity (js/inquiryActivity.js)
+   ===================================== */
+
+.inquiry-options,
+.inquiry-review {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.inquiry-review {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.lesson-card .inquiry-count {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.inquiry-count:focus {
+    outline: none;
+}
+
+.inquiry-result {
+    background: var(--accent-soft);
+    border-left: 5px solid var(--accent);
+    border-radius: 0.85rem;
+    padding: 0.85rem 1rem;
+    margin-top: 0.5rem;
+}
+
+.inquiry-result p:last-child,
+.inquiry-column ul {
+    margin-bottom: 0;
+}
+
+.lesson-card .inquiry-value {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-muted);
+}
+
+.lesson-card .inquiry-value.is-high {
+    color: var(--success);
+}
+
+.inquiry-value.is-high::before {
+    content: "\2713\00a0";
+}
+
+.lesson-card .inquiry-value.is-some {
+    color: var(--accent-text);
+}
+
+.lesson-card .inquiry-why {
+    border-top: 1px solid var(--border);
+    padding-top: 0.5rem;
+    margin-bottom: 0;
+    font-size: 0.95rem;
+}
+
+.inquiry-column {
+    background: var(--surface);
+    border: 1px solid var(--primary-border);
+    border-radius: 0.85rem;
+    padding: 1rem;
+    height: 100%;
+}

@@ -276,3 +276,15 @@ The menu screen has an "Explore freely" switch for reviewers. It is on by defaul
 - While it is on, `getMissingRequiredResponses()` returns nothing and `validateRequiredFields()` always passes, so every place that enforces required reflections (the module guard, the Next button, module completion) lets the reviewer through. The Reflection Summary is also open.
 - Anything typed is still saved. Switching it off restores the normal requirements, based on the responses actually saved.
 - Steps inside activities (choosing an option, marking a line) still ask for an answer, and still offer Skip for Now.
+
+### Inquiry activity
+
+`js/inquiryActivity.js` is a reusable activity (lesson type `inquiry`) about finding things out before acting. The learner reads an unclear situation, writes their own explanations, chooses a limited number of things to ask or observe, and sees what each reveals. A review then shows every option with how much it could tell them, followed by a debrief.
+
+- The situation, the options, their results and ratings, and the debrief belong in module data. The format is documented at the top of the file.
+- The activity has three steps: the question, the choices, and the review. The lesson's Next and Previous buttons move between them, and the top bar counts all three.
+- The written answer is saved under the question's `storageKey` and appears in the Reflection Summary. It does not block module completion.
+- A choice cannot be taken back once its result has been shown. "Choose again" on the review clears the choices.
+- Skip for Now on the question moves on to the choices. On the choices it leaves the activity.
+- Progress is saved under `inquiry_<stateId or id>`. Each option can carry an optional `audio` file.
+- It is used in the wedding incident ("Just Family"), which is followed by one reflection.

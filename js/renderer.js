@@ -48,6 +48,12 @@ import {
     initializeSignalTranscript
 } from "./signalTranscript.js";
 
+import {
+    renderInquiryContent,
+    initializeInquiry,
+    getInquiryQuestions
+} from "./inquiryActivity.js";
+
 import { getModuleStepPosition } from "./moduleProgress.js";
 
 import {
@@ -97,6 +103,7 @@ export function renderLesson(lesson, context) {
     initializeBranchingScenario(lesson, context);
     initializePerspectiveFlip(lesson, context);
     initializeSignalTranscript(lesson, context);
+    initializeInquiry(lesson, context);
     updateNavigationOrder();
 }
 
@@ -117,6 +124,7 @@ const lessonRenderers = {
     branchingScenario: renderBranchingScenario,
     perspectiveFlip: renderPerspectiveFlip,
     signalTranscript: renderSignalTranscript,
+    inquiry: renderInquiry,
     showcaseEnd: renderShowcaseEnd
 };
 
@@ -203,7 +211,7 @@ function renderLessonNavigation(context) {
             </button>
 
             ${getReflectionEntries(context.currentLesson || {}).some(entry => entry.required)
-                || ["branchingScenario", "perspectiveFlip", "signalTranscript"].includes(context.currentLesson?.type) ? `
+                || ["branchingScenario", "perspectiveFlip", "signalTranscript", "inquiry"].includes(context.currentLesson?.type) ? `
                 <button class="btn btn-outline-secondary secondary-navigation-button" data-action="skip"
                     ${context.currentLesson?.type === "guidedActivity" ? "hidden" : ""}>Skip for Now</button>
             ` : ""}
@@ -666,6 +674,14 @@ function renderPerspectiveFlip(lesson, context) {
     );
 }
 
+function renderInquiry(lesson, context) {
+    return renderPageShell(
+        lesson,
+        renderInquiryContent(lesson),
+        context
+    );
+}
+
 function renderSignalTranscript(lesson, context) {
     return renderPageShell(
         lesson,
@@ -1030,6 +1046,10 @@ function getLessonReflectionItems(lesson) {
         return getScenarioQuestions(lesson);
     }
 
+    if (lesson.type === "inquiry") {
+        return getInquiryQuestions(lesson);
+    }
+
     if (lesson.type === "imageReveal") {
         return (lesson.steps || [])
             .filter(step => step.storageKey)
@@ -1107,6 +1127,7 @@ function attachSharedLessonEvents(lesson, context) {
             if (lesson.type === "branchingScenario" && context.advanceBranchingScenario?.()) return;
             if (lesson.type === "perspectiveFlip" && context.advancePerspectiveFlip?.()) return;
             if (lesson.type === "signalTranscript" && context.advanceSignalTranscript?.()) return;
+            if (lesson.type === "inquiry" && context.advanceInquiry?.()) return;
             if (!validateRequiredFields()) return;
             if (lesson.type === "moduleComplete" && lesson.moduleKey) {
                 if (context.completeModule) {
@@ -1132,6 +1153,7 @@ function attachSharedLessonEvents(lesson, context) {
             saveResponseDrafts();
             if (lesson.type === "branchingScenario" && context.skipBranchingScenario?.()) return;
             if (lesson.type === "perspectiveFlip" && context.skipPerspectiveFlip?.()) return;
+            if (lesson.type === "inquiry" && context.skipInquiry?.()) return;
             if (lesson.type === "guidedActivity") context.advanceGuidedActivity?.(true);
             else if (context.nextLesson) context.goToLesson(context.nextLesson.id);
         });
@@ -1142,6 +1164,7 @@ function attachSharedLessonEvents(lesson, context) {
             if (lesson.type === "branchingScenario" && context.retreatBranchingScenario?.()) return;
             if (lesson.type === "perspectiveFlip" && context.retreatPerspectiveFlip?.()) return;
             if (lesson.type === "signalTranscript" && context.retreatSignalTranscript?.()) return;
+            if (lesson.type === "inquiry" && context.retreatInquiry?.()) return;
             if (context.previousLesson) {
                 context.goToLesson(context.previousLesson.id);
             }
